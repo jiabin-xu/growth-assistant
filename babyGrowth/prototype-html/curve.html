@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>宝宝成长记录小程序 - 曲线页</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* 曲线页特定样式 */
+    .filter-options {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+
+    .filter-group {
+      width: 48%;
+    }
+
+    .filter-label {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 5px;
+    }
+
+    .filter-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .filter-btn {
+      padding: 6px 10px;
+      background-color: #f0f0f0;
+      border: none;
+      border-radius: 15px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .filter-btn.active {
+      background-color: #4A90E2;
+      color: white;
+    }
+
+    .chart-container {
+      height: 250px;
+      background-color: white;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+
+    .chart-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .chart-placeholder svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .data-interpretation {
+      background-color: white;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .interpretation-item {
+      margin-bottom: 15px;
+    }
+
+    .interpretation-item h3 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #4A90E2;
+    }
+
+    .interpretation-item p {
+      font-size: 14px;
+      color: #333;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-container">
+    <!-- 顶部导航栏 -->
+    <div class="navbar">
+      <div class="nav-item">首页</div>
+      <div class="nav-item">记录</div>
+      <div class="nav-item active">曲线</div>
+      <div class="nav-item">知识</div>
+      <div class="nav-item">我的</div>
+    </div>
+
+    <!-- 曲线页内容 -->
+    <div class="page-container" id="curve-page">
+      <!-- 顶部：筛选选项 -->
+      <div class="filter-options">
+        <div class="filter-group">
+          <div class="filter-label">时间范围</div>
+          <div class="filter-buttons">
+            <button class="filter-btn">1个月</button>
+            <button class="filter-btn active">3个月</button>
+            <button class="filter-btn">6个月</button>
+            <button class="filter-btn">1年</button>
+            <button class="filter-btn">全部</button>
+          </div>
+        </div>
+        <div class="filter-group">
+          <div class="filter-label">指标选择</div>
+          <div class="filter-buttons">
+            <button class="filter-btn active">身高</button>
+            <button class="filter-btn">体重</button>
+            <button class="filter-btn">BMI</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 中部：成长曲线图表 -->
+      <div class="chart-container">
+        <div class="chart-placeholder">
+          <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+            <!-- 坐标轴 -->
+            <line x1="30" y1="170" x2="280" y2="170" stroke="#ccc" stroke-width="1" />
+            <line x1="30" y1="20" x2="30" y2="170" stroke="#ccc" stroke-width="1" />
+
+            <!-- X轴刻度 -->
+            <text x="30" y="185" font-size="8" text-anchor="middle">3月</text>
+            <text x="80" y="185" font-size="8" text-anchor="middle">4月</text>
+            <text x="130" y="185" font-size="8" text-anchor="middle">5月</text>
+            <text x="180" y="185" font-size="8" text-anchor="middle">6月</text>
+            <text x="230" y="185" font-size="8" text-anchor="middle">7月</text>
+            <text x="280" y="185" font-size="8" text-anchor="middle">8月</text>
+
+            <!-- Y轴刻度 -->
+            <text x="20" y="170" font-size="8" text-anchor="end">70</text>
+            <text x="20" y="140" font-size="8" text-anchor="end">75</text>
+            <text x="20" y="110" font-size="8" text-anchor="end">80</text>
+            <text x="20" y="80" font-size="8" text-anchor="end">85</text>
+            <text x="20" y="50" font-size="8" text-anchor="end">90</text>
+            <text x="20" y="20" font-size="8" text-anchor="end">95</text>
+
+            <!-- 标准百分位线 P97 -->
+            <path d="M30,40 Q80,35 130,30 T230,20 T280,15" stroke="#FFCA28" stroke-width="1" fill="none" />
+            <text x="285" y="15" font-size="8" fill="#FFCA28">P97</text>
+
+            <!-- 标准百分位线 P50 -->
+            <path d="M30,80 Q80,75 130,70 T230,60 T280,55" stroke="#4A90E2" stroke-width="1" fill="none" />
+            <text x="285" y="55" font-size="8" fill="#4A90E2">P50</text>
+
+            <!-- 标准百分位线 P3 -->
+            <path d="M30,120 Q80,115 130,110 T230,100 T280,95" stroke="#EF5350" stroke-width="1" fill="none" />
+            <text x="285" y="95" font-size="8" fill="#EF5350">P3</text>
+
+            <!-- 实际数据线 -->
+            <path d="M30,90 L80,85 L130,80 L180,70 L230,65" stroke="#66BB6A" stroke-width="2" fill="none" />
+
+            <!-- 数据点 -->
+            <circle cx="30" cy="90" r="3" fill="#66BB6A" />
+            <circle cx="80" cy="85" r="3" fill="#66BB6A" />
+            <circle cx="130" cy="80" r="3" fill="#66BB6A" />
+            <circle cx="180" cy="70" r="3" fill="#66BB6A" />
+            <circle cx="230" cy="65" r="3" fill="#66BB6A" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- 底部：数据解读区 -->
+      <div class="data-interpretation">
+        <div class="interpretation-item">
+          <h3>当前百分位情况</h3>
+          <p>小明当前身高处于P75百分位，表示超过了75%的同龄儿童。</p>
+        </div>
+        <div class="interpretation-item">
+          <h3>同龄儿童对比</h3>
+          <p>与同龄儿童相比，小明的身高属于中上水平，高于大多数同龄儿童。</p>
+        </div>
+        <div class="interpretation-item">
+          <h3>最近变化趋势</h3>
+          <p>近3个月来，小明的身高增长速度略高于平均水平，呈现良好的增长趋势。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

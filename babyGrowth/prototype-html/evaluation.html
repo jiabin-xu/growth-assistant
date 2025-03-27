@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>宝宝成长记录小程序 - 评估页</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* 评估页特定样式 */
+    .evaluation-header {
+      margin-bottom: 15px;
+    }
+
+    .evaluation-time {
+      font-size: 12px;
+      color: #999;
+      margin-bottom: 5px;
+    }
+
+    .evaluation-summary {
+      font-size: 16px;
+      font-weight: 600;
+      color: #4A90E2;
+      padding: 10px 0;
+    }
+
+    .evaluation-cards {
+      margin-bottom: 20px;
+    }
+
+    .evaluation-card {
+      background-color: white;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .evaluation-card h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #4A90E2;
+    }
+
+    .evaluation-item {
+      margin-bottom: 10px;
+    }
+
+    .evaluation-item-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+    }
+
+    .evaluation-item-title .status {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+
+    .status.good {
+      background-color: #66BB6A;
+    }
+
+    .status.warning {
+      background-color: #FFCA28;
+    }
+
+    .status.alert {
+      background-color: #EF5350;
+    }
+
+    .evaluation-item-content {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .qa-section {
+      background-color: white;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .qa-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .common-questions {
+      margin-bottom: 15px;
+    }
+
+    .question-tag {
+      display: inline-block;
+      padding: 6px 12px;
+      background-color: #f0f0f0;
+      border-radius: 15px;
+      font-size: 12px;
+      color: #666;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+
+    .question-input {
+      display: flex;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .question-input input {
+      flex: 1;
+      border: none;
+      padding: 10px 15px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .question-input button {
+      background-color: #4A90E2;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      font-size: 14px;
+    }
+
+    .suggestions-section {
+      background-color: white;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .suggestions-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    .suggestion-card {
+      border-left: 3px solid #4A90E2;
+      padding: 10px 15px;
+      margin-bottom: 15px;
+      background-color: #f9f9f9;
+    }
+
+    .suggestion-card h4 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #4A90E2;
+    }
+
+    .suggestion-card p {
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-container">
+    <!-- 顶部导航栏 -->
+    <div class="navbar">
+      <div class="nav-item">首页</div>
+      <div class="nav-item">记录</div>
+      <div class="nav-item">曲线</div>
+      <div class="nav-item">知识</div>
+      <div class="nav-item active">我的</div>
+    </div>
+
+    <!-- 评估页内容 -->
+    <div class="page-container" id="evaluation-page">
+      <!-- 顶部：评估时间和总结 -->
+      <div class="evaluation-header">
+        <div class="evaluation-time">评估时间：2023年6月15日</div>
+        <div class="evaluation-summary">发育正常，符合年龄段特征</div>
+      </div>
+
+      <!-- 中部：评估结果卡片 -->
+      <div class="evaluation-cards">
+        <div class="evaluation-card">
+          <h3>身高评估</h3>
+          <div class="evaluation-item">
+            <div class="evaluation-item-title">
+              <span class="status good"></span>
+              百分位
+            </div>
+            <div class="evaluation-item-content">当前身高78.5cm，处于P75百分位，属于正常范围。</div>
+          </div>
+          <div class="evaluation-item">
+            <div class="evaluation-item-title">
+              <span class="status good"></span>
+              同龄比较
+            </div>
+            <div class="evaluation-item-content">高于75%的同龄儿童，属于中上水平。</div>
+          </div>
+          <div class="evaluation-item">
+            <div class="evaluation-item-title">
+              <span class="status good"></span>
+              发育趋势
+            </div>
+            <div class="evaluation-item-content">近3个月增长速度良好，符合正常发育曲线。</div>
+          </div>
+        </div>
+
+        <div class="evaluation-card">
+          <h3>体重评估</h3>
+          <div class="evaluation-item">
+            <div class="evaluation-item-title">
+              <span class="status warning"></span>
+              百分位
+            </div>
+            <div class="evaluation-item-content">当前体重10.2kg，处于P60百分位，属于正常范围。</div>
+          </div>
+          <div class="evaluation-item">
+            <div class="evaluation-item-title">
+              <span class="status warning"></span>
+              同龄比较
+            </div>
+            <div class="evaluation-item-content">高于60%的同龄儿童，体重略高但仍在正常范围内。</div>
+          </div>
+          <div class="evaluation-item">
+            <div class="evaluation-item-title">
+              <span class="status warning"></span>
+              发育趋势
+            </div>
+            <div class="evaluation-item-content">近期体重增长速度略快，建议关注饮食情况。</div>
+          </div>
+        </div>
+
+        <div class="evaluation-card">
+          <h3>BMI评估</h3>
+          <div class="evaluation-item">
+            <div class="evaluation-item-title">
+              <span class="status good"></span>
+              健康范围
+            </div>
+            <div class="evaluation-item-content">当前BMI为16.5，处于健康范围内。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 智能问答区 -->
+      <div class="qa-section">
+        <div class="qa-title">智能问答</div>
+        <div class="common-questions">
+          <div class="question-tag">为什么孩子身高增长慢？</div>
+          <div class="question-tag">如何促进宝宝长高？</div>
+          <div class="question-tag">体重增长过快怎么办？</div>
+          <div class="question-tag">宝宝饮食建议</div>
+        </div>
+        <div class="question-input">
+          <input type="text" placeholder="输入您的问题...">
+          <button>提问</button>
+        </div>
+      </div>
+
+      <!-- 底部：个性化建议区 -->
+      <div class="suggestions-section">
+        <div class="suggestions-title">个性化建议</div>
+        <div class="suggestion-card">
+          <h4>饮食建议</h4>
+          <p>保持均衡饮食，适当控制高糖高脂食物摄入，增加蔬菜水果摄入量。每日保证奶制品摄入，提供充足钙质。</p>
+        </div>
+        <div class="suggestion-card">
+          <h4>运动建议</h4>
+          <p>鼓励户外活动，每天保证1-2小时的户外运动时间，如散步、跑步、攀爬等，促进骨骼发育。</p>
+        </div>
+        <div class="suggestion-card">
+          <h4>营养补充建议</h4>
+          <p>根据医生建议，适当补充维生素D，促进钙质吸收。避免过度补充，以食物获取营养为主。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

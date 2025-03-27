@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宝宝成长记录小程序</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 顶部导航栏 -->
+        <div class="navbar">
+            <div class="nav-item active">首页</div>
+            <div class="nav-item">记录</div>
+            <div class="nav-item">曲线</div>
+            <div class="nav-item">知识</div>
+            <div class="nav-item">我的</div>
+        </div>
+
+        <!-- 首页内容 -->
+        <div class="page-container" id="home-page">
+            <!-- 顶部：宝宝信息 -->
+            <div class="baby-info">
+                <div class="baby-avatar">
+                    <img src="https://via.placeholder.com/60" alt="宝宝头像">
+                </div>
+                <div class="baby-details">
+                    <h1 class="baby-name">小明，1岁2个月</h1>
+                    <p class="last-measure">最近测量：2023年6月15日</p>
+                </div>
+            </div>
+
+            <!-- 中部：数据卡片 -->
+            <div class="data-cards">
+                <div class="data-card">
+                    <h2>身高</h2>
+                    <div class="data-value">78.5 <span>cm</span></div>
+                    <div class="data-percentile">P75</div>
+                    <div class="trend up">↑ 较上次增长1.2cm</div>
+                </div>
+                <div class="data-card">
+                    <h2>体重</h2>
+                    <div class="data-value">10.2 <span>kg</span></div>
+                    <div class="data-percentile">P60</div>
+                    <div class="trend up">↑ 较上次增长0.3kg</div>
+                </div>
+            </div>
+
+            <!-- 快速入口按钮 -->
+            <div class="quick-actions">
+                <button class="action-btn record">记录成长</button>
+                <button class="action-btn curve">查看曲线</button>
+            </div>
+
+            <!-- 底部：最近记录和发育评估 -->
+            <div class="recent-records">
+                <h2>最近记录</h2>
+                <div class="record-item">
+                    <div class="record-date">2023年6月15日</div>
+                    <div class="record-content">
+                        <div>身高: 78.5cm (P75)</div>
+                        <div>体重: 10.2kg (P60)</div>
+                    </div>
+                </div>
+                <div class="record-item">
+                    <div class="record-date">2023年5月20日</div>
+                    <div class="record-content">
+                        <div>身高: 77.3cm (P73)</div>
+                        <div>体重: 9.9kg (P58)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="development-summary">
+                <h2>发育评估</h2>
+                <p>目前发育状况良好，体重略高于同龄儿童平均水平。</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
