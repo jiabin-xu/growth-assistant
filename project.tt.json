@@ -1,0 +1,13 @@
+{
+  "miniprogramRoot": "./",
+  "projectname": "growth-assistant",
+  "description": "宝宝健康成长",
+  "appid": "touristappid",
+  "setting": {
+    "urlCheck": true,
+    "es6": false,
+    "postcss": false,
+    "minified": false
+  },
+  "compileType": "miniprogram"
+}
