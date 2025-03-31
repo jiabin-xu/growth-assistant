@@ -1,0 +1,139 @@
+.history {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+  padding: 24px;
+
+  &.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #5f6368;
+  }
+
+  &.empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .empty-text {
+      font-size: 16px;
+      color: #5f6368;
+    }
+  }
+}
+
+.header {
+  margin-bottom: 32px;
+
+  .title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #202124;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    color: #5f6368;
+    display: block;
+  }
+}
+
+.records {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.record-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  .record-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+
+    .name {
+      font-size: 20px;
+      font-weight: bold;
+      color: #202124;
+    }
+
+    .status {
+      font-size: 14px;
+      padding: 4px 12px;
+      border-radius: 12px;
+
+      &.completed {
+        background: #e6f4ea;
+        color: #34a853;
+      }
+
+      &.in_progress {
+        background: #e8f0fe;
+        color: #1a73e8;
+      }
+    }
+  }
+
+  .record-info {
+    margin-bottom: 16px;
+
+    .info-item {
+      display: flex;
+      margin-bottom: 8px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .label {
+        font-size: 14px;
+        color: #5f6368;
+        width: 80px;
+      }
+
+      .value {
+        font-size: 14px;
+        color: #202124;
+      }
+    }
+  }
+
+  .record-result {
+    padding-top: 16px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .result-item {
+      .score {
+        font-size: 24px;
+        font-weight: bold;
+        color: #1a73e8;
+        margin-right: 8px;
+      }
+
+      .label {
+        font-size: 14px;
+        color: #5f6368;
+      }
+    }
+
+    .classification {
+      font-size: 16px;
+      font-weight: bold;
+      color: #34a853;
+      padding: 4px 12px;
+      background: #e6f4ea;
+      border-radius: 12px;
+    }
+  }
+}

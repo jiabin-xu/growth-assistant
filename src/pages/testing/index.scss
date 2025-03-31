@@ -1,0 +1,108 @@
+.testing {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+  padding: 24px;
+
+  &.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #5f6368;
+  }
+}
+
+.header {
+  margin-bottom: 32px;
+
+  .title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #202124;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    color: #5f6368;
+    display: block;
+  }
+}
+
+.items-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.test-item {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  .item-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+
+    .item-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #202124;
+    }
+
+    .item-domain {
+      font-size: 14px;
+      color: #1a73e8;
+      background: rgba(26, 115, 232, 0.1);
+      padding: 4px 12px;
+      border-radius: 12px;
+    }
+  }
+
+  .item-description {
+    font-size: 16px;
+    color: #5f6368;
+    line-height: 1.5;
+    margin-bottom: 24px;
+    display: block;
+  }
+
+  .item-actions {
+    display: flex;
+    gap: 16px;
+
+    .action-btn {
+      flex: 1;
+      height: 44px;
+      border-radius: 22px;
+      font-size: 16px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+
+      &.fail {
+        background: #fce8e6;
+        color: #d93025;
+
+        &:active {
+          background: #fad2ce;
+        }
+      }
+
+      &.pass {
+        background: #e6f4ea;
+        color: #34a853;
+
+        &:active {
+          background: #ceead6;
+        }
+      }
+    }
+  }
+}
