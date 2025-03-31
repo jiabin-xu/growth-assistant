@@ -202,6 +202,68 @@ const calculateDomainScore = (
   };
 };
 
+// 获取总体进度和各领域进度
+export const getProgress = (state: AssessmentState): {
+  totalProgress: number;
+  domainProgress: {
+    [key in Domain]?: {
+      tested: number;
+      direction: string;
+      progress: number;
+    };
+  };
+} => {
+  const domainProgress: {
+    [key in Domain]?: {
+      tested: number;
+      direction: string;
+      progress: number;
+    };
+  } = {};
+
+  let totalTestedItems = 0;
+  let totalExpectedItems = 0;
+
+  DOMAIN_ORDER.forEach((domain) => {
+    // 计算当前测试范围的月龄索引
+    const mainTestIndex = AGE_GROUPS.indexOf(state.mainTestAgeMonths);
+    let startIndex = mainTestIndex;
+    let endIndex = mainTestIndex;
+
+    // 根据当前领域的测试方向更新范围
+    if (domain === state.currentDomain) {
+      if (state.searchDirection === 'backward') {
+        startIndex = Math.min(startIndex, state.lastTestedAgeIndex);
+      } else {
+        endIndex = Math.max(endIndex, state.lastTestedAgeIndex);
+      }
+    }
+
+    // 获取当前测试范围内的所有项目
+    const domainItems = ALL_TEST_ITEMS.filter(item =>
+      item.domain === domain &&
+      AGE_GROUPS.indexOf(item.ageMonths) >= startIndex &&
+      AGE_GROUPS.indexOf(item.ageMonths) <= endIndex
+    );
+
+    const testedItems = domainItems.filter(item => state.results.has(item.id));
+
+    totalTestedItems += testedItems.length;
+    totalExpectedItems += domainItems.length;
+
+    domainProgress[domain] = {
+      tested: testedItems.length,
+      direction: domain === state.currentDomain ? state.searchDirection : 'backward',
+      progress: domainItems.length > 0 ? (testedItems.length / domainItems.length) * 100 : 0
+    };
+  });
+
+  return {
+    totalProgress: totalExpectedItems > 0 ? (totalTestedItems / totalExpectedItems) * 100 : 0,
+    domainProgress
+  };
+};
+
 export const calculateScores = (state: AssessmentState): AssessmentResult => {
   const domainMentalAges = new Map<Domain, number>();
   let totalMentalAgeSum = 0;

@@ -8,6 +8,7 @@ import {
   getInitialTestItems,
   getNextTestItems,
   calculateScores,
+  getProgress,
 } from "../../rule";
 import {
   Domain,
@@ -35,14 +36,21 @@ export default function Testing() {
 
   const [assessment, setAssessment] = useState<AssessmentState | null>(null);
   const [currentItems, setCurrentItems] = useState<ExtendedTestItem[]>([]);
+  const [currentItemIndex, setCurrentItemIndex] = useState<number>(0);
   const [loading, setLoading] = useState(true);
-  const [domainProgress, setDomainProgress] = useState<{
-    [key in Domain]?: {
-      tested: number;
-      direction: string;
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [progress, setProgress] = useState<{
+    totalProgress: number;
+    domainProgress: {
+      [key in Domain]?: {
+        tested: number;
+        direction: string;
+        progress: number;
+      };
     };
-  }>({});
+  }>({ totalProgress: 0, domainProgress: {} });
 
+  // console.log("currentItem?.ageMonths :>> ", currentItem?.ageMonths);
   // 初始化评估
   useEffect(() => {
     if (!id) return;
@@ -71,18 +79,10 @@ export default function Testing() {
       // 获取初始测试项
       const initialItems = getInitialTestItems(assessmentState);
       setCurrentItems(initialItems);
+      setCurrentItemIndex(0);
 
-      // 初始化领域进度
-      const progress: {
-        [key in Domain]?: { tested: number; direction: string };
-      } = {};
-      Object.values(Domain).forEach((domain) => {
-        progress[domain] = {
-          tested: 0,
-          direction: "backward",
-        };
-      });
-      setDomainProgress(progress);
+      // 初始化进度
+      setProgress(getProgress(assessmentState));
     } catch (e) {
       console.error("初始化评估失败:", e);
       Taro.showToast({
@@ -103,79 +103,68 @@ export default function Testing() {
       const newState = recordResult(assessment, itemId, result);
       setAssessment(newState);
 
-      // 更新当前领域的进度
-      setDomainProgress((prev) => ({
-        ...prev,
-        [newState.currentDomain]: {
-          tested: (prev[newState.currentDomain]?.tested || 0) + 1,
-          direction: newState.searchDirection,
-        },
-      }));
+      // 更新进度
+      setProgress(getProgress(newState));
 
-      // 检查当前月龄组是否已全部测试完成
-      const remainingItems = currentItems.filter((item) => item.id !== itemId);
-
-      if (remainingItems.length === 0) {
-        // 获取下一批测试项
-        const nextItems = getNextTestItems(newState);
-
-        if (nextItems.length === 0) {
-          // 评估完成，计算结果
-          const results = calculateScores(newState);
-
-          // 保存结果
-          const assessments = Taro.getStorageSync("assessments") || [];
-          const updatedAssessments = assessments.map((a: StoredAssessment) => {
-            if (a.id === id) {
-              return {
-                ...a,
-                results,
-                endTime: new Date().toISOString(),
-                status: "completed",
-              };
-            }
-            return a;
-          });
-          Taro.setStorageSync("assessments", updatedAssessments);
-
-          // 跳转到结果页
-          Taro.navigateTo({
-            url: `/pages/result/index?id=${id}`,
-          });
-          return;
-        }
-
-        // 显示方向变化提示
-        if (newState.searchDirection !== assessment.searchDirection) {
-          const direction =
-            newState.searchDirection === "forward" ? "向后" : "向前";
-          Taro.showToast({
-            title: `开始${direction}测试`,
-            icon: "none",
-            duration: 2000,
-          });
-        }
-
-        // 显示领域变化提示
-        if (newState.currentDomain !== assessment.currentDomain) {
-          Taro.showToast({
-            title: `开始测试${newState.currentDomain}`,
-            icon: "none",
-            duration: 2000,
-          });
-        }
-
-        setCurrentItems(nextItems);
-      } else {
-        setCurrentItems(remainingItems);
+      // 检查是否完成当前组的所有测试项
+      if (currentItemIndex < currentItems.length - 1) {
+        // 继续测试当前组的下一个项目
+        setCurrentItemIndex(currentItemIndex + 1);
+        return;
       }
-    } catch (e) {
-      console.error("处理测试结果失败:", e);
-      Taro.showToast({
-        title: "处理结果失败",
-        icon: "error",
-      });
-    }
+
+      // 当前组测试完成，获取下一批测试项
+      const nextItems = getNextTestItems(newState);
+
+      if (nextItems.length === 0) {
+        // 评估完成，计算结果
+        const results = calculateScores(newState);
+
+        // 保存结果
+        const assessments = Taro.getStorageSync("assessments") || [];
+        const updatedAssessments = assessments.map((a: StoredAssessment) => {
+          if (a.id === id) {
+            return {
+              ...a,
+              results,
+              endTime: new Date().toISOString(),
+              status: "completed",
+            };
+          }
+          return a;
+        });
+        Taro.setStorageSync("assessments", updatedAssessments);
+
+        // 跳转到结果页
+        Taro.navigateTo({
+          url: `/pages/result/index?id=${id}`,
+        });
+        return;
+      }
+
+      // 显示方向变化提示
+      if (newState.searchDirection !== assessment.searchDirection) {
+        const direction =
+          newState.searchDirection === "forward" ? "向后" : "向前";
+        Taro.showToast({
+          title: `开始${direction}测试`,
+          icon: "none",
+          duration: 2000,
+        });
+      }
+
+      // 显示领域变化提示
+      if (newState.currentDomain !== assessment.currentDomain) {
+        Taro.showToast({
+          title: `开始测试${newState.currentDomain}`,
+          icon: "none",
+          duration: 2000,
+        });
+      }
+
+      setCurrentItems(nextItems);
+      setCurrentItemIndex(0);
+    } catch (e) {}
   };
 
   if (loading) {
@@ -215,48 +204,74 @@ export default function Testing() {
             </>
           )}
         </View>
-        <View className="progress-bars">
-          {Object.entries(domainProgress).map(([domain, progress]) => (
-            <View key={domain} className="progress-item">
-              <View className="progress-label">
-                <Text className="label">{domain}</Text>
-                <Text className="count">{progress.tested}项</Text>
-                <Text className="direction">
-                  {progress.direction === "backward" ? "←" : "→"}
-                </Text>
-              </View>
-              <View
-                className={`progress-bar ${
-                  domain === assessment?.currentDomain ? "active" : ""
-                }`}
-              >
-                <View
-                  className="progress-fill"
-                  style={{
-                    width: `${
-                      progress.tested ? Math.min(progress.tested * 10, 100) : 0
-                    }%`,
-                  }}
-                />
-              </View>
-            </View>
-          ))}
+
+        {/* 总体进度 */}
+        <View
+          className="total-progress"
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          <View className="progress-label">
+            <Text className="label">总体进度</Text>
+            <Text className="count">{progress.totalProgress.toFixed(1)}%</Text>
+            <Text className="expand-icon">{isExpanded ? "↑" : "↓"}</Text>
+          </View>
+          <View className="progress-bar">
+            <View
+              className="progress-fill"
+              style={{
+                width: `${Math.min(progress.totalProgress, 100)}%`,
+              }}
+            />
+          </View>
         </View>
+
+        {/* 各领域进度 */}
+        {isExpanded && (
+          <View className="progress-bars">
+            {Object.entries(progress.domainProgress).map(
+              ([domain, domainInfo]) => (
+                <View key={domain} className="progress-item">
+                  <View className="progress-label">
+                    <Text className="label">{domain}</Text>
+                    <Text className="count">{domainInfo.tested}项</Text>
+                    <Text className="direction">
+                      {domainInfo.direction === "backward" ? "←" : "→"}
+                    </Text>
+                  </View>
+                  <View
+                    className={`progress-bar ${
+                      domain === assessment?.currentDomain ? "active" : ""
+                    }`}
+                  >
+                    <View
+                      className="progress-fill"
+                      style={{
+                        width: `${Math.min(domainInfo.progress, 100)}%`,
+                      }}
+                    />
+                  </View>
+                </View>
+              )
+            )}
+          </View>
+        )}
       </View>
 
       <View className="items-container">
-        {currentItems.map((item) => (
-          <View key={item.id} className="test-item">
+        {currentItems[currentItemIndex] && (
+          <View className="test-item">
             <View className="item-content">
-              <Text className="item-description">{item.description}</Text>
-              {item.operationMethod && (
+              <Text className="item-description">
+                {currentItems[currentItemIndex].description}
+              </Text>
+              {currentItems[currentItemIndex].operationMethod && (
                 <Text className="operation-method">
-                  操作方法：{item.operationMethod}
+                  操作方法：{currentItems[currentItemIndex].operationMethod}
                 </Text>
               )}
-              {item.passCriteria && (
+              {currentItems[currentItemIndex].passCriteria && (
                 <Text className="pass-criteria">
-                  通过标准：{item.passCriteria}
+                  通过标准：{currentItems[currentItemIndex].passCriteria}
                 </Text>
               )}
             </View>
@@ -264,19 +279,23 @@ export default function Testing() {
             <View className="item-actions">
               <Button
                 className="action-btn fail"
-                onClick={() => handleItemResult(item.id, "fail")}
+                onClick={() =>
+                  handleItemResult(currentItems[currentItemIndex].id, "fail")
+                }
               >
                 未通过
               </Button>
               <Button
                 className="action-btn pass"
-                onClick={() => handleItemResult(item.id, "pass")}
+                onClick={() =>
+                  handleItemResult(currentItems[currentItemIndex].id, "pass")
+                }
               >
                 通过
               </Button>
             </View>
           </View>
-        ))}
+        )}
       </View>
     </View>
   );
