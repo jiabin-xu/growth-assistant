@@ -97,15 +97,41 @@ const isAgeGroupAllFail = (state: AssessmentState, domain: Domain, ageIndex: num
 // 检查是否找到基底
 const hasFoundBasal = (state: AssessmentState, domain: Domain): boolean => {
   const currentIndex = state.lastTestedAgeIndex;
-  return isAgeGroupAllPass(state, domain, currentIndex) &&
-    isAgeGroupAllPass(state, domain, currentIndex - 1);
+
+  // 如果当前是第一个月龄组，无法继续向前测试
+  if (currentIndex <= 0) {
+    // 如果第一个月龄通过，则可以认为找到基底
+    return isAgeGroupAllPass(state, domain, currentIndex);
+  }
+
+  if (currentIndex + 1 === AGE_GROUPS.indexOf(state.mainTestAgeMonths)) {
+    return false;
+  }
+
+  // 检查当前月龄和前一个月龄是否都通过
+  const currentPassed = isAgeGroupAllPass(state, domain, currentIndex);
+  const previousPassed = isAgeGroupAllPass(state, domain, currentIndex + 1);
+
+  // 如果当前月龄和前一个月龄都通过，说明找到基底
+  return currentPassed && previousPassed;
 };
 
 // 检查是否找到上限
 const hasFoundCeiling = (state: AssessmentState, domain: Domain): boolean => {
   const currentIndex = state.lastTestedAgeIndex;
-  return isAgeGroupAllFail(state, domain, currentIndex) &&
-    isAgeGroupAllFail(state, domain, currentIndex + 1);
+
+  // 如果当前是最后一个月龄组，无法继续向后测试
+  if (currentIndex >= AGE_GROUPS.length - 1) {
+    // 如果最后一个月龄失败，则可以认为找到上限
+    return isAgeGroupAllFail(state, domain, currentIndex);
+  }
+
+  // 检查当前月龄和后一个月龄是否都失败
+  const currentFailed = isAgeGroupAllFail(state, domain, currentIndex);
+  const nextFailed = isAgeGroupAllFail(state, domain, currentIndex - 1);
+
+  // 如果当前月龄和后一个月龄都失败，说明找到上限
+  return currentFailed && nextFailed;
 };
 
 // 检查当前领域是否完成测试
@@ -132,9 +158,13 @@ export const getInitialTestItems = (state: AssessmentState): TestItem[] => {
 
 export const getNextTestItems = (state: AssessmentState): TestItem[] => {
   // 检查当前领域是否完成
-  if (isDomainComplete(state, state.currentDomain)) {
+  const isComplete = isDomainComplete(state, state.currentDomain);
+
+  if (isComplete) {
     const nextDomain = getNextDomain(state.currentDomain);
-    if (!nextDomain) return []; // 所有领域都测试完成
+    if (!nextDomain) {
+      return []; // 所有领域都测试完成
+    }
 
     // 开始新领域的测试
     state.currentDomain = nextDomain;
@@ -146,17 +176,30 @@ export const getNextTestItems = (state: AssessmentState): TestItem[] => {
   // 确定下一个要测试的月龄
   let nextAgeIndex: number;
   if (state.searchDirection === 'backward') {
-    if (hasFoundBasal(state, state.currentDomain)) {
+    const foundBasal = hasFoundBasal(state, state.currentDomain);
+
+    if (foundBasal) {
       // 找到基底，切换到向后测试
       state.searchDirection = 'forward';
       nextAgeIndex = AGE_GROUPS.indexOf(state.mainTestAgeMonths) + 1;
     } else {
       // 继续向前测试
       nextAgeIndex = state.lastTestedAgeIndex - 1;
+      // 边界检查
+      if (nextAgeIndex < 0) {
+        // 如果已经到达最小月龄，切换到向后测试
+        state.searchDirection = 'forward';
+        nextAgeIndex = AGE_GROUPS.indexOf(state.mainTestAgeMonths) + 1;
+      }
     }
   } else {
     // 向后测试
     nextAgeIndex = state.lastTestedAgeIndex + 1;
+    // 边界检查
+    if (nextAgeIndex >= AGE_GROUPS.length) {
+      // 如果已经到达最大月龄，完成当前领域
+      return [];
+    }
   }
 
   // 更新最后测试的月龄索引
