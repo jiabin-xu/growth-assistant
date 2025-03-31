@@ -50,7 +50,10 @@ export default function Index() {
       </View>
 
       <View className="footer">
-        <Text className="footer-text">专业的儿童发育评估工具</Text>
+        <Text className="disclaimer-text">
+          评估方案严格按照 「国家卫生和计划生育委员会」
+          发布的《0岁~6岁儿童发育行为评估量表》执行
+        </Text>
       </View>
     </View>
   );
