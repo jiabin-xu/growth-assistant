@@ -108,13 +108,27 @@ function calculateAgeMonths(birthDate: Date, assessmentDate: Date): number {
   return Math.round(ageInMonths * 10) / 10;
 }
 
-// 2. Core Assessment Class
+/// --- Keep previous Types and Enums (Domain, TestItem, TestResultStatus, AGE_GROUPS, ALL_TEST_ITEMS) ---
+// --- Keep previous Helper Functions (getItemsForAgeGroup, getItemsForAgeGroupAndDomain, calculateAgeMonths) ---
+
+enum DomainSearchStatus {
+  NeedsBackward = 'NeedsBackward', // Still searching for Basal
+  NeedsForward = 'NeedsForward',   // Basal found, searching for Ceiling
+  Complete = 'Complete'            // Basal and Ceiling found
+}
+
+// 2. Core Assessment Class (Modified)
 class DevelopmentalAssessment {
   private birthDate: Date;
   private assessmentDate: Date;
   public chronologicalAgeMonths: number;
   public mainTestAgeMonths: number; // 主测月龄
+  private mainTestAgeIndex: number;
   private results: Map<number, TestResultStatus>; // Internal state for results
+
+  // State tracking for exploration
+  private testedAgeIndices: Set<number>;
+  private domainSearchStatus: Map<Domain, DomainSearchStatus>;
 
   constructor(birthDate: Date, assessmentDate: Date) {
     if (assessmentDate < birthDate) {
@@ -124,15 +138,23 @@ class DevelopmentalAssessment {
     this.assessmentDate = assessmentDate;
     this.chronologicalAgeMonths = calculateAgeMonths(birthDate, assessmentDate);
     this.mainTestAgeMonths = this.findMainTestAge(this.chronologicalAgeMonths);
+    this.mainTestAgeIndex = AGE_GROUPS.indexOf(this.mainTestAgeMonths);
+    if (this.mainTestAgeIndex === -1) {
+      throw new Error("Calculated main test age month is not in the defined AGE_GROUPS.");
+    }
+
     this.results = new Map<number, TestResultStatus>();
-    // Initialize all items as 'not_tested'
     ALL_TEST_ITEMS.forEach(item => this.results.set(item.id, 'not_tested'));
+
+    // Initialize state
+    this.testedAgeIndices = new Set<number>();
+    this.domainSearchStatus = new Map<Domain, DomainSearchStatus>();
+    Object.values(Domain).forEach(domain => {
+      this.domainSearchStatus.set(domain, DomainSearchStatus.NeedsBackward); // Start by searching backward
+    });
   }
 
-  /**
-   * Finds the closest age group in AGE_GROUPS to the chronological age.
-   * Rule 4.2.2: If exactly between two, choose the lower one.
-   */
+  // --- findMainTestAge remains the same ---
   private findMainTestAge(chronoAgeMonths: number): number {
     let closestAge = AGE_GROUPS[0];
     let minDiff = Math.abs(chronoAgeMonths - closestAge);
@@ -146,10 +168,8 @@ class DevelopmentalAssessment {
         closestAge = currentAge;
       } else if (diff === minDiff) {
         // If equidistant, prefer the lower age group (which is already set)
-        // No change needed here as we iterate upwards
       } else {
-        // Difference is increasing, we passed the closest
-        break;
+        break; // Difference is increasing
       }
     }
     // Special case: if exactly halfway, e.g., chronoAge is 2.5, closest is 2 and 3. Prefer 2.
@@ -161,30 +181,17 @@ class DevelopmentalAssessment {
         return prevAge; // Choose lower if exactly halfway
       }
     }
-
-
     return closestAge;
   }
 
   /**
-   * 1. Get the initial set of test items based on rule 4.2.3.1
-   * Tests the mainTestAgeMonths and 2 age groups before and 2 after.
+   * 1. Get the initial set of test items (Revised)
+   * Returns only items for the mainTestAgeMonths.
    */
   public getInitialTestItems(): TestItem[] {
-    const mainIndex = AGE_GROUPS.indexOf(this.mainTestAgeMonths);
-    if (mainIndex === -1) return []; // Should not happen if mainTestAge is valid
-
-    const indicesToTest = new Set<number>();
-    for (let i = Math.max(0, mainIndex - 2); i <= Math.min(AGE_GROUPS.length - 1, mainIndex + 2); i++) {
-      indicesToTest.add(i);
-    }
-
-    const initialItems: TestItem[] = [];
-    indicesToTest.forEach(index => {
-      initialItems.push(...getItemsForAgeGroup(AGE_GROUPS[index]));
-    });
-
-    return initialItems;
+    // Mark this index as tested (or about to be)
+    this.testedAgeIndices.add(this.mainTestAgeIndex);
+    return getItemsForAgeGroup(this.mainTestAgeMonths);
   }
 
   /**
@@ -193,6 +200,14 @@ class DevelopmentalAssessment {
   public recordResult(itemId: number, status: TestResultStatus): void {
     if (this.results.has(itemId)) {
       this.results.set(itemId, status);
+      // Find which age index this item belongs to and mark it as tested
+      const item = ALL_TEST_ITEMS.find(i => i.id === itemId);
+      if (item) {
+        const itemAgeIndex = AGE_GROUPS.indexOf(item.ageMonths);
+        if (itemAgeIndex !== -1) {
+          this.testedAgeIndices.add(itemAgeIndex);
+        }
+      }
     } else {
       console.warn(`Item ID ${itemId} not found in the assessment scale.`);
     }
@@ -205,151 +220,20 @@ class DevelopmentalAssessment {
     return this.results.get(itemId);
   }
 
-  /**
-   * 4. Calculate the next items to test based on 4.2.3 rules and current results.
-   */
-  public getNextTestItems(): TestItem[] {
-    const nextItems = new Map<number, TestItem>(); // Use Map to avoid duplicates
-    const mainIndex = AGE_GROUPS.indexOf(this.mainTestAgeMonths);
-
-    // Check if initial 5 age groups are fully tested. If not, return missing ones.
-    const initialAgesIndices = new Set<number>();
-    for (let i = Math.max(0, mainIndex - 2); i <= Math.min(AGE_GROUPS.length - 1, mainIndex + 2); i++) {
-      initialAgesIndices.add(i);
-    }
-    const initialUntested: TestItem[] = [];
-    initialAgesIndices.forEach(index => {
-      const age = AGE_GROUPS[index];
-      getItemsForAgeGroup(age).forEach(item => {
-        if (this.results.get(item.id) === 'not_tested') {
-          initialUntested.push(item);
-        }
-      });
-    });
-    // If any items from the initial 5 groups are still untested, prioritize them
-    if (initialUntested.length > 0) {
-      initialUntested.forEach(item => nextItems.set(item.id, item));
-      return Array.from(nextItems.values());
-    }
-
-
-    // If initial tests are done, apply forward/backward rules per domain
-    for (const domain of Object.values(Domain)) {
-      // Backward Check (Rule 4.2.3.2)
-      let continueBackward = true;
-      let currentIndex = mainIndex - 1;
-      while (continueBackward && currentIndex >= 0) {
-        const age1 = AGE_GROUPS[currentIndex];
-        const status1 = this.checkAgeGroupStatus(age1, domain);
-
-        const age2 = (currentIndex - 1 >= 0) ? AGE_GROUPS[currentIndex - 1] : null;
-        const status2 = age2 !== null ? this.checkAgeGroupStatus(age2, domain) : 'all_pass'; // Assume pass if at boundary
-
-        if (status1 === 'all_pass' && status2 === 'all_pass') {
-          continueBackward = false; // Stop backward search for this domain
-        } else if (status1 === 'not_fully_tested' || status2 === 'not_fully_tested') {
-          // This case should be handled by the initial check, but as fallback:
-          if (status1 === 'not_fully_tested') {
-            getItemsForAgeGroupAndDomain(age1, domain)
-              .filter(item => this.results.get(item.id) === 'not_tested')
-              .forEach(item => nextItems.set(item.id, item));
-          }
-          if (age2 && status2 === 'not_fully_tested') {
-            getItemsForAgeGroupAndDomain(age2, domain)
-              .filter(item => this.results.get(item.id) === 'not_tested')
-              .forEach(item => nextItems.set(item.id, item));
-          }
-          continueBackward = false; // Stop and test these missing ones
-        }
-        else {
-          // At least one failure in the last two preceding groups. Need to test the *next* older group.
-          const nextBackwardIndex = currentIndex - 1; // Test the group before the current two
-          if (nextBackwardIndex >= 0) {
-            const nextBackwardAge = AGE_GROUPS[nextBackwardIndex];
-            // Only add if *any* item in that group is untested
-            const itemsToAdd = getItemsForAgeGroupAndDomain(nextBackwardAge, domain)
-              .filter(item => this.results.get(item.id) === 'not_tested');
-            if (itemsToAdd.length > 0) {
-              itemsToAdd.forEach(item => nextItems.set(item.id, item));
-            } else {
-              // This age group is already fully tested, but didn't trigger stop condition? Continue checking further back.
-            }
-
-          } else {
-            continueBackward = false; // Reached the beginning
-          }
-          currentIndex--; // Move to check the next pair backward
-        }
-        // Only decrement if we didn't find items to add and didn't stop
-        if (continueBackward) {
-          // If we stopped due to 'all_pass', don't decrement further back than needed
-          // If we found items to add, we should stop backward search for now
-          // Decrement only if neither condition is met (e.g., one passed, one failed -> need to go further back)
-        }
-
-
-      }
-
-
-      // Forward Check (Rule 4.2.3.3)
-      let continueForward = true;
-      currentIndex = mainIndex + 1;
-      while (continueForward && currentIndex < AGE_GROUPS.length) {
-        const age1 = AGE_GROUPS[currentIndex];
-        const status1 = this.checkAgeGroupStatus(age1, domain);
-
-        const age2 = (currentIndex + 1 < AGE_GROUPS.length) ? AGE_GROUPS[currentIndex + 1] : null;
-        const status2 = age2 !== null ? this.checkAgeGroupStatus(age2, domain) : 'all_fail'; // Assume fail if at boundary
-
-        if (status1 === 'all_fail' && status2 === 'all_fail') {
-          continueForward = false; // Stop forward search for this domain
-        } else if (status1 === 'not_fully_tested' || status2 === 'not_fully_tested') {
-          // Prioritize testing incomplete groups within the initial range (handled above)
-          // If outside initial range and found untested, test them
-          if (status1 === 'not_fully_tested') {
-            getItemsForAgeGroupAndDomain(age1, domain)
-              .filter(item => this.results.get(item.id) === 'not_tested')
-              .forEach(item => nextItems.set(item.id, item));
-          }
-          if (age2 && status2 === 'not_fully_tested') {
-            getItemsForAgeGroupAndDomain(age2, domain)
-              .filter(item => this.results.get(item.id) === 'not_tested')
-              .forEach(item => nextItems.set(item.id, item));
-          }
-          continueForward = false; // Stop and test these missing ones
-        }
-        else {
-          // At least one pass in the last two succeeding groups. Need to test the *next* younger group.
-          const nextForwardIndex = currentIndex + 1;
-          if (nextForwardIndex < AGE_GROUPS.length) {
-            const nextForwardAge = AGE_GROUPS[nextForwardIndex];
-            const itemsToAdd = getItemsForAgeGroupAndDomain(nextForwardAge, domain)
-              .filter(item => this.results.get(item.id) === 'not_tested');
-            if (itemsToAdd.length > 0) {
-              itemsToAdd.forEach(item => nextItems.set(item.id, item));
-            } else {
-              // Already tested, continue forward
-            }
-          } else {
-            continueForward = false; // Reached the end
-          }
-          currentIndex++; // Move forward
-        }
-        // Only increment if we didn't find items to add and didn't stop
-        if (continueForward) {
-          // Increment only if we didn't stop due to 'all_fail' and didn't find new items to test
-        }
-      }
-    }
-
-    return Array.from(nextItems.values());
-  }
-
 
   /** Helper to check the pass/fail status of all items in an age group for a specific domain */
-  private checkAgeGroupStatus(ageMonths: number, domain: Domain): 'all_pass' | 'all_fail' | 'mixed' | 'not_fully_tested' {
+  private checkAgeGroupStatus(ageIndex: number, domain: Domain): 'all_pass' | 'all_fail' | 'mixed' | 'not_fully_tested' {
+    if (ageIndex < 0 || ageIndex >= AGE_GROUPS.length) {
+      // Treat out-of-bounds indices strategically for basal/ceiling checks
+      // For basal (backward check), out-of-bounds lower index implies "pass"
+      // For ceiling (forward check), out-of-bounds higher index implies "fail"
+      // This needs context, handled within checkBasal/checkCeiling directly.
+      // Here, if directly asked, return not tested.
+      return 'not_fully_tested';
+    }
+    const ageMonths = AGE_GROUPS[ageIndex];
     const items = getItemsForAgeGroupAndDomain(ageMonths, domain);
-    if (items.length === 0) return 'all_pass'; // Or 'all_fail'? Define behavior for empty group. Let's treat as pass for basal, fail for ceiling.
+    if (items.length === 0) return 'all_pass'; // Treat empty domain/age groups as passed
 
     let passes = 0;
     let fails = 0;
@@ -372,119 +256,212 @@ class DevelopmentalAssessment {
     return 'mixed';
   }
 
+  /** Checks if Basal is confirmed for a domain (Rule 4.2.3.2) */
+  private checkBasalConfirmed(domain: Domain): boolean {
+    // Iterate backwards from the lowest tested index for this domain
+    const testedIndicesForDomain = Array.from(this.testedAgeIndices)
+      .filter(index => getItemsForAgeGroupAndDomain(AGE_GROUPS[index], domain).length > 0) // Consider only relevant indices
+      .sort((a, b) => a - b); // Sort ascending
+
+    if (testedIndicesForDomain.length < 2) return false; // Need at least two tested points to check consecutive
+
+    const lowestTestedIndex = testedIndicesForDomain[0];
+
+    // Check the lowest tested index and the one before it
+    const status1 = this.checkAgeGroupStatus(lowestTestedIndex, domain);
+    // Treat index -1 (below first group) as implicitly passed for basal check
+    const status0 = this.checkAgeGroupStatus(lowestTestedIndex - 1, domain);
+    const precedingActuallyTested = this.testedAgeIndices.has(lowestTestedIndex - 1);
+
+
+    // Basal is established if the two *lowest consecutive tested points* are 'all_pass'
+    // OR if the very first age group (index 0) is tested and 'all_pass'
+    if (lowestTestedIndex === 0 && status1 === 'all_pass') return true;
+
+    // Find the lowest *pair* of tested indices
+    for (let i = 0; i < testedIndicesForDomain.length - 1; i++) {
+      const idx1 = testedIndicesForDomain[i];
+      const idx2 = testedIndicesForDomain[i + 1];
+      // Are they consecutive AGE GROUPS?
+      if (idx2 === idx1 + 1) {
+        const s1 = this.checkAgeGroupStatus(idx1, domain);
+        const s2 = this.checkAgeGroupStatus(idx2, domain);
+        // Check if *these two consecutive groups* are passed
+        if (s1 === 'all_pass' && s2 === 'all_pass') {
+          // But is this the true basal? True basal requires checking *below* the lowest failure
+          // Let's simplify: if *any* two consecutive are passed, assume basal established for now for deciding next step
+          // Correct basal calculation during scoring is more precise.
+          // Re-evaluate: Rule 4.2.3.2 -> Stop going backward when 2 consecutive prior PASS.
+          // Check status relative to the *lowest non-passed* or lowest tested point.
+          break; // Found a pass pair, but maybe not the true basal yet
+        }
+      }
+    }
+
+    // Simpler Check: Check status relative to the lowest tested point
+    // If the lowest tested point AND the one before it PASS, basal is confirmed.
+    if (precedingActuallyTested) {
+      if (status1 === 'all_pass' && status0 === 'all_pass') return true;
+    } else {
+      // If the preceding wasn't tested, we can't confirm based on this pair yet.
+      // If the lowest tested IS index 0 and it passed, that's basal.
+      if (lowestTestedIndex === 0 && status1 === 'all_pass') return true;
+    }
+
+
+    // More robust basal check: Iterate backward from main index until two consecutive passes are found
+    let consecutivePasses = 0;
+    for (let i = this.mainTestAgeIndex; i >= 0; i--) {
+      if (!this.testedAgeIndices.has(i)) continue; // Skip untested indices
+      const status = this.checkAgeGroupStatus(i, domain);
+      if (status === 'all_pass') {
+        consecutivePasses++;
+        if (consecutivePasses === 2) return true;
+      } else {
+        consecutivePasses = 0; // Reset counter if not pass
+      }
+    }
+    // Check if index 0 passed (edge case)
+    if (consecutivePasses === 1 && this.testedAgeIndices.has(0) && this.checkAgeGroupStatus(0, domain) === 'all_pass') {
+      // If we only found one pass at index 0, check implicit pass before it
+      return true;
+    }
+
+    return false; // Default if no 2 consecutive passes found going down
+  }
+
+  /** Checks if Ceiling is confirmed for a domain (Rule 4.2.3.3) */
+  private checkCeilingConfirmed(domain: Domain): boolean {
+    // Iterate forwards from the highest tested index for this domain
+    const testedIndicesForDomain = Array.from(this.testedAgeIndices)
+      .filter(index => getItemsForAgeGroupAndDomain(AGE_GROUPS[index], domain).length > 0)
+      .sort((a, b) => b - a); // Sort descending
+
+    if (testedIndicesForDomain.length < 2) return false;
+
+    const highestTestedIndex = testedIndicesForDomain[0];
+    const status1 = this.checkAgeGroupStatus(highestTestedIndex, domain);
+    // Treat index beyond last group as implicitly failed for ceiling check
+    const status2 = this.checkAgeGroupStatus(highestTestedIndex + 1, domain);
+    const succeedingActuallyTested = this.testedAgeIndices.has(highestTestedIndex + 1);
+
+
+    // Ceiling is established if the two *highest consecutive tested points* are 'all_fail'
+    // OR if the very last age group is tested and 'all_fail'
+    if (highestTestedIndex === AGE_GROUPS.length - 1 && status1 === 'all_fail') return true;
+
+    if (succeedingActuallyTested) {
+      if (status1 === 'all_fail' && status2 === 'all_fail') return true;
+    } else {
+      // If the succeeding wasn't tested, we can't confirm based on this pair yet.
+      if (highestTestedIndex === AGE_GROUPS.length - 1 && status1 === 'all_fail') return true;
+    }
+
+    // More robust ceiling check: Iterate forward from main index until two consecutive fails are found
+    let consecutiveFails = 0;
+    for (let i = this.mainTestAgeIndex; i < AGE_GROUPS.length; i++) {
+      if (!this.testedAgeIndices.has(i)) continue; // Skip untested indices
+      const status = this.checkAgeGroupStatus(i, domain);
+      if (status === 'all_fail') {
+        consecutiveFails++;
+        if (consecutiveFails === 2) return true;
+      } else {
+        consecutiveFails = 0; // Reset counter if not fail
+      }
+    }
+    // Check if last index failed (edge case)
+    const lastIndex = AGE_GROUPS.length - 1;
+    if (consecutiveFails === 1 && this.testedAgeIndices.has(lastIndex) && this.checkAgeGroupStatus(lastIndex, domain) === 'all_fail') {
+      // If we only found one fail at the last index, check implicit fail after it
+      return true;
+    }
+
+    return false; // Default if no 2 consecutive fails found going up
+  }
+
   /**
-   * 5. Calculate developmental scores based on rules 4.4.1 and 4.4.2
+   * 4. Calculate the single next age group to test (Revised)
+   * Prioritizes backward search, then forward.
    */
-  public calculateScores(): {
-    domainMentalAges: Map<Domain, number>;
-    totalMentalAge: number;
-    developmentQuotient: number;
-    dqClassification: string;
-  } {
-    const domainMentalAges = new Map<Domain, number>();
-    let totalMentalAgeSum = 0;
+  public getNextTestItems(): TestItem[] {
+    let nextIndexToTest: number | null = null;
+    let targetBackwardIndex: number | null = null;
+    let targetForwardIndex: number | null = null;
 
+    // Update domain search statuses based on current results
+    Object.values(Domain).forEach(domain => {
+      if (this.domainSearchStatus.get(domain) === DomainSearchStatus.NeedsBackward) {
+        if (this.checkBasalConfirmed(domain)) {
+          this.domainSearchStatus.set(domain, DomainSearchStatus.NeedsForward);
+        }
+      }
+      if (this.domainSearchStatus.get(domain) === DomainSearchStatus.NeedsForward) {
+        if (this.checkCeilingConfirmed(domain)) {
+          this.domainSearchStatus.set(domain, DomainSearchStatus.Complete);
+        }
+      }
+    });
+
+    // --- Determine Next Index ---
+    let lowestUntestedBackward: number | null = null;
+    let lowestUntestedForward: number | null = null;
+
+    // Find lowest needed backward index across incomplete domains
     for (const domain of Object.values(Domain)) {
-      let basalAgeMonths = 0;
-      let domainScore = 0;
+      if (this.domainSearchStatus.get(domain) === DomainSearchStatus.NeedsBackward) {
+        // Find the lowest tested index for this domain
+        const testedIndices = Array.from(this.testedAgeIndices).sort((a, b) => a - b);
+        const domainTestedIndices = testedIndices.filter(idx => getItemsForAgeGroupAndDomain(AGE_GROUPS[idx], domain).length > 0);
+        const lowestTested = domainTestedIndices.length > 0 ? domainTestedIndices[0] : this.mainTestAgeIndex; // Start from main if none tested below
 
-      // Find Basal Age (Highest age group where ALL items passed) - Rule 4.4.2.1
-      // Check backwards from mainTestAgeMonths initially, then cover all
-      let basalFound = false;
-      for (let i = AGE_GROUPS.length - 1; i >= 0; i--) {
-        const age = AGE_GROUPS[i];
-        const status = this.checkAgeGroupStatus(age, domain);
-        if (status === 'all_pass') {
-          basalAgeMonths = age; // The highest fully passed age group
-          basalFound = true;
-          break;
-        }
-      }
-
-      // Calculate score contribution from basal age and all preceding ages
-      if (basalFound) {
-        const basalIndex = AGE_GROUPS.indexOf(basalAgeMonths);
-        for (let i = 0; i <= basalIndex; i++) {
-          const age = AGE_GROUPS[i];
-          const { totalPoints } = this.getScorePointsForAgeGroup(age);
-          // Assume all items passed up to and including basal age
-          domainScore += totalPoints;
-        }
-      }
-
-
-      // Add scores for items passed *above* the basal age
-      const basalIndex = basalFound ? AGE_GROUPS.indexOf(basalAgeMonths) : -1;
-      for (let i = basalIndex + 1; i < AGE_GROUPS.length; i++) {
-        const age = AGE_GROUPS[i];
-        const { pointsPerItem } = this.getScorePointsForAgeGroup(age);
-        const itemsInGroup = getItemsForAgeGroupAndDomain(age, domain);
-
-        for (const item of itemsInGroup) {
-          if (this.results.get(item.id) === 'pass') {
-            domainScore += pointsPerItem;
+        const potentialNextBackward = lowestTested - 1;
+        if (potentialNextBackward >= 0 && !this.testedAgeIndices.has(potentialNextBackward)) {
+          if (lowestUntestedBackward === null || potentialNextBackward < lowestUntestedBackward) {
+            lowestUntestedBackward = potentialNextBackward;
           }
         }
       }
-
-      // Round domain score (mental age in months) to one decimal place
-      const roundedDomainScore = Math.round(domainScore * 10) / 10;
-      domainMentalAges.set(domain, roundedDomainScore);
-      totalMentalAgeSum += roundedDomainScore;
     }
 
-    // Calculate Total Mental Age (average of domains, rounded) - Rule 4.4.2.2
-    const totalMentalAge = Math.round((totalMentalAgeSum / Object.keys(Domain).length) * 10) / 10;
+    // If backward search is needed, prioritize it
+    if (lowestUntestedBackward !== null) {
+      nextIndexToTest = lowestUntestedBackward;
+    } else {
+      // Backward search complete or not needed for any domain, check forward
+      for (const domain of Object.values(Domain)) {
+        if (this.domainSearchStatus.get(domain) === DomainSearchStatus.NeedsForward) {
+          // Find the highest tested index for this domain
+          const testedIndices = Array.from(this.testedAgeIndices).sort((a, b) => b - a); // Descending
+          const domainTestedIndices = testedIndices.filter(idx => getItemsForAgeGroupAndDomain(AGE_GROUPS[idx], domain).length > 0);
+          const highestTested = domainTestedIndices.length > 0 ? domainTestedIndices[0] : this.mainTestAgeIndex; // Start from main if none tested above
 
-    // Calculate Development Quotient (DQ) - Rule 2.3
-    const developmentQuotient = this.chronologicalAgeMonths > 0
-      ? Math.round((totalMentalAge / this.chronologicalAgeMonths) * 100)
-      : 0; // Avoid division by zero
-
-    // Classify DQ based on Rule 5
-    let dqClassification = "智力发育障碍"; // < 70
-    if (developmentQuotient >= 130) {
-      dqClassification = "优秀";
-    } else if (developmentQuotient >= 110) {
-      dqClassification = "良好";
-    } else if (developmentQuotient >= 80) {
-      dqClassification = "中等";
-    } else if (developmentQuotient >= 70) {
-      dqClassification = "临界偏低";
+          const potentialNextForward = highestTested + 1;
+          if (potentialNextForward < AGE_GROUPS.length && !this.testedAgeIndices.has(potentialNextForward)) {
+            if (lowestUntestedForward === null || potentialNextForward < lowestUntestedForward) {
+              lowestUntestedForward = potentialNextForward;
+            }
+          }
+        }
+      }
+      if (lowestUntestedForward !== null) {
+        nextIndexToTest = lowestUntestedForward;
+      }
     }
 
-
-    return {
-      domainMentalAges,
-      totalMentalAge,
-      developmentQuotient,
-      dqClassification
-    };
+    // --- Return Items for the Determined Index ---
+    if (nextIndexToTest !== null) {
+      const nextAgeMonth = AGE_GROUPS[nextIndexToTest];
+      this.testedAgeIndices.add(nextIndexToTest); // Mark as targeted for testing
+      console.log(`LOG: Next age group to test: ${nextAgeMonth} months (Index: ${nextIndexToTest})`); // Debug log
+      // Return only items within this age group that haven't been tested yet
+      return getItemsForAgeGroup(nextAgeMonth).filter(item => this.results.get(item.id) === 'not_tested');
+    } else {
+      console.log("LOG: No further items to test based on Basal/Ceiling rules."); // Debug log
+      return []; // Assessment complete based on rules
+    }
   }
 
-  /** Helper to get scoring points based on age group (Rule 4.4.1) */
-  private getScorePointsForAgeGroup(ageMonths: number): { totalPoints: number; pointsPerItem: number } {
-    let totalPoints = 0;
-    if (ageMonths >= 1 && ageMonths <= 12) {
-      totalPoints = 1.0;
-    } else if (ageMonths >= 15 && ageMonths <= 36) {
-      totalPoints = 3.0;
-    } else if (ageMonths >= 42 && ageMonths <= 84) {
-      totalPoints = 6.0;
-    }
-
-    // Need to know how many items are in THIS age group for ANY domain to divide points?
-    // Reread 4.4.1: "每个能区 X 分... 若有两个测查项目则各为 X/2 分"
-    // This implies the division is based on items *within that domain* for that age group.
-    // Let's recalculate pointsPerItem based on items per domain per age.
-    // This function needs the domain context, or the calculation needs to happen inside calculateScores loop.
-
-    // ***Revised approach: Calculate pointsPerItem within the calculateScores loop ***
-    // This function will just return the *Total* score value for passing the month.
-    return { totalPoints, pointsPerItem: 0 }; // pointsPerItem will be calculated contextually
-  }
-
-  /** Revised scoring calculation inside calculateScores incorporating points per item */
+  // --- calculateScoresRevised remains the same ---
   public calculateScoresRevised(): {
     domainMentalAges: Map<Domain, number>;
     totalMentalAge: number;
@@ -500,81 +477,96 @@ class DevelopmentalAssessment {
       let domainScore = 0;
 
       // Find Highest Consecutive Pass Age Group (Basal Age)
-      let lastPassedAgeIndex = -1;
-      for (let i = 0; i < AGE_GROUPS.length; i++) {
-        const age = AGE_GROUPS[i];
-        const status = this.checkAgeGroupStatus(age, domain);
-        if (status === 'all_pass') {
-          lastPassedAgeIndex = i;
-        } else {
-          // Stop checking for consecutive passes once a non-'all_pass' is found
-          // However, need to check ALL groups to establish the true basal
-          // Let's stick to the previous basal finding method (highest all_pass anywhere)
-        }
-      }
-
-      // Recalculate Basal Finding: Highest age group where ALL items passed
       let basalIndex = -1;
       for (let i = AGE_GROUPS.length - 1; i >= 0; i--) {
-        const age = AGE_GROUPS[i];
-        if (this.checkAgeGroupStatus(age, domain) === 'all_pass') {
-          basalIndex = i;
-          break;
+        // Need to ensure the group was actually tested to qualify as basal
+        if (this.testedAgeIndices.has(i) && this.checkAgeGroupStatus(i, domain) === 'all_pass') {
+          // Check if the one before it ALSO passed (or it's index 0)
+          const prevStatus = (i === 0) ? 'all_pass' : this.checkAgeGroupStatus(i - 1, domain);
+          const prevTested = (i === 0) || this.testedAgeIndices.has(i - 1);
+          // Simpler: find highest index where it and the one below (if exists) are passed
+          if (prevTested && prevStatus === 'all_pass') {
+            // This 'i' is the higher of the two consecutive passes, qualifies as basal start
+            // But scoring includes all points *up to* this point.
+            // Basal definition: highest age before the first failure. Assume pass below.
+            // Find lowest index with a failure or mixed result
+            let firstFailIndex = -1;
+            for (let j = 0; j < AGE_GROUPS.length; j++) {
+              if (this.testedAgeIndices.has(j)) {
+                const status = this.checkAgeGroupStatus(j, domain);
+                if (status === 'fail' || status === 'mixed') {
+                  firstFailIndex = j;
+                  break;
+                }
+              }
+            }
+            // Basal index is the one *before* the first failure
+            basalIndex = (firstFailIndex === -1)
+              ? AGE_GROUPS.length - 1 // All passed
+              : firstFailIndex - 1;
+
+            break; // Found the basal based on first failure method
+          } else if (i === 0) { // Special case: index 0 passed, treat as basal
+            basalIndex = 0;
+            break;
+          }
+
+
         }
       }
+      // If no passes found at all, basalIndex remains -1
+
 
       // Calculate score for basal age and all preceding age groups
+      // Assume all items passed up to and including the basal index
       if (basalIndex !== -1) {
         for (let i = 0; i <= basalIndex; i++) {
           const age = AGE_GROUPS[i];
           const { totalPoints } = this.getScorePointsForAgeGroup(age);
-          domainScore += totalPoints; // Add the full value for this month
-        }
-      }
-
-
-      // Add scores for items passed *above* the basal age index
-      for (let i = basalIndex + 1; i < AGE_GROUPS.length; i++) {
-        const age = AGE_GROUPS[i];
-        const itemsInGroupDomain = getItemsForAgeGroupAndDomain(age, domain);
-        const numItems = itemsInGroupDomain.length;
-        if (numItems === 0) continue; // Skip if no items for this domain/age
-
-        const { totalPoints } = this.getScorePointsForAgeGroup(age);
-        const pointsPerItem = totalPoints / numItems; // Score per item for this specific domain/age
-
-        for (const item of itemsInGroupDomain) {
-          if (this.results.get(item.id) === 'pass') {
-            domainScore += pointsPerItem;
+          const itemsInGroupDomain = getItemsForAgeGroupAndDomain(age, domain);
+          const numItems = itemsInGroupDomain.length;
+          if (numItems > 0) {
+            domainScore += totalPoints; // Add the full value for this month/domain if basal applies
           }
         }
       }
 
-      // Round domain score (mental age in months) to one decimal place
+
+      // Add scores for items passed *above* the basal index
+      for (let i = basalIndex + 1; i < AGE_GROUPS.length; i++) {
+        // Only consider scores for items in *tested* age groups above basal
+        if (this.testedAgeIndices.has(i)) {
+          const age = AGE_GROUPS[i];
+          const itemsInGroupDomain = getItemsForAgeGroupAndDomain(age, domain);
+          const numItems = itemsInGroupDomain.length;
+          if (numItems === 0) continue;
+
+          const { totalPoints } = this.getScorePointsForAgeGroup(age);
+          const pointsPerItem = totalPoints / numItems;
+
+          for (const item of itemsInGroupDomain) {
+            if (this.results.get(item.id) === 'pass') {
+              domainScore += pointsPerItem;
+            }
+          }
+        }
+      }
+
       const roundedDomainScore = Math.round(domainScore * 10) / 10;
       domainMentalAges.set(domain, roundedDomainScore);
       totalMentalAgeSum += roundedDomainScore;
     }
 
-    // Calculate Total Mental Age (average of domains, rounded) - Rule 4.4.2.2
     const totalMentalAge = Math.round((totalMentalAgeSum / Object.keys(Domain).length) * 10) / 10;
-
-    // Calculate Development Quotient (DQ) - Rule 2.3
     const developmentQuotient = this.chronologicalAgeMonths > 0
       ? Math.round((totalMentalAge / this.chronologicalAgeMonths) * 100)
-      : 0; // Avoid division by zero
+      : 0;
 
-    // Classify DQ based on Rule 5
     let dqClassification = "智力发育障碍"; // < 70
-    if (developmentQuotient >= 130) {
-      dqClassification = "优秀";
-    } else if (developmentQuotient >= 110) {
-      dqClassification = "良好";
-    } else if (developmentQuotient >= 80) {
-      dqClassification = "中等";
-    } else if (developmentQuotient >= 70) {
-      dqClassification = "临界偏低";
-    }
+    if (developmentQuotient >= 130) dqClassification = "优秀";
+    else if (developmentQuotient >= 110) dqClassification = "良好";
+    else if (developmentQuotient >= 80) dqClassification = "中等";
+    else if (developmentQuotient >= 70) dqClassification = "临界偏低";
 
     return {
       domainMentalAges,
@@ -584,77 +576,75 @@ class DevelopmentalAssessment {
     };
   }
 
+  /** Helper to get scoring points based on age group (Rule 4.4.1) */
+  private getScorePointsForAgeGroup(ageMonths: number): { totalPoints: number } {
+    let totalPoints = 0;
+    if (ageMonths >= 1 && ageMonths <= 12) totalPoints = 1.0;
+    else if (ageMonths >= 15 && ageMonths <= 36) totalPoints = 3.0;
+    else if (ageMonths >= 42 && ageMonths <= 84) totalPoints = 6.0;
+    return { totalPoints };
+  }
 
 }
 
-// --- Example Usage ---
+// --- Example Usage (Revised Flow) ---
 
-const birthDate = new Date('2022-01-15');
-const assessmentDate = new Date('2022-07-20'); // Approx 6 months old
+const birthDateRev = new Date('2022-01-15'); // ~6 months old
+const assessmentDateRev = new Date('2022-07-20');
 
 try {
-  const assessment = new DevelopmentalAssessment(birthDate, assessmentDate);
+  const assessment = new DevelopmentalAssessment(birthDateRev, assessmentDateRev);
 
   console.log(`Chronological Age: ${assessment.chronologicalAgeMonths} months`);
-  console.log(`Main Test Age (主测月龄): ${assessment.mainTestAgeMonths} months`);
+  console.log(`Main Test Age (主测月龄): ${assessment.mainTestAgeMonths} months`); // Should be 6
 
-  // 1. Get Initial Items
-  const initialItems = assessment.getInitialTestItems();
-  console.log("\nInitial Test Items IDs:", initialItems.map(item => item.id));
-  // Simulate testing some initial items... Assume testing for 4, 5, 6, 7, 8 months
-  // Example: Assume child passes all 4, 5, 6 month items, fails some 7 month, passes some 8 month
-  getItemsForAgeGroup(4).forEach(item => assessment.recordResult(item.id, 'pass'));
-  getItemsForAgeGroup(5).forEach(item => assessment.recordResult(item.id, 'pass'));
-  getItemsForAgeGroup(6).forEach(item => assessment.recordResult(item.id, 'pass'));
-  // Let's assume item 59 (GrossMotor, 7m) is failed, others passed
-  getItemsForAgeGroup(7).forEach(item => assessment.recordResult(item.id, item.id === 59 ? 'fail' : 'pass'));
-  // Let's assume item 68 (GrossMotor, 8m) is passed, item 70 (FineMotor) failed, others passed
-  getItemsForAgeGroup(8).forEach(item => assessment.recordResult(item.id, item.id === 70 ? 'fail' : 'pass'));
+  // 1. Get Initial Items (Only for main test age)
+  let currentItems = assessment.getInitialTestItems();
+  console.log(`\nInitial Test Items (Age ${assessment.mainTestAgeMonths}m) IDs:`, currentItems.map(item => item.id));
 
+  // Simulate testing month 6 - Assume all pass
+  console.log("\n--- Simulating Testing Month 6 (All Pass) ---");
+  currentItems.forEach(item => assessment.recordResult(item.id, 'pass'));
 
-  // 2. Get Next Items
-  let nextItems = assessment.getNextTestItems();
-  console.log("\nNext Test Items IDs (after initial):", nextItems.map(item => item.id));
-  // Expected: Based on fails/passes in 7/8 months, rules 4.2.3.2/4.2.3.3 apply
-  // Backward: 6m and 5m passed -> Stop backward check.
-  // Forward: 7m has a fail, 8m has a fail/pass mix. Neither are 'all_fail'. Need to test 9m.
-  // Expect items from 9 month age group.
+  // 2. Get Next Items (Should go backward first)
+  currentItems = assessment.getNextTestItems();
+  console.log(`\nNext Test Items (Expected Age 5m) IDs:`, currentItems.map(item => item.id)); // Should be items for age 5m
 
-  // Simulate testing 9m items
-  if (nextItems.length > 0) {
-    console.log("\n--- Simulating Testing Next Batch ---");
-    getItemsForAgeGroup(9).forEach(item => {
-      // Assume all 9m fail for simplicity to test ceiling
-      if (assessment.getResult(item.id) === 'not_tested') { // Only record if it was in the nextItems list
-        assessment.recordResult(item.id, 'fail');
-        console.log(`Recorded FAIL for item ${item.id} (9 months)`);
-      }
-    });
+  // Simulate testing month 5 - Assume all pass
+  console.log("\n--- Simulating Testing Month 5 (All Pass) ---");
+  currentItems.forEach(item => assessment.recordResult(item.id, 'pass'));
 
-    nextItems = assessment.getNextTestItems();
-    console.log("\nNext Test Items IDs (after 9m fails):", nextItems.map(item => item.id));
-    // Forward check: 8m was mixed, 9m was 'all_fail'. Need to test 10m.
-    // Expect items from 10 month age group.
+  // 3. Get Next Items (Check Basal - 6m passed, 5m passed -> Basal confirmed for all domains. Should go forward)
+  currentItems = assessment.getNextTestItems();
+  console.log(`\nNext Test Items (Expected Age 7m) IDs:`, currentItems.map(item => item.id)); // Should be items for age 7m
 
-    // Simulate testing 10m items - assume all fail
-    console.log("\n--- Simulating Testing Next Batch ---");
-    getItemsForAgeGroup(10).forEach(item => {
-      if (assessment.getResult(item.id) === 'not_tested') {
-        assessment.recordResult(item.id, 'fail');
-        console.log(`Recorded FAIL for item ${item.id} (10 months)`);
-      }
-    });
+  // Simulate testing month 7 - Assume some fail (e.g., item 59)
+  console.log("\n--- Simulating Testing Month 7 (Item 59 Fail) ---");
+  currentItems.forEach(item => assessment.recordResult(item.id, item.id === 59 ? 'fail' : 'pass'));
 
-    nextItems = assessment.getNextTestItems();
-    console.log("\nNext Test Items IDs (after 10m fails):", nextItems.map(item => item.id));
-    // Forward check: 9m all_fail, 10m all_fail -> Stop forward check.
-    // Expect empty list.
-  }
+  // 4. Get Next Items (Basal OK, Ceiling not confirmed. Need to go forward)
+  currentItems = assessment.getNextTestItems();
+  console.log(`\nNext Test Items (Expected Age 8m) IDs:`, currentItems.map(item => item.id)); // Should be items for age 8m
 
+  // Simulate testing month 8 - Assume all fail
+  console.log("\n--- Simulating Testing Month 8 (All Fail) ---");
+  currentItems.forEach(item => assessment.recordResult(item.id, 'fail'));
 
-  // 3. Calculate Scores
+  // 5. Get Next Items (Check Ceiling: 7m mixed, 8m all_fail. Need one more fail -> test 9m)
+  currentItems = assessment.getNextTestItems();
+  console.log(`\nNext Test Items (Expected Age 9m) IDs:`, currentItems.map(item => item.id)); // Should be items for age 9m
+
+  // Simulate testing month 9 - Assume all fail
+  console.log("\n--- Simulating Testing Month 9 (All Fail) ---");
+  currentItems.forEach(item => assessment.recordResult(item.id, 'fail'));
+
+  // 6. Get Next Items (Check Ceiling: 8m all_fail, 9m all_fail -> Ceiling confirmed. Stop.)
+  currentItems = assessment.getNextTestItems();
+  console.log(`\nNext Test Items (Expected Empty):`, currentItems.map(item => item.id)); // Should be empty []
+
+  // 7. Calculate Scores
   console.log("\n--- Calculating Final Scores ---");
-  const scores = assessment.calculateScoresRevised(); // Use revised scoring
+  const scores = assessment.calculateScoresRevised();
   console.log("Domain Mental Ages (months):");
   scores.domainMentalAges.forEach((age, domain) => {
     console.log(`  ${domain}: ${age}`);
@@ -662,6 +652,7 @@ try {
   console.log(`Total Mental Age (months): ${scores.totalMentalAge}`);
   console.log(`Development Quotient (DQ): ${scores.developmentQuotient}`);
   console.log(`DQ Classification: ${scores.dqClassification}`);
+
 
 } catch (error) {
   console.error("Assessment Error:", error);
