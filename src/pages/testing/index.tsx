@@ -189,86 +189,48 @@ export default function Testing() {
         {assessment && <BasicInfo baseInfo={baseInfo} />}
       </View>
 
-      <View className="domain-progress">
-        <View className="current-domain">
-          {assessment && (
-            <>
-              <Text className="domain-name">{assessment.currentDomain}</Text>
-              <Text className="age-text">
-                {AGE_GROUPS[assessment.lastTestedAgeIndex]}个月龄测试项目
-              </Text>
-            </>
-          )}
+      <View className="total-progress">
+        <View className="progress-bar">
+          <View
+            className="progress-fill"
+            style={{
+              width: `${Math.min(progress.totalProgress, 100)}%`,
+            }}
+          />
         </View>
-
-        {/* 总体进度 */}
-        <View
-          className="total-progress"
-          onClick={() => setIsExpanded(!isExpanded)}
-        >
-          <View className="progress-label">
-            <Text className="label">总体进度</Text>
-            <Text className="count">{progress.totalProgress.toFixed(1)}%</Text>
-            <Text className="expand-icon">{isExpanded ? "↑" : "↓"}</Text>
-          </View>
-          <View className="progress-bar">
-            <View
-              className="progress-fill"
-              style={{
-                width: `${Math.min(progress.totalProgress, 100)}%`,
-              }}
-            />
-          </View>
-        </View>
-
-        {/* 各领域进度 */}
-        {isExpanded && (
-          <View className="progress-bars">
-            {Object.entries(progress.domainProgress).map(
-              ([domain, domainInfo]) => (
-                <View key={domain} className="progress-item">
-                  <View className="progress-label">
-                    <Text className="label">{domain}</Text>
-                    <Text className="count">{domainInfo.tested}项</Text>
-                    <Text className="direction">
-                      {domainInfo.direction === "backward" ? "←" : "→"}
-                    </Text>
-                  </View>
-                  <View
-                    className={`progress-bar ${
-                      domain === assessment?.currentDomain ? "active" : ""
-                    }`}
-                  >
-                    <View
-                      className="progress-fill"
-                      style={{
-                        width: `${Math.min(domainInfo.progress, 100)}%`,
-                      }}
-                    />
-                  </View>
-                </View>
-              )
-            )}
-          </View>
-        )}
       </View>
 
       <View className="items-container">
         {currentItems[currentItemIndex] && (
           <View className="test-item">
             <View className="item-content">
-              <Text className="item-description">
-                {currentItems[currentItemIndex].description}
-              </Text>
-              {currentItems[currentItemIndex].operationMethod && (
-                <Text className="operation-method">
-                  操作方法：{currentItems[currentItemIndex].operationMethod}
+              <View className="main-section">
+                <Text className="domain-tag">{assessment?.currentDomain}</Text>
+                <Text className="item-description">
+                  {currentItems[currentItemIndex].description}
                 </Text>
-              )}
-              {currentItems[currentItemIndex].passCriteria && (
-                <Text className="pass-criteria">
-                  通过标准：{currentItems[currentItemIndex].passCriteria}
-                </Text>
+              </View>
+
+              {(currentItems[currentItemIndex].operationMethod ||
+                currentItems[currentItemIndex].passCriteria) && (
+                <View className="details-section">
+                  {currentItems[currentItemIndex].operationMethod && (
+                    <View className="detail-item">
+                      <Text className="detail-label">操作方法</Text>
+                      <Text className="detail-content">
+                        {currentItems[currentItemIndex].operationMethod}
+                      </Text>
+                    </View>
+                  )}
+                  {currentItems[currentItemIndex].passCriteria && (
+                    <View className="detail-item">
+                      <Text className="detail-label">通过标准</Text>
+                      <Text className="detail-content">
+                        {currentItems[currentItemIndex].passCriteria}
+                      </Text>
+                    </View>
+                  )}
+                </View>
               )}
             </View>
 

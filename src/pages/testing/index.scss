@@ -17,244 +17,175 @@ $box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 
 .testing {
   min-height: 100vh;
-  box-sizing: border-box;
-  background-color: #f7f7f7;
-  padding: $spacing-xl;
-  font-family: $font-family-base;
+  background: #f7f7f7;
+  padding: 16px;
 
-  &.loading {
-    @include flex-center;
-    font-size: $font-size-base;
-    color: $text-secondary;
-  }
-}
+  .header {
+    background: #fff;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    margin-bottom: 16px;
 
-.header {
-  @include card;
-  margin-bottom: $spacing-xl;
-
-  .title {
-    font-size: $font-size-xl;
-    font-weight: 700;
-    color: $text-primary;
-    margin-bottom: $spacing-lg;
-    display: block;
-  }
-}
-
-.domain-progress {
-  @include card;
-  margin-bottom: $spacing-xl;
-
-  .current-domain {
-    text-align: center;
-    margin-bottom: $spacing-xl;
-    padding-bottom: $spacing-xl;
-    border-bottom: 1px solid #f0f0f0;
-
-    .domain-name {
-      font-size: $font-size-lg;
-      font-weight: 700;
-      color: $primary-color;
-      margin-bottom: $spacing-sm;
-      display: block;
-    }
-
-    .age-text {
-      font-size: $font-size-sm;
-      color: $text-secondary;
-      background: #f9f9f9;
-      padding: $spacing-xs $spacing-md;
-      border-radius: 16px;
-      display: inline-block;
+    .title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 16px;
     }
   }
 
   .total-progress {
-    cursor: pointer;
-    padding: $spacing-md;
-    border-radius: $border-radius;
-    transition: background-color $transition-fast;
-
-    &:hover {
-      background: #fafafa;
-    }
-
-    .progress-label {
-      display: flex;
-      align-items: center;
-      margin-bottom: $spacing-md;
-
-      .label {
-        font-size: $font-size-base;
-        font-weight: 600;
-        color: $text-primary;
-        flex: 1;
-      }
-
-      .count {
-        font-size: $font-size-sm;
-        color: $primary-color;
-        font-weight: 600;
-        margin-right: $spacing-sm;
-      }
-
-      .expand-icon {
-        color: $text-secondary;
-        font-size: $font-size-xs;
-      }
-    }
+    background: #fff;
+    padding: 12px 16px;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    margin-bottom: 16px;
+    opacity: 0.8;
 
     .progress-bar {
-      height: 8px;
+      height: 2px;
       background: #f0f0f0;
-      border-radius: 4px;
+      border-radius: 1px;
       overflow: hidden;
 
       .progress-fill {
         height: 100%;
-        background: $primary-color;
-        border-radius: 4px;
-        transition: width $transition-normal $transition-timing;
+        background: #58cc02;
+        transition: width 0.3s ease;
       }
     }
   }
 
-  .progress-bars {
-    margin-top: $spacing-lg;
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-md;
+  .items-container {
+    padding: 0;
 
-    .progress-item {
-      .progress-label {
-        display: flex;
-        align-items: center;
-        margin-bottom: $spacing-sm;
+    .test-item {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      animation: slideIn 0.3s ease-out;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
 
-        .label {
-          font-size: $font-size-sm;
-          color: $text-secondary;
-          flex: 1;
-        }
-
-        .count {
-          font-size: $font-size-xs;
-          color: $text-secondary;
-          margin-right: $spacing-sm;
-        }
-
-        .direction {
-          font-size: $font-size-xs;
-          color: $text-secondary;
-          width: 20px;
-          text-align: center;
-        }
-      }
-
-      .progress-bar {
-        height: 6px;
-        background: #f0f0f0;
-        border-radius: 3px;
-        overflow: hidden;
-
-        &.active {
-          background: #e5f8d4;
-        }
-
-        .progress-fill {
-          height: 100%;
-          background: $primary-color;
-          border-radius: 3px;
-          transition: width $transition-normal $transition-timing;
-        }
-      }
-    }
-  }
-}
-
-.items-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0 $spacing-sm;
-}
-
-.test-item {
-  @include card;
-  @include hover-effect;
-  margin-bottom: $spacing-lg;
-
-  .item-content {
-    margin-bottom: $spacing-xl;
-
-    .item-description {
-      font-size: $font-size-base;
-      color: $text-primary;
-      line-height: 1.6;
-      margin-bottom: $spacing-lg;
-      font-weight: 500;
-    }
-
-    .operation-method,
-    .pass-criteria {
-      font-size: $font-size-sm;
-      color: $text-secondary;
-      line-height: 1.6;
-      margin-top: $spacing-md;
-      background: #fafafa;
-      padding: $spacing-md $spacing-lg;
-      border-radius: $spacing-sm;
-      border-left: 3px solid #e5e5e5;
-    }
-  }
-
-  .item-actions {
-    display: flex;
-    gap: $spacing-md;
-
-    .action-btn {
-      flex: 1;
-      height: 48px;
-      border-radius: $border-radius;
-      font-size: $font-size-base;
-      font-weight: 700;
-      @include flex-center;
-      border: none;
-      transition: all $transition-fast;
-      cursor: pointer;
-
-      &.fail {
-        background: $error-light;
-        color: $error-color;
-        border: 2px solid transparent;
-
-        &:hover {
-          background: color.adjust($error-light, $lightness: 2%);
-          border-color: $error-color;
-        }
-
-        &:active {
-          transform: scale(0.98);
-        }
-      }
-
-      &.pass {
-        background: $primary-color;
-        color: white;
-        box-shadow: 0 4px 0 color.adjust($primary-color, $lightness: -10%);
+      &:hover {
         transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      }
 
-        &:hover {
-          background: $primary-hover;
-          transform: translateY(-3px);
+      .item-content {
+        padding: 24px;
+
+        .main-section {
+          margin-bottom: 20px;
+          display: flex;
+          align-items: flex-start;
+          gap: 12px;
+
+          .domain-tag {
+            background: #e5f8d4;
+            color: #58cc02;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+          }
+
+          .item-description {
+            flex: 1;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+            padding-top: 4px;
+          }
         }
 
-        &:active {
-          background: $primary-active;
-          transform: translateY(0);
-          box-shadow: 0 2px 0 color.adjust($primary-color, $lightness: -10%);
+        .details-section {
+          background: #f8f9fa;
+          border-radius: 12px;
+          padding: 16px;
+
+          .detail-item {
+            &:not(:last-child) {
+              margin-bottom: 16px;
+              padding-bottom: 16px;
+              border-bottom: 1px solid #eee;
+            }
+
+            .detail-label {
+              display: inline-block;
+              background: #fff;
+              color: #58cc02;
+              padding: 4px 12px;
+              border-radius: 12px;
+              font-size: 14px;
+              margin-bottom: 8px;
+              font-weight: 500;
+            }
+
+            .detail-content {
+              display: block;
+              color: #666;
+              font-size: 14px;
+              line-height: 1.6;
+              padding: 0 4px;
+            }
+          }
+        }
+      }
+
+      .item-actions {
+        display: flex;
+        padding: 20px 24px;
+        gap: 12px;
+        border-top: 1px solid #f0f0f0;
+        background: #fff;
+
+        .action-btn {
+          flex: 1;
+          height: 44px;
+          line-height: 44px;
+          text-align: center;
+          border-radius: 22px;
+          font-size: 16px;
+          font-weight: 600;
+          transition: all 0.2s ease;
+
+          &.fail {
+            background: #fff;
+            border: 1px solid #ff4b4b;
+            color: #ff4b4b;
+
+            &:active {
+              background: #fff5f5;
+            }
+          }
+
+          &.pass {
+            background: #58cc02;
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(88, 204, 2, 0.2);
+
+            &:active {
+              background: #46a302;
+              transform: translateY(1px);
+              box-shadow: 0 1px 2px rgba(88, 204, 2, 0.2);
+            }
+          }
         }
       }
     }
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
