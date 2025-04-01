@@ -189,18 +189,10 @@ export default function Testing() {
         {assessment && <BasicInfo baseInfo={baseInfo} />}
       </View>
 
-      <View className="total-progress">
-        <View className="progress-bar">
-          <View
-            className="progress-fill"
-            style={{
-              width: `${Math.min(progress.totalProgress, 100)}%`,
-            }}
-          />
-        </View>
-      </View>
-
       <View className="items-container">
+        <Text className="progress-text">
+          评估进度：{progress.totalProgress.toFixed(1)}%
+        </Text>
         {currentItems[currentItemIndex] && (
           <View className="test-item">
             <View className="item-content">

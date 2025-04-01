@@ -35,30 +35,22 @@ $box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
   }
 
-  .total-progress {
-    background: #fff;
-    padding: 12px 16px;
-    border-radius: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    margin-bottom: 16px;
-    opacity: 0.8;
-
-    .progress-bar {
-      height: 2px;
-      background: #f0f0f0;
-      border-radius: 1px;
-      overflow: hidden;
-
-      .progress-fill {
-        height: 100%;
-        background: #58cc02;
-        transition: width 0.3s ease;
-      }
-    }
-  }
-
   .items-container {
+    position: relative;
     padding: 0;
+
+    .progress-text {
+      position: absolute;
+      top: 2px;
+      right: 0;
+      font-size: 12px;
+      color: #666;
+      background: #fff;
+      padding: 4px 12px;
+      border-radius: 13px;
+      // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+      z-index: 1;
+    }
 
     .test-item {
       background: #fff;
@@ -151,6 +143,7 @@ $box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
           font-size: 16px;
           font-weight: 600;
           transition: all 0.2s ease;
+          margin-top: 0;
 
           &.fail {
             background: #fff;
