@@ -1,16 +1,16 @@
 @use "../../styles/variables" as *;
 
 // 定义变量
-$primary-color: #58cc02;
-$primary-hover: #4fb502;
-$primary-active: #46a302;
-$error-color: #ff4b4b;
-$error-light: #fef0f0;
-$background-color: #fff;
-$text-primary: #3c3c3c;
-$text-secondary: #777;
-$border-radius: 12px;
-$box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+// $primary-color: #58cc02;
+// $primary-hover: #4fb502;
+// $primary-active: #46a302;
+// $error-color: #ff4b4b;
+// $error-light: #fef0f0;
+// $background-color: #fff;
+// $text-primary: #3c3c3c;
+// $text-secondary: #777;
+// $border-radius: 12px;
+// $box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 
 // 引入 sass:color 模块
 @use "sass:color";
