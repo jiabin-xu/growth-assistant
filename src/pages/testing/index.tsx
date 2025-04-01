@@ -22,6 +22,9 @@ interface StoredAssessment {
   id: string;
   name: string;
   birthDate: string;
+  height: string;
+  weight: string;
+  gender: string;
 }
 
 // 扩展 TestItem 接口
@@ -35,6 +38,7 @@ export default function Testing() {
   const { id } = router.params;
 
   const [assessment, setAssessment] = useState<AssessmentState | null>(null);
+  const [baseInfo, setBaseInfo] = useState<StoredAssessment | null>(null);
   const [currentItems, setCurrentItems] = useState<ExtendedTestItem[]>([]);
   const [currentItemIndex, setCurrentItemIndex] = useState<number>(0);
   const [loading, setLoading] = useState(true);
@@ -68,6 +72,8 @@ export default function Testing() {
         });
         return;
       }
+
+      setBaseInfo(storedAssessment);
 
       const birthDate = new Date(storedAssessment.birthDate);
       const assessmentDate = new Date();
@@ -189,6 +195,13 @@ export default function Testing() {
                 ? "向前测试"
                 : "向后测试"}
             </Text>
+            <View className="basic-info">
+              <Text className="info-text">姓名: {baseInfo?.name}</Text>
+              <Text className="info-text">性别: {baseInfo?.gender}</Text>
+              <Text className="info-text">出生日期: {baseInfo?.birthDate}</Text>
+              <Text className="info-text">身高: {baseInfo?.height}cm</Text>
+              <Text className="info-text">体重: {baseInfo?.weight}kg</Text>
+            </View>
           </View>
         )}
       </View>

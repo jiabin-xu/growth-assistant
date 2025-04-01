@@ -1,146 +1,209 @@
+@use "../../styles/variables" as *;
+
+// 定义变量
+$primary-color: #58cc02;
+$primary-hover: #4fb502;
+$primary-active: #46a302;
+$error-color: #ff4b4b;
+$error-light: #fef0f0;
+$background-color: #fff;
+$text-primary: #3c3c3c;
+$text-secondary: #777;
+$border-radius: 12px;
+$box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+// 引入 sass:color 模块
+@use "sass:color";
+
 .testing {
-  height: 100vh;
+  min-height: 100vh;
   box-sizing: border-box;
-  background-color: #f5f7fa;
-  padding: 24px;
+  background-color: #f7f7f7;
+  padding: $spacing-xl;
+  font-family: $font-family-base;
 
   &.loading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    color: #5f6368;
+    @include flex-center;
+    font-size: $font-size-base;
+    color: $text-secondary;
   }
 }
 
 .header {
-  margin-bottom: 24px;
+  @include card;
+  margin-bottom: $spacing-xl;
 
   .title {
-    font-size: 28px;
-    font-weight: bold;
-    color: #202124;
-    margin-bottom: 8px;
+    font-size: $font-size-xl;
+    font-weight: 700;
+    color: $text-primary;
+    margin-bottom: $spacing-lg;
     display: block;
   }
 
-  .subtitle {
-    font-size: 16px;
-    color: #5f6368;
-    display: block;
+  .test-info {
+    .age-text {
+      display: inline-block;
+      background: #e5f8d4;
+      color: $primary-color;
+      padding: $spacing-xs $spacing-md;
+      border-radius: 20px;
+      font-size: $font-size-sm;
+      font-weight: 600;
+      margin-right: $spacing-md;
+    }
+
+    .direction-text {
+      display: inline-block;
+      background: #f0f0f0;
+      color: $text-secondary;
+      padding: $spacing-xs $spacing-md;
+      border-radius: 20px;
+      font-size: $font-size-sm;
+    }
+
+    .basic-info {
+      margin-top: $spacing-lg;
+      display: flex;
+      flex-wrap: wrap;
+      gap: $spacing-md;
+
+      .info-text {
+        font-size: $font-size-sm;
+        color: $text-secondary;
+        background: #f9f9f9;
+        padding: $spacing-xs $spacing-md;
+        border-radius: 16px;
+      }
+    }
   }
 }
 
 .domain-progress {
-  background: white;
-  border-radius: 16px;
-  padding: 24px;
-  margin-bottom: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  @include card;
+  margin-bottom: $spacing-xl;
+
+  .current-domain {
+    text-align: center;
+    margin-bottom: $spacing-xl;
+    padding-bottom: $spacing-xl;
+    border-bottom: 1px solid #f0f0f0;
+
+    .domain-name {
+      font-size: $font-size-lg;
+      font-weight: 700;
+      color: $primary-color;
+      margin-bottom: $spacing-sm;
+      display: block;
+    }
+
+    .age-text {
+      font-size: $font-size-sm;
+      color: $text-secondary;
+      background: #f9f9f9;
+      padding: $spacing-xs $spacing-md;
+      border-radius: 16px;
+      display: inline-block;
+    }
+  }
 
   .total-progress {
-    margin-bottom: 20px;
     cursor: pointer;
+    padding: $spacing-md;
+    border-radius: $border-radius;
+    transition: background-color $transition-fast;
+
+    &:hover {
+      background: #fafafa;
+    }
 
     .progress-label {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
+      margin-bottom: $spacing-md;
 
       .label {
-        font-size: 16px;
-        font-weight: bold;
-        color: #202124;
+        font-size: $font-size-base;
+        font-weight: 600;
+        color: $text-primary;
+        flex: 1;
       }
 
       .count {
-        font-size: 14px;
-        color: #5f6368;
+        font-size: $font-size-sm;
+        color: $primary-color;
+        font-weight: 600;
+        margin-right: $spacing-sm;
       }
 
       .expand-icon {
-        font-size: 16px;
-        color: #5f6368;
-        margin-left: 8px;
+        color: $text-secondary;
+        font-size: $font-size-xs;
       }
     }
 
     .progress-bar {
       height: 8px;
-      background: #f1f3f4;
+      background: #f0f0f0;
       border-radius: 4px;
       overflow: hidden;
 
       .progress-fill {
         height: 100%;
-        background: #1a73e8;
+        background: $primary-color;
         border-radius: 4px;
-        transition: width 0.3s ease;
+        transition: width $transition-normal $transition-timing;
       }
     }
   }
 
-  .current-domain {
-    margin-bottom: 20px;
-    text-align: center;
-
-    .domain-name {
-      font-size: 24px;
-      font-weight: bold;
-      color: #1a73e8;
-      margin-bottom: 8px;
-      display: block;
-    }
-
-    .age-text {
-      font-size: 16px;
-      color: #5f6368;
-    }
-  }
-
   .progress-bars {
+    margin-top: $spacing-lg;
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    margin-top: 24px;
-    padding-top: 20px;
-    border-top: 1px solid #e8eaed;
+    gap: $spacing-md;
 
     .progress-item {
       .progress-label {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        margin-bottom: 8px;
+        margin-bottom: $spacing-sm;
 
         .label {
-          font-size: 14px;
-          color: #5f6368;
+          font-size: $font-size-sm;
+          color: $text-secondary;
+          flex: 1;
         }
 
         .count {
-          font-size: 12px;
-          color: #5f6368;
+          font-size: $font-size-xs;
+          color: $text-secondary;
+          margin-right: $spacing-sm;
+        }
+
+        .direction {
+          font-size: $font-size-xs;
+          color: $text-secondary;
+          width: 20px;
+          text-align: center;
         }
       }
 
       .progress-bar {
         height: 6px;
-        background: #f1f3f4;
+        background: #f0f0f0;
         border-radius: 3px;
         overflow: hidden;
-        transition: background-color 0.3s ease;
 
         &.active {
-          background: #e8f0fe;
+          background: #e5f8d4;
         }
 
         .progress-fill {
           height: 100%;
-          background: #1a73e8;
+          background: $primary-color;
           border-radius: 3px;
-          transition: width 0.3s ease;
+          transition: width $transition-normal $transition-timing;
         }
       }
     }
@@ -148,105 +211,85 @@
 }
 
 .items-container {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 0 8px;
-  margin-bottom: 32px;
   max-width: 800px;
-  margin: 0 auto 32px;
+  margin: 0 auto;
+  padding: 0 $spacing-sm;
 }
 
 .test-item {
-  background: white;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
-
-  &:hover {
-    border-color: #e5e5e5;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  }
-
-  &:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-  }
+  @include card;
+  @include hover-effect;
+  margin-bottom: $spacing-lg;
 
   .item-content {
-    margin-bottom: 24px;
+    margin-bottom: $spacing-xl;
 
     .item-description {
-      font-size: 17px;
-      color: #4b4b4b;
-      line-height: 1.5;
-      display: block;
-      margin-bottom: 16px;
+      font-size: $font-size-base;
+      color: $text-primary;
+      line-height: 1.6;
+      margin-bottom: $spacing-lg;
       font-weight: 500;
-      letter-spacing: 0.2px;
     }
 
     .operation-method,
     .pass-criteria {
-      font-size: 14px;
-      color: #777;
+      font-size: $font-size-sm;
+      color: $text-secondary;
       line-height: 1.6;
-      display: block;
-      margin-top: 12px;
-      padding-left: 12px;
-      border-left: 3px solid #e5e5e5;
+      margin-top: $spacing-md;
       background: #fafafa;
-      padding: 12px 16px;
-      border-radius: 8px;
+      padding: $spacing-md $spacing-lg;
+      border-radius: $spacing-sm;
+      border-left: 3px solid #e5e5e5;
     }
   }
 
   .item-actions {
     display: flex;
-    gap: 12px;
+    gap: $spacing-md;
 
     .action-btn {
       flex: 1;
-      height: 44px;
-      border-radius: 12px;
-      font-size: 15px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      height: 48px;
+      border-radius: $border-radius;
+      font-size: $font-size-base;
+      font-weight: 700;
+      @include flex-center;
       border: none;
-      margin-top: 0;
-      transition: all 0.2s ease;
+      transition: all $transition-fast;
       cursor: pointer;
 
       &.fail {
-        background: #fef0f0;
-        color: #ff4b4b;
+        background: $error-light;
+        color: $error-color;
+        border: 2px solid transparent;
 
         &:hover {
-          background: #ffe7e7;
+          background: color.adjust($error-light, $lightness: 2%);
+          border-color: $error-color;
         }
 
         &:active {
-          background: #ffd7d7;
+          transform: scale(0.98);
         }
       }
 
       &.pass {
-        background: #58cc02;
+        background: $primary-color;
         color: white;
+        box-shadow: 0 4px 0 color.adjust($primary-color, $lightness: -10%);
+        transform: translateY(-2px);
 
         &:hover {
-          background: #4fb502;
-          transform: translateY(-1px);
+          background: $primary-hover;
+          transform: translateY(-3px);
         }
 
         &:active {
-          background: #46a302;
+          background: $primary-active;
           transform: translateY(0);
+          box-shadow: 0 2px 0 color.adjust($primary-color, $lightness: -10%);
         }
       }
     }
