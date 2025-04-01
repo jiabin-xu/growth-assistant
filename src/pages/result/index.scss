@@ -1,162 +1,204 @@
+@use "../../styles/variables" as *;
+
 .result {
-  height: 100vh;
-  box-sizing: border-box;
-  background-color: #f5f5f5;
-  padding: 24px;
+  min-height: 100vh;
+  background-color: $background-color;
+  padding: $spacing-xl $spacing-xl calc(80px + #{$spacing-xl * 2});
+  font-family: $font-family-base;
 
   &.loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flex-center;
+    color: $text-secondary;
+    font-size: $font-size-base;
   }
 
   .header {
-    margin-bottom: 24px;
     text-align: center;
+    margin-bottom: $spacing-xl;
 
     .title {
-      font-size: 24px;
+      font-size: $font-size-xl;
       font-weight: bold;
-      color: #333;
+      color: $text-primary;
       display: block;
+      margin-bottom: $spacing-xs;
     }
 
     .subtitle {
-      font-size: 16px;
-      color: #666;
-      margin-top: 8px;
-      display: block;
+      font-size: $font-size-base;
+      color: $text-secondary;
+    }
+  }
+
+  .basic-info {
+    @include card;
+    margin-bottom: $spacing-lg;
+
+    .info-title {
+      font-size: $font-size-lg;
+      color: $text-primary;
+      margin-bottom: $spacing-md;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: $spacing-md;
+
+      .info-item {
+        .label {
+          font-size: $font-size-sm;
+          color: $text-secondary;
+          margin-bottom: $spacing-xs;
+        }
+
+        .value {
+          font-size: $font-size-base;
+          color: $text-primary;
+        }
+      }
     }
   }
 
   .score-card {
-    background: white;
-    border-radius: 12px;
-    padding: 24px;
+    @include card;
     text-align: center;
-    margin-bottom: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: $spacing-lg;
 
     .main-score {
-      margin-bottom: 16px;
+      margin-bottom: $spacing-md;
 
       .score-value {
         font-size: 48px;
         font-weight: bold;
-        color: #3f87f6;
+        color: $primary-color;
+        line-height: 1.2;
         display: block;
       }
 
       .score-label {
-        font-size: 14px;
-        color: #666;
-        margin-top: 8px;
+        font-size: $font-size-sm;
+        color: $text-secondary;
       }
     }
 
     .classification {
-      font-size: 20px;
-      color: #333;
+      font-size: $font-size-lg;
+      color: $text-primary;
       font-weight: 500;
     }
   }
 
   .radar-chart {
-    background: white;
-    border-radius: 12px;
-    padding: 24px;
-    margin-bottom: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    @include card;
+    margin-bottom: $spacing-lg;
 
     .chart-title {
-      font-size: 18px;
-      color: #333;
-      font-weight: 500;
-      margin-bottom: 16px;
+      font-size: $font-size-lg;
+      color: $text-primary;
+      margin-bottom: $spacing-md;
       display: block;
     }
   }
 
   .details-card {
-    background: white;
-    border-radius: 12px;
-    padding: 24px;
-    margin-bottom: 24px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    @include card;
 
     .card-title {
-      font-size: 18px;
-      color: #333;
-      font-weight: 500;
-      margin-bottom: 16px;
+      font-size: $font-size-lg;
+      color: $text-primary;
+      margin-bottom: $spacing-lg;
       display: block;
     }
 
     .domains {
+      margin-bottom: $spacing-lg;
+
       .domain-item {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 12px 0;
-        border-bottom: 1px solid #eee;
+        padding: $spacing-sm 0;
+        border-bottom: 1px solid rgba($text-secondary, 0.1);
 
         &:last-child {
           border-bottom: none;
         }
 
         .domain-name {
-          color: #333;
-          font-size: 16px;
+          font-size: $font-size-base;
+          color: $text-primary;
         }
 
         .domain-score {
-          color: #3f87f6;
-          font-size: 16px;
+          font-size: $font-size-base;
+          color: $primary-color;
           font-weight: 500;
         }
       }
     }
 
     .total-age {
-      margin-top: 16px;
-      padding-top: 16px;
-      border-top: 1px solid #eee;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding-top: $spacing-md;
+      border-top: 1px solid rgba($text-secondary, 0.1);
 
       .label {
-        color: #333;
-        font-size: 16px;
+        font-size: $font-size-base;
+        color: $text-primary;
+        font-weight: 500;
       }
 
       .value {
-        color: #3f87f6;
-        font-size: 16px;
-        font-weight: 500;
+        font-size: $font-size-lg;
+        color: $primary-color;
+        font-weight: bold;
       }
     }
   }
 
   .actions {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: $spacing-lg;
+    background: $background-color;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
     display: flex;
-    gap: 16px;
+    gap: $spacing-md;
 
     .action-btn {
       flex: 1;
-      height: 44px;
-      line-height: 44px;
-      border-radius: 22px;
-      font-size: 16px;
+      height: 48px;
+      line-height: 48px;
+      font-size: $font-size-base;
+      border-radius: $border-radius;
+      border: none;
+      transition: all $transition-fast;
 
       &.history {
-        background: #f5f5f5;
-        color: #666;
+        background-color: rgba($text-secondary, 0.05);
+        color: $text-primary;
+
+        &:hover {
+          background-color: rgba($text-secondary, 0.1);
+        }
       }
 
       &.new {
-        background: #3f87f6;
+        background-color: $primary-color;
         color: white;
+
+        &:hover {
+          background-color: $primary-hover;
+        }
+
+        &:active {
+          background-color: $primary-active;
+        }
       }
     }
   }

@@ -122,7 +122,10 @@ export default function Testing() {
 
       // 当前组测试完成，获取下一批测试项
       const nextItems = getNextTestItems(newState);
-
+      console.log(
+        "nextItems :>> ",
+        nextItems.map((item) => item.ageMonths)
+      );
       if (nextItems.length === 0) {
         // 评估完成，计算结果
         const results = calculateScores(newState);

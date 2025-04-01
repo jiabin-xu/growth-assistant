@@ -175,9 +175,11 @@ export const getNextTestItems = (state: AssessmentState): TestItem[] => {
 
   // 确定下一个要测试的月龄
   let nextAgeIndex: number;
+  console.log('state :>> ', state);
+  console.log("state.searchDirection :>> ", state.searchDirection);
   if (state.searchDirection === 'backward') {
     const foundBasal = hasFoundBasal(state, state.currentDomain);
-
+    console.log("foundBasal :>> ", foundBasal);
     if (foundBasal) {
       // 找到基底，切换到向后测试
       state.searchDirection = 'forward';

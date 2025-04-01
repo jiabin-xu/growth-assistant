@@ -12,6 +12,10 @@ import { registerRadarChart } from "@visactor/vchart/esm/chart";
 interface Assessment {
   id: string;
   name: string;
+  birthDate: string;
+  gender: string;
+  height: string;
+  weight: string;
   results: {
     developmentQuotient: number;
     dqClassification: string;
@@ -161,7 +165,15 @@ export default function Result() {
     );
   }
 
-  const { name, results } = assessment || {};
+  if (!assessment) {
+    return (
+      <View className="result loading">
+        <Text>未找到评估信息</Text>
+      </View>
+    );
+  }
+
+  const { name, birthDate, gender, height, weight, results } = assessment;
   const {
     developmentQuotient,
     dqClassification,
@@ -169,13 +181,46 @@ export default function Result() {
     totalMentalAge,
   } = results || {};
 
+  // 计算年龄
+  const calculateAge = (birthDate: string) => {
+    const birth = new Date(birthDate);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - birth.getTime());
+    const months = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 30.44));
+    const years = Math.floor(months / 12);
+    const remainingMonths = months % 12;
+    return `${years}岁${remainingMonths}个月`;
+  };
+
   const radarSpec = getRadarChartSpec();
 
   return (
     <View className="result">
       <View className="header">
         <Text className="title">评估结果</Text>
-        <Text className="subtitle">{name || ""}</Text>
+        <Text className="subtitle">{name}</Text>
+      </View>
+
+      <View className="basic-info">
+        <Text className="info-title">基本信息</Text>
+        <View className="info-grid">
+          <View className="info-item">
+            <Text className="label">性别</Text>
+            <Text className="value">{gender}</Text>
+          </View>
+          <View className="info-item">
+            <Text className="label">年龄</Text>
+            <Text className="value">{calculateAge(birthDate)}</Text>
+          </View>
+          <View className="info-item">
+            <Text className="label">身高</Text>
+            <Text className="value">{height}cm</Text>
+          </View>
+          <View className="info-item">
+            <Text className="label">体重</Text>
+            <Text className="value">{weight}kg</Text>
+          </View>
+        </View>
       </View>
 
       <View className="score-card">
