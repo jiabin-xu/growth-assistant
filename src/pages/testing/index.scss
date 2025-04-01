@@ -19,6 +19,28 @@ $box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   min-height: 100vh;
   background: #f7f7f7;
   padding: 16px;
+  padding-top: 2px;
+  position: relative;
+  box-sizing: border-box;
+  overflow-x: hidden;
+
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: rgba(88, 204, 2, 0.1);
+    z-index: 100;
+
+    .progress-fill {
+      height: 100%;
+      background: #58cc02;
+      transition: width 0.3s ease;
+      border-radius: 0 1.5px 1.5px 0;
+      box-shadow: 0 0 4px rgba(88, 204, 2, 0.3);
+    }
+  }
 
   .header {
     background: #fff;
@@ -26,6 +48,7 @@ $box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     border-radius: 16px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     margin-bottom: 16px;
+    margin-top: 16px;
 
     .title {
       font-size: 20px;
@@ -38,6 +61,8 @@ $box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   .items-container {
     position: relative;
     padding: 0;
+    perspective: 1500px;
+    transform-style: preserve-3d;
 
     .progress-text {
       position: absolute;
@@ -57,8 +82,10 @@ $box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       border-radius: 16px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       overflow: hidden;
-      animation: slideIn 0.3s ease-out;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      animation: cardSwitch 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+      backface-visibility: hidden;
+      transform-style: preserve-3d;
+      will-change: transform, opacity;
 
       &:hover {
         transform: translateY(-2px);
@@ -172,13 +199,13 @@ $box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
 }
 
-@keyframes slideIn {
-  from {
+@keyframes cardSwitch {
+  0% {
     opacity: 0;
-    transform: translateX(30px);
+    transform: translate3d(30%, 0, -60px);
   }
-  to {
+  100% {
     opacity: 1;
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
 }

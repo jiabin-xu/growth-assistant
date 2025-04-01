@@ -184,17 +184,23 @@ export default function Testing() {
 
   return (
     <View className="testing">
+      <View className="progress-bar">
+        <View
+          className="progress-fill"
+          style={{
+            width: `${Math.min(progress.totalProgress, 100)}%`,
+          }}
+        />
+      </View>
+
       <View className="header">
         <Text className="title">发育评估测试</Text>
         {assessment && <BasicInfo baseInfo={baseInfo} />}
       </View>
 
       <View className="items-container">
-        <Text className="progress-text">
-          评估进度：{progress.totalProgress.toFixed(1)}%
-        </Text>
         {currentItems[currentItemIndex] && (
-          <View className="test-item">
+          <View className="test-item" key={currentItems[currentItemIndex].id}>
             <View className="item-content">
               <View className="main-section">
                 <Text className="domain-tag">{assessment?.currentDomain}</Text>
