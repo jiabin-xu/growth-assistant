@@ -16,6 +16,7 @@ import {
   TestResultStatus,
   AGE_GROUPS,
 } from "../../constants";
+import BasicInfo from "../../components/BasicInfo";
 import "./index.scss";
 
 interface StoredAssessment {
@@ -185,25 +186,7 @@ export default function Testing() {
     <View className="testing">
       <View className="header">
         <Text className="title">发育评估测试</Text>
-        {assessment && (
-          <View className="test-info">
-            <Text className="age-text">
-              主测月龄: {assessment.mainTestAgeMonths}个月
-            </Text>
-            <Text className="direction-text">
-              {assessment.searchDirection === "backward"
-                ? "向前测试"
-                : "向后测试"}
-            </Text>
-            <View className="basic-info">
-              <Text className="info-text">姓名: {baseInfo?.name}</Text>
-              <Text className="info-text">性别: {baseInfo?.gender}</Text>
-              <Text className="info-text">出生日期: {baseInfo?.birthDate}</Text>
-              <Text className="info-text">身高: {baseInfo?.height}cm</Text>
-              <Text className="info-text">体重: {baseInfo?.weight}kg</Text>
-            </View>
-          </View>
-        )}
+        {assessment && <BasicInfo baseInfo={baseInfo} />}
       </View>
 
       <View className="domain-progress">

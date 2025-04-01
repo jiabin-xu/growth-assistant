@@ -40,43 +40,6 @@ $box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     margin-bottom: $spacing-lg;
     display: block;
   }
-
-  .test-info {
-    .age-text {
-      display: inline-block;
-      background: #e5f8d4;
-      color: $primary-color;
-      padding: $spacing-xs $spacing-md;
-      border-radius: 20px;
-      font-size: $font-size-sm;
-      font-weight: 600;
-      margin-right: $spacing-md;
-    }
-
-    .direction-text {
-      display: inline-block;
-      background: #f0f0f0;
-      color: $text-secondary;
-      padding: $spacing-xs $spacing-md;
-      border-radius: 20px;
-      font-size: $font-size-sm;
-    }
-
-    .basic-info {
-      margin-top: $spacing-lg;
-      display: flex;
-      flex-wrap: wrap;
-      gap: $spacing-md;
-
-      .info-text {
-        font-size: $font-size-sm;
-        color: $text-secondary;
-        background: #f9f9f9;
-        padding: $spacing-xs $spacing-md;
-        border-radius: 16px;
-      }
-    }
-  }
 }
 
 .domain-progress {

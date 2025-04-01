@@ -1,0 +1,20 @@
+.basic-info {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+
+  .info-text {
+    font-size: 14px;
+    color: #777;
+    background: #f9f9f9;
+    padding: 8px 16px;
+    border-radius: 16px;
+
+    &.highlight {
+      background: #e5f8d4;
+      color: #58cc02;
+      font-weight: 600;
+    }
+  }
+}
