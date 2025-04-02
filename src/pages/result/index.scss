@@ -202,4 +202,215 @@
       }
     }
   }
+
+  .interpretation-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    margin: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    .card-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .domain-swiper {
+      height: 480px; // 设置固定高度以确保所有内容可见
+
+      .domain-swiper-item {
+        padding: 0 10px;
+      }
+
+      .domain-interpretation {
+        height: 100%;
+        padding: 20px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+
+        .domain-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 16px;
+
+          .domain-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+          }
+
+          .domain-age {
+            font-size: 14px;
+            color: #666;
+            background: rgba(52, 152, 219, 0.1);
+            padding: 4px 8px;
+            border-radius: 12px;
+          }
+        }
+
+        .domain-content {
+          flex: 1;
+          overflow-y: auto;
+
+          .subtitle {
+            font-size: 15px;
+            font-weight: 500;
+            color: #34495e;
+            margin: 16px 0 8px;
+
+            &:first-child {
+              margin-top: 0;
+            }
+          }
+
+          .description {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: rgba(52, 152, 219, 0.05);
+            border-radius: 8px;
+          }
+
+          .suggestion-list {
+            .suggestion-item {
+              display: flex;
+              margin-bottom: 12px;
+              padding: 8px;
+              background: rgba(46, 204, 113, 0.05);
+              border-radius: 8px;
+              transition: all 0.3s ease;
+
+              &:hover {
+                background: rgba(46, 204, 113, 0.1);
+              }
+
+              .suggestion-dot {
+                color: #2ecc71;
+                margin-right: 8px;
+              }
+
+              .suggestion-text {
+                font-size: 14px;
+                color: #666;
+                line-height: 1.5;
+                flex: 1;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .next-steps-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    margin: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    .card-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .next-steps-content {
+      .next-assessment {
+        margin-bottom: 20px;
+
+        .subtitle {
+          font-size: 15px;
+          font-weight: 500;
+          color: #34495e;
+          margin-bottom: 8px;
+        }
+
+        .time {
+          font-size: 16px;
+          color: #e74c3c;
+          font-weight: 500;
+        }
+      }
+
+      .milestones {
+        .subtitle {
+          font-size: 15px;
+          font-weight: 500;
+          color: #34495e;
+          margin-bottom: 12px;
+        }
+
+        .milestone-list {
+          .milestone-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+
+            .milestone-dot {
+              color: #2ecc71;
+              margin-right: 8px;
+            }
+
+            .milestone-text {
+              font-size: 14px;
+              color: #666;
+              line-height: 1.5;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .report-footer {
+    background: #ffffff;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    .report-meta {
+      margin-bottom: 16px;
+
+      .report-id,
+      .report-date {
+        font-size: 12px;
+        color: #999;
+        margin-bottom: 4px;
+      }
+    }
+
+    .report-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+
+      .action-btn {
+        flex: 1;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        border-radius: 20px;
+        font-size: 14px;
+
+        &.share {
+          background: #3498db;
+          color: #fff;
+        }
+
+        &.download {
+          background: #2ecc71;
+          color: #fff;
+        }
+      }
+    }
+  }
 }

@@ -1,6 +1,8 @@
 import { View, Text, Image } from "@tarojs/components";
 import Taro from "@tarojs/taro";
 import "./index.scss";
+import assessmentIcon from "../../assets/images/assessment.svg";
+import historyIcon from "../../assets/images/history.svg";
 
 export default function Index() {
   const handleStartAssessment = () => {
@@ -18,11 +20,12 @@ export default function Index() {
   return (
     <View className="index">
       <View className="header">
-        <Image
+        {/* <Image
           className="logo"
           src="/assets/images/logo.png"
           mode="aspectFit"
-        />
+        /> */}
+        <div className="logo"></div>
         <Text className="title">儿童发育评估</Text>
         <Text className="subtitle">科学评估，助力成长</Text>
       </View>
@@ -30,7 +33,7 @@ export default function Index() {
       <View className="content">
         <View className="card start-card" onClick={handleStartAssessment}>
           <View className="card-icon">
-            <Image src="/assets/images/assessment.png" mode="aspectFit" />
+            <Image src={assessmentIcon} mode="aspectFit" />
           </View>
           <View className="card-content">
             <Text className="card-title">开始评估</Text>
@@ -40,7 +43,7 @@ export default function Index() {
 
         <View className="card history-card" onClick={handleViewHistory}>
           <View className="card-icon">
-            <Image src="/assets/images/history.png" mode="aspectFit" />
+            <Image src={historyIcon} mode="aspectFit" />
           </View>
           <View className="card-content">
             <Text className="card-title">评估历史</Text>
