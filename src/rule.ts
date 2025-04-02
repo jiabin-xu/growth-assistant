@@ -19,7 +19,7 @@ export interface DomainScore {
 }
 
 export interface AssessmentResult {
-  domainMentalAges: Map<Domain, number>;
+  domainMentalAges: Record<Domain, number>;
   totalMentalAge: number;
   developmentQuotient: number;
   dqClassification: string;
@@ -235,13 +235,69 @@ const calculateDomainScore = (
 ): DomainScore => {
   const domainItems = ALL_TEST_ITEMS.filter(item => item.domain === domain);
   const passedItems = domainItems.filter(item => state.results.get(item.id) === 'pass');
+  const failedItems = domainItems.filter(item => state.results.get(item.id) === 'fail');
 
-  // 简化的得分计算：每个通过的项目按其月龄计分
-  const mentalAge = passedItems.reduce((sum, item) => sum + item.ageMonths, 0) /
-    (passedItems.length || 1);
+  // 找到最高通过的月龄
+  // 找到通过测试的最高月龄和最低月龄
+  const passedAges = passedItems.map(item => item.ageMonths);
+  const minPassedAge = passedAges.length > 0 ? Math.min(...passedAges) : 0;
+
+  // 按月龄分组测试项目
+  const itemsByAge = domainItems.reduce((acc, item) => {
+    const age = item.ageMonths;
+    if (!acc[age]) {
+      acc[age] = [];
+    }
+    acc[age].push(item);
+    return acc;
+  }, {} as Record<number, typeof domainItems>);
+
+  let totalMentalAge = 0;
+
+  // 遍历每个月龄段的项目
+  Object.entries(itemsByAge).forEach(([ageStr, items]) => {
+    const age = parseInt(ageStr);
+    const itemsInAge = items.length;
+
+    // 获取该月龄段的能区总分
+    let ageGroupScore = 0;
+    if (age <= 12) {
+      ageGroupScore = 1.0;
+    } else if (age <= 36) {
+      ageGroupScore = 3.0;
+    } else {
+      ageGroupScore = 6.0;
+    }
+
+    // 计算该月龄段的得分
+    let ageScore = 0;
+
+    // 检查是否有测试记录
+    const testedItems = items.filter(item =>
+      state.results.get(item.id) === 'pass' ||
+      state.results.get(item.id) === 'fail'
+    );
+
+    if (testedItems.length === 0) {
+      // 未测试的月龄段
+      if (age <= minPassedAge) {
+        // 左侧未测区域，默认得满分
+        ageScore = ageGroupScore;
+      }
+      // 右侧未测区域默认得0分，不需要处理
+    } else {
+      // 已测试的月龄段
+      const passedInAge = items.filter(item => state.results.get(item.id) === 'pass').length;
+      // 按通过项目比例计算得分
+      ageScore = (passedInAge / itemsInAge) * ageGroupScore;
+    }
+
+    // 累加到总智龄
+    totalMentalAge += ageScore;
+  });
 
   return {
-    mentalAge: Math.round(mentalAge * 10) / 10,
+    mentalAge: Math.round(totalMentalAge * 10) / 10, // 保留一位小数
     itemsPassed: passedItems.length,
     totalItems: domainItems.length
   };
@@ -310,12 +366,12 @@ export const getProgress = (state: AssessmentState): {
 };
 
 export const calculateScores = (state: AssessmentState): AssessmentResult => {
-  const domainMentalAges = new Map<Domain, number>();
+  const domainMentalAges = {} as Record<Domain, number>;
   let totalMentalAgeSum = 0;
 
   DOMAIN_ORDER.forEach(domain => {
     const score = calculateDomainScore(state, domain);
-    domainMentalAges.set(domain, score.mentalAge);
+    domainMentalAges[domain] = score.mentalAge;
     totalMentalAgeSum += score.mentalAge;
   });
 
@@ -327,7 +383,7 @@ export const calculateScores = (state: AssessmentState): AssessmentResult => {
   else if (developmentQuotient >= 110) dqClassification = "良好";
   else if (developmentQuotient >= 80) dqClassification = "中等";
   else if (developmentQuotient >= 70) dqClassification = "临界偏低";
-
+  console.log('domainMentalAges :>> ', domainMentalAges);
   return {
     domainMentalAges,
     totalMentalAge,

@@ -19,10 +19,19 @@ interface Assessment {
   results: {
     developmentQuotient: number;
     dqClassification: string;
-    domainMentalAges: Map<Domain, number>;
+    domainMentalAges: Record<Domain, number>;
     totalMentalAge: number;
   };
 }
+
+// 领域名称映射
+const DOMAIN_NAMES: Record<Domain, string> = {
+  [Domain.GrossMotor]: "大运动",
+  [Domain.FineMotor]: "精细动作",
+  [Domain.Language]: "语言",
+  [Domain.Adaptive]: "适应能力",
+  [Domain.Social]: "社会行为",
+};
 
 VChart.useRegisters([registerRadarChart]);
 
@@ -135,24 +144,59 @@ export default function Result() {
     },
   ];
 
+  console.log("assessment :>> ", assessment);
+
   const getRadarChartSpec = () => {
     if (!assessment?.results.domainMentalAges) return null;
-    console.log("assessment :>> ", assessment);
-    // const domainData = Array.from(
-    //   assessment.results.domainMentalAges.entries()
-    // ).map(([domain, age]) => ({
-    //   domain: Domain[domain],
-    //   age,
-    // }));
+
+    // 计算用户实际月龄
+    const birthDate = new Date(assessment.birthDate);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - birthDate.getTime());
+    const actualAgeMonths = Math.floor(
+      diffTime / (1000 * 60 * 60 * 24 * 30.44)
+    );
+
+    // 构建雷达图数据
+    const chartData = [
+      {
+        id: assessment.name,
+        values: [
+          // 发育年龄数据
+          ...Object.entries(assessment.results.domainMentalAges).map(
+            ([domain, age]) => ({
+              key: DOMAIN_NAMES[domain as Domain],
+              value: age,
+              type: "发育年龄",
+            })
+          ),
+          // 实际年龄数据
+          ...Object.keys(assessment.results.domainMentalAges).map((domain) => ({
+            key: DOMAIN_NAMES[domain as Domain],
+            value: actualAgeMonths,
+            type: "实际年龄",
+          })),
+        ],
+      },
+    ];
 
     return {
       type: "radar",
-      data: mockData,
+      data: chartData,
       categoryField: "key",
       valueField: "value",
       seriesField: "type",
       area: {
-        visible: true, // 展示面积
+        visible: true,
+      },
+      legend: {
+        visible: true,
+      },
+      tooltip: {
+        visible: true,
+        formatter: (datum) => {
+          return `${datum.type}: ${datum.value}个月`;
+        },
       },
     };
   };
@@ -258,15 +302,19 @@ export default function Result() {
 
       <View className="details-card">
         <Text className="card-title">领域得分</Text>
-        {/* <View className="domains">
+        <View className="domains">
           {domainMentalAges &&
-            Array.from(domainMentalAges.entries()).map(([domain, age]) => (
-              <View key={domain} className="domain-item">
-                <Text className="domain-name">{Domain[domain]}</Text>
-                <Text className="domain-score">{age}个月</Text>
-              </View>
-            ))}
-        </View> */}
+            Array.from(Object.entries(domainMentalAges)).map(
+              ([domain, age]) => (
+                <View key={domain} className="domain-item">
+                  <Text className="domain-name">
+                    {DOMAIN_NAMES[domain as Domain]}
+                  </Text>
+                  <Text className="domain-score">{age}个月</Text>
+                </View>
+              )
+            )}
+        </View>
         <View className="total-age">
           <Text className="label">总体发育年龄</Text>
           <Text className="value">{totalMentalAge || 0}个月</Text>
