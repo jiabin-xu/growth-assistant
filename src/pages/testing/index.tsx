@@ -154,10 +154,8 @@ export default function Testing() {
 
       // 显示方向变化提示
       if (newState.searchDirection !== assessment.searchDirection) {
-        const direction =
-          newState.searchDirection === "forward" ? "向后" : "向前";
         Taro.showToast({
-          title: `开始${direction}测试`,
+          title: `开始测试宝宝能力上限`,
           icon: "none",
           duration: 2000,
         });

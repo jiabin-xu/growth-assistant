@@ -2,6 +2,7 @@
 
 .assessment {
   min-height: 100vh;
+  box-sizing: border-box;
   background-color: $background-color;
   padding: $spacing-xl;
   font-family: $font-family-base;
