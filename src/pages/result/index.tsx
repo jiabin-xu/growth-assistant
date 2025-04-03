@@ -7,7 +7,8 @@ import { Domain } from "../../constants";
 import "./index.scss";
 import { VChartEnvType } from "@visactor/taro-vchart/esm/typings";
 import { registerRadarChart } from "@visactor/vchart/esm/chart";
-// import { registerRadarChart } from "@visactor/vchart";
+import { registerDiscreteLegend } from "@visactor/vchart/esm/component";
+import { getInterpretationAndSuggestions } from "src/utils/evaluate";
 
 interface Assessment {
   id: string;
@@ -33,7 +34,12 @@ const DOMAIN_NAMES: Record<Domain, string> = {
   [Domain.Social]: "社会行为",
 };
 
-VChart.useRegisters([registerRadarChart]);
+VChart.useRegisters([
+  registerRadarChart,
+  // registerTooltip,
+  // registerCanvasTooltipHandler,
+  registerDiscreteLegend,
+]);
 
 // 格式化日期
 const formatDate = (date: Date): string => {
@@ -49,52 +55,6 @@ const getNextAssessmentDate = (birthDate: string): string => {
   nextDate.setMonth(nextDate.getMonth() + 3);
   return formatDate(nextDate);
 };
-
-// 获取领域描述
-const getDomainDescription = (domain: Domain, age: number): string => {
-  const descriptions: Record<Domain, string> = {
-    [Domain.GrossMotor]: `在大运动方面，您的孩子表现出${age}个月龄水平的发展状态。表现在身体平衡、协调性和基本运动技能等方面。`,
-    [Domain.FineMotor]: `在精细动作方面，您的孩子展现出${age}个月龄水平的操作能力。这包括手指灵活度、手眼协调等细节动作。`,
-    [Domain.Language]: `在语言发展方面，您的孩子达到${age}个月龄的水平。这体现在语言理解、表达和交流能力等方面。`,
-    [Domain.Adaptive]: `在适应能力方面，您的孩子表现出${age}个月龄水平的发展。这包括问题解决、生活自理等适应性行为。`,
-    [Domain.Social]: `在社会行为方面，您的孩子展现出${age}个月龄水平的社交能力。这体现在与他人互动、情感表达等方面。`,
-  };
-  return descriptions[domain];
-};
-
-// 获取领域建议
-const getDomainSuggestions = (domain: Domain): string[] => {
-  const suggestions: Record<Domain, string[]> = {
-    [Domain.GrossMotor]: [
-      "每天安排30分钟以上的户外活动时间",
-      "鼓励参与跑跳、攀爬等大肌肉活动",
-      "进行亲子互动游戏，如追逐、躲猫猫等",
-    ],
-    [Domain.FineMotor]: [
-      "提供画画、捏泥等手工活动机会",
-      "练习使用筷子、穿衣扣扣子等日常动作",
-      "玩拼图、积木等益智玩具",
-    ],
-    [Domain.Language]: [
-      "每天进行亲子共读活动",
-      "鼓励孩子表达想法和需求",
-      "创造更多与同龄人交流的机会",
-    ],
-    [Domain.Adaptive]: [
-      "培养生活自理能力",
-      "给予解决问题的机会和时间",
-      "建立规律的生活作息",
-    ],
-    [Domain.Social]: [
-      "创造与其他孩子互动的机会",
-      "参与集体活动",
-      "鼓励表达情感和共情能力",
-    ],
-  };
-  return suggestions[domain];
-};
-
-// 获取即将到来的发展里程碑
 const getUpcomingMilestones = (currentAge: number): string[] => {
   return [
     "预期3个月内可以达成的能力目标1",
@@ -171,64 +131,6 @@ export default function Result() {
     });
   };
 
-  const mockData = [
-    {
-      id: "白金",
-      values: [
-        {
-          key: "大运动",
-          value: 5,
-          type: "user",
-        },
-        {
-          key: "精细动作",
-          value: 5,
-          type: "user",
-        },
-        {
-          key: "语言",
-          value: 5,
-          type: "user",
-        },
-        {
-          key: "适应能力",
-          value: 5,
-          type: "user",
-        },
-        {
-          key: "社会行为",
-          value: 5,
-          type: "user",
-        },
-        {
-          key: "大运动",
-          value: 11,
-          type: "age",
-        },
-        {
-          key: "精细动作",
-          value: 10,
-          type: "age",
-        },
-        {
-          key: "语言",
-          value: 4,
-          type: "age",
-        },
-        {
-          key: "适应能力",
-          value: 2,
-          type: "age",
-        },
-        {
-          key: "社会行为",
-          value: 6,
-          type: "age",
-        },
-      ],
-    },
-  ];
-
   console.log("assessment :>> ", assessment);
 
   const getRadarChartSpec = () => {
@@ -248,6 +150,13 @@ export default function Result() {
         id: assessment.name,
         values: [
           // 发育年龄数据
+
+          // 实际年龄数据
+          ...Object.keys(assessment.results.domainMentalAges).map((domain) => ({
+            key: DOMAIN_NAMES[domain as Domain],
+            value: actualAgeMonths,
+            type: "实际年龄",
+          })),
           ...Object.entries(assessment.results.domainMentalAges).map(
             ([domain, age]) => ({
               key: DOMAIN_NAMES[domain as Domain],
@@ -255,12 +164,6 @@ export default function Result() {
               type: "发育年龄",
             })
           ),
-          // 实际年龄数据
-          ...Object.keys(assessment.results.domainMentalAges).map((domain) => ({
-            key: DOMAIN_NAMES[domain as Domain],
-            value: actualAgeMonths,
-            type: "实际年龄",
-          })),
         ],
       },
     ];
@@ -274,35 +177,22 @@ export default function Result() {
       area: {
         visible: true,
       },
-      legend: {
+      color: ["#999", "#58cc02"],
+
+      legends: {
         visible: true,
+        orient: "top",
       },
-      tooltip: {
-        visible: true,
-        formatter: (datum) => {
-          return `${datum.type}: ${datum.value}个月`;
-        },
-      },
+      // tooltip: {
+      //   visible: true,
+      //   formatter: (datum) => {
+      //     return `${datum.type}: ${datum.value}个月`;
+      //   },
+      // },
     };
   };
 
-  if (loading) {
-    return (
-      <View className="result loading">
-        <Text>加载中...</Text>
-      </View>
-    );
-  }
-
-  if (!assessment) {
-    return (
-      <View className="result loading">
-        <Text>未找到评估信息</Text>
-      </View>
-    );
-  }
-
-  const { name, birthDate, gender, height, weight, results } = assessment;
+  const { name, birthDate, gender, height, weight, results } = assessment || {};
   const {
     developmentQuotient,
     dqClassification,
@@ -321,7 +211,62 @@ export default function Result() {
     return `${years}岁${remainingMonths}个月`;
   };
 
+  const actualAgeMonths = useMemo(() => {
+    if (!assessment?.birthDate) return 0;
+    const birthDate = new Date(assessment.birthDate);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - birthDate.getTime());
+    return Math.floor(diffTime / (1000 * 60 * 60 * 24 * 30.44));
+  }, [assessment?.birthDate]);
+
+  const domainAnalysis = useMemo(() => {
+    if (!domainMentalAges || !developmentQuotient) return [];
+
+    return Object.entries(domainMentalAges).map(([domain, mentalAgeValue]) => {
+      const mentalAge = Number(mentalAgeValue);
+      const { interpretation, suggestions } = getInterpretationAndSuggestions(
+        domain as Domain,
+        Number(developmentQuotient),
+        mentalAge
+      );
+
+      return {
+        domain: domain as Domain,
+        domainName: DOMAIN_NAMES[domain as Domain],
+        mentalAge,
+        interpretation,
+        suggestions,
+        description: interpretation,
+        developmentStatus:
+          Number(mentalAge) >= actualAgeMonths
+            ? "领先"
+            : Number(mentalAge) >= actualAgeMonths * 0.8
+            ? "正常"
+            : "需要关注",
+        gap: Math.abs(mentalAge - actualAgeMonths),
+      };
+    });
+  }, [domainMentalAges, developmentQuotient, actualAgeMonths]);
+
+  // 替换原有的suggestions
+
   const radarSpec = getRadarChartSpec();
+
+  if (loading) {
+    return (
+      <View className="result loading">
+        <Text>加载中...</Text>
+      </View>
+    );
+  }
+
+  if (!assessment) {
+    return (
+      <View className="result loading">
+        <Text>未找到评估信息</Text>
+      </View>
+    );
+  }
 
   return (
     <View className="result">
@@ -385,30 +330,9 @@ export default function Result() {
         )}
       </View>
 
-      <View className="details-card">
-        <Text className="card-title">领域得分</Text>
-        <View className="domains">
-          {domainMentalAges &&
-            Array.from(Object.entries(domainMentalAges)).map(
-              ([domain, age]) => (
-                <View key={domain} className="domain-item">
-                  <Text className="domain-name">
-                    {DOMAIN_NAMES[domain as Domain]}
-                  </Text>
-                  <Text className="domain-score">{age}个月</Text>
-                </View>
-              )
-            )}
-        </View>
-        <View className="total-age">
-          <Text className="label">总体发育年龄</Text>
-          <Text className="value">{totalMentalAge || 0}个月</Text>
-        </View>
-      </View>
-
       <View className="interpretation-card">
-        <Text className="card-title">专业解读与建议</Text>
-        {domainMentalAges && (
+        <Text className="card-title">解读与建议</Text>
+        {domainAnalysis.length > 0 && (
           <Swiper
             className="domain-swiper"
             indicatorDots
@@ -416,35 +340,42 @@ export default function Result() {
             indicatorActiveColor="#3498db"
             circular
           >
-            {Object.entries(domainMentalAges).map(([domain, age]) => (
-              <SwiperItem key={domain} className="domain-swiper-item">
+            {domainAnalysis.map((analysis) => (
+              <SwiperItem key={analysis.domain} className="domain-swiper-item">
                 <View className="domain-interpretation">
                   <View className="domain-header">
                     <Text className="domain-title">
-                      {DOMAIN_NAMES[domain as Domain]}能力解读
+                      {analysis.domainName}能力解读
                     </Text>
-                    <Text className="domain-age">发展水平：{age}个月</Text>
+                    <View className="domain-status">
+                      <Text className="domain-age">
+                        发展水平：{analysis.mentalAge}个月
+                      </Text>
+                      {/* <Text
+                        className={`status-tag ${analysis.developmentStatus.toLowerCase()}`}
+                      >
+                        {analysis.developmentStatus}
+                      </Text> */}
+                    </View>
                   </View>
                   <View className="domain-content">
                     <View className="current-status">
                       <Text className="subtitle">当前表现</Text>
                       <Text className="description">
-                        {getDomainDescription(domain as Domain, age)}
+                        {analysis.interpretation}
                       </Text>
                     </View>
                     <View className="suggestions">
                       <Text className="subtitle">发展建议</Text>
                       <View className="suggestion-list">
-                        {getDomainSuggestions(domain as Domain).map(
-                          (suggestion, index) => (
-                            <View key={index} className="suggestion-item">
-                              <Text className="suggestion-dot">•</Text>
-                              <Text className="suggestion-text">
-                                {suggestion}
-                              </Text>
-                            </View>
-                          )
-                        )}
+                        {analysis.suggestions?.map((suggestion, index) => (
+                          <View key={index} className="suggestion-item">
+                            <Text className="suggestion-dot">•</Text>
+                            <Text className="suggestion-text">
+                              {suggestion}
+                            </Text>
+                          </View>
+                        ))}
                       </View>
                     </View>
                   </View>
