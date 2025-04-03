@@ -326,27 +326,26 @@ export default function Result() {
   return (
     <View className="result">
       <View className="header">
-        <Text className="title">评估结果</Text>
-        <Text className="subtitle">{name}</Text>
+        <Text className="title">{name}的评估结果</Text>
       </View>
 
       <View className="basic-info">
         <Text className="info-title">基本信息</Text>
         <View className="info-grid">
           <View className="info-item">
-            <Text className="label">性别</Text>
+            <Text className="label">性别：</Text>
             <Text className="value">{gender}</Text>
           </View>
           <View className="info-item">
-            <Text className="label">年龄</Text>
+            <Text className="label">年龄：</Text>
             <Text className="value">{calculateAge(birthDate)}</Text>
           </View>
           <View className="info-item">
-            <Text className="label">身高</Text>
+            <Text className="label">身高：</Text>
             <Text className="value">{height}cm</Text>
           </View>
           <View className="info-item">
-            <Text className="label">体重</Text>
+            <Text className="label">体重：</Text>
             <Text className="value">{weight}kg</Text>
           </View>
         </View>
@@ -354,10 +353,11 @@ export default function Result() {
 
       <View className="score-card">
         <View className="main-score">
-          <Text className="score-value">{developmentQuotient || 0}</Text>
-          <Text className="score-label">发育商 (DQ)</Text>
+          <Text className="score-label">发育评估结果</Text>
+          <Text className="classification">
+            {dqClassification || "暂无结果"}
+          </Text>
         </View>
-        <Text className="classification">{dqClassification || ""}</Text>
       </View>
 
       <View className="radar-chart">

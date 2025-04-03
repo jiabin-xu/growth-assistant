@@ -61,31 +61,33 @@
   }
 
   .score-card {
-    @include card;
-    text-align: center;
-    margin-bottom: $spacing-lg;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    // margin-bottom: 20px;
+    margin: 20px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
     .main-score {
-      margin-bottom: $spacing-md;
-
-      .score-value {
-        font-size: 48px;
-        font-weight: bold;
-        color: $primary-color;
-        line-height: 1.2;
-        display: block;
-      }
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
 
       .score-label {
-        font-size: $font-size-sm;
-        color: $text-secondary;
+        font-size: 18px;
+        color: #333;
+        font-weight: 500;
       }
-    }
 
-    .classification {
-      font-size: $font-size-lg;
-      color: $text-primary;
-      font-weight: 500;
+      .classification {
+        font-size: 24px;
+        font-weight: bold;
+        color: $primary-color;
+        padding: 8px 20px;
+        // background: #e6f4ea;
+        border-radius: 24px;
+      }
     }
   }
 
@@ -207,7 +209,7 @@
     background: #ffffff;
     border-radius: 16px;
     padding: 24px;
-    margin: 20px;
+    margin: 20px 0;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
     .card-title {
@@ -221,12 +223,12 @@
       height: 480px; // 设置固定高度以确保所有内容可见
 
       .domain-swiper-item {
-        padding: 0 10px;
+        padding: 0;
       }
 
       .domain-interpretation {
         height: 100%;
-        padding: 20px;
+        padding: 20px 10px;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
