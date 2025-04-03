@@ -25,6 +25,18 @@ interface Assessment {
   };
 }
 
+interface DomainAnalysis {
+  domain: Domain;
+  domainName: string;
+  mentalAge: number;
+  interpretation: string;
+  suggestions: string[];
+  description: string;
+  developmentStatus: string;
+  gap: number;
+  customSuggestions: string[];
+}
+
 // 领域名称映射
 const DOMAIN_NAMES: Record<Domain, string> = {
   [Domain.GrossMotor]: "大运动",
@@ -78,6 +90,18 @@ const handleDownloadPDF = () => {
     icon: "loading",
   });
   // TODO: 实现PDF生成和下载逻辑
+};
+
+// 获取领域描述
+const getDomainDescription = (domain: Domain, age: number): string => {
+  const descriptions: Record<Domain, string> = {
+    [Domain.GrossMotor]: `在大运动方面，您的孩子表现出${age}个月龄水平的发展状态。这包括身体平衡、协调性、基本运动技能等方面的表现。`,
+    [Domain.FineMotor]: `在精细动作方面，您的孩子展现出${age}个月龄水平的操作能力。这体现在手指灵活度、手眼协调、精细操作等能力上。`,
+    [Domain.Language]: `在语言发展方面，您的孩子达到${age}个月龄的水平。这涵盖了语言理解、表达、交流等多个方面的能力。`,
+    [Domain.Adaptive]: `在适应能力方面，您的孩子表现出${age}个月龄水平的发展。这包括日常生活自理、环境适应、问题解决等能力。`,
+    [Domain.Social]: `在社会行为方面，您的孩子展现出${age}个月龄水平的社交能力。这体现在人际互动、情感表达、社交规则理解等方面。`,
+  };
+  return descriptions[domain];
 };
 
 export default function Result() {
@@ -220,15 +244,17 @@ export default function Result() {
   }, [assessment?.birthDate]);
 
   const domainAnalysis = useMemo(() => {
-    if (!domainMentalAges || !developmentQuotient) return [];
+    if (!domainMentalAges || !developmentQuotient)
+      return [] as DomainAnalysis[];
 
     return Object.entries(domainMentalAges).map(([domain, mentalAgeValue]) => {
       const mentalAge = Number(mentalAgeValue);
-      const { interpretation, suggestions } = getInterpretationAndSuggestions(
-        domain as Domain,
-        Number(developmentQuotient),
-        mentalAge
-      );
+      const { interpretation = "", suggestions = [] } =
+        getInterpretationAndSuggestions(
+          domain as Domain,
+          Number(developmentQuotient),
+          mentalAge
+        );
 
       return {
         domain: domain as Domain,
@@ -236,7 +262,7 @@ export default function Result() {
         mentalAge,
         interpretation,
         suggestions,
-        description: interpretation,
+        description: getDomainDescription(domain as Domain, mentalAge),
         developmentStatus:
           Number(mentalAge) >= actualAgeMonths
             ? "领先"
@@ -244,11 +270,9 @@ export default function Result() {
             ? "正常"
             : "需要关注",
         gap: Math.abs(mentalAge - actualAgeMonths),
-      };
+      } as DomainAnalysis;
     });
   }, [domainMentalAges, developmentQuotient, actualAgeMonths]);
-
-  // 替换原有的suggestions
 
   const radarSpec = getRadarChartSpec();
 
@@ -331,7 +355,7 @@ export default function Result() {
       </View>
 
       <View className="interpretation-card">
-        <Text className="card-title">解读与建议</Text>
+        <Text className="card-title">能力解读与发展建议</Text>
         {domainAnalysis.length > 0 && (
           <Swiper
             className="domain-swiper"
@@ -344,27 +368,30 @@ export default function Result() {
               <SwiperItem key={analysis.domain} className="domain-swiper-item">
                 <View className="domain-interpretation">
                   <View className="domain-header">
-                    <Text className="domain-title">
-                      {analysis.domainName}能力解读
-                    </Text>
+                    <Text className="domain-title">{analysis.domainName}</Text>
                     <View className="domain-status">
                       <Text className="domain-age">
                         发展水平：{analysis.mentalAge}个月
                       </Text>
-                      {/* <Text
-                        className={`status-tag ${analysis.developmentStatus.toLowerCase()}`}
+                      <Text
+                        className={`status-tag ${analysis.developmentStatus}`}
                       >
                         {analysis.developmentStatus}
-                      </Text> */}
+                      </Text>
                     </View>
                   </View>
                   <View className="domain-content">
-                    <View className="current-status">
-                      <Text className="subtitle">当前表现</Text>
-                      <Text className="description">
-                        {analysis.interpretation}
-                      </Text>
-                    </View>
+                    {/* <View className="domain-status">
+                      {analysis.interpretation &&
+                        analysis.interpretation.length > 0 && (
+                          <>
+                            <Text className="subtitle">发展表现</Text>
+                            <Text className="description">
+                              {analysis.interpretation}
+                            </Text>
+                          </>
+                        )}
+                    </View> */}
                     <View className="suggestions">
                       <Text className="subtitle">发展建议</Text>
                       <View className="suggestion-list">
@@ -376,6 +403,19 @@ export default function Result() {
                             </Text>
                           </View>
                         ))}
+                        {analysis.customSuggestions?.map(
+                          (suggestion, index) => (
+                            <View
+                              key={`custom-${index}`}
+                              className="suggestion-item"
+                            >
+                              <Text className="suggestion-dot">•</Text>
+                              <Text className="suggestion-text">
+                                {suggestion}
+                              </Text>
+                            </View>
+                          )
+                        )}
                       </View>
                     </View>
                   </View>
