@@ -1,6 +1,7 @@
 import { View, Text, Form, Input, Button, Picker } from "@tarojs/components";
 import { useState } from "react";
 import Taro from "@tarojs/taro";
+import { useShare } from "../../hooks/useShare";
 import "./index.scss";
 
 interface FormData {
@@ -10,6 +11,9 @@ interface FormData {
 }
 
 export default function Assessment() {
+  // 添加分享功能
+  useShare("填写宝宝信息 - 萌宝成长小助手");
+
   const [birthDate, setBirthDate] = useState("");
   const [gender, setGender] = useState("");
   const [formData, setFormData] = useState<FormData>({

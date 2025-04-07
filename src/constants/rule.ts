@@ -14,10 +14,10 @@ export const DQ_CLASSIFICATIONS = {
   good: "良好",
   normal: "正常",
   attention: "需要关注",
-  delay: "发育迟缓",
+  delayed: "发育迟缓",
 } as const;
 
-export type DQClassification = keyof typeof DQ_CLASSIFICATIONS; 
+export type DQClassification = keyof typeof DQ_CLASSIFICATIONS;
 
 export interface TestItem {
   id: number;          // Unique ID (1-261)
@@ -271,7 +271,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     domain: Domain.Language,
     description: "笑出声R", // Note: Table B.1 has '笑出声', R added from A.1
     operationMethod: "逗引婴儿笑, 但不得接触身体",
-    passCriteria: "观察或询问, 婴儿能发出“咯咯”笑声"
+    passCriteria: "观察或询问, 婴儿能发出\"咯咯\"笑声"
   },
   {
     id: 28,
@@ -521,7 +521,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 6,
     domain: Domain.Social,
     description: "会躲猫猫",
-    operationMethod: "主试者把自己的脸藏在一张中心有孔的A4纸后面(孔直径0.5cm), 呼唤婴儿名字, 婴儿听到声音, 观望时, 主试者沿纸边在纸的同一侧反复出现两次并逗引说“喵、喵”, 第三次呼唤婴儿名字后从纸孔观察婴儿表情",
+    operationMethod: "主试者把自己的脸藏在一张中心有孔的A4纸后面(孔直径0.5cm), 呼唤婴儿名字, 婴儿听到声音, 观望时, 主试者沿纸边在纸的同一侧反复出现两次并逗引说\"喵、喵\", 第三次呼唤婴儿名字后从纸孔观察婴儿表情",
     passCriteria: "第三次呼唤婴儿时, 婴儿视线再次转向主试者刚才露脸的方向"
   },
   // --- 7 Months ---
@@ -791,7 +791,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 10,
     domain: Domain.Language,
     description: "模仿发语声R", // Note: R added from A.1
-    operationMethod: "观察或询问婴儿是否会模仿“妈妈”、“爸爸”、“拿”、“走”等语音",
+    operationMethod: "观察或询问婴儿是否会模仿\"妈妈\"、\"爸爸\"、\"拿\"、\"走\"等语音",
     passCriteria: "观察或询问, 婴儿能模仿发语声"
   },
   {
@@ -799,7 +799,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 10,
     domain: Domain.Language,
     description: "懂得常见物及人名称",
-    operationMethod: "主试者问婴儿“妈妈在哪里?”“灯在哪里?”“阿姨在哪里?”等人或物的名称, 观察其反应",
+    operationMethod: "主试者问婴儿\"妈妈在哪里?\"\"灯在哪里?\"\"阿姨在哪里?\"等人或物的名称, 观察其反应",
     passCriteria: "婴儿会用眼睛注视或指出2种或以上的人或物"
   },
   {
@@ -863,8 +863,8 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 100,
     ageMonths: 11,
     domain: Domain.Language,
-    description: "懂得“不”R", // Note: R added from A.1
-    operationMethod: "婴儿取一玩具玩时, 主试者说“不动”、“不拿”, 不要做手势, 观察或询问其反应",
+    description: "懂得\"不\"", // Note: R added from A.1
+    operationMethod: "婴儿取一玩具玩时, 主试者说\"不动\"、\"不拿\", 不要做手势, 观察或询问其反应",
     passCriteria: "观察或询问, 婴儿会停止拿取玩具的动作"
   },
   {
@@ -937,7 +937,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 12,
     domain: Domain.Language,
     description: "向他/她要东西知道给",
-    operationMethod: "将一玩具放入小儿手中, 然后主试者或家长对小儿说“把某某东西给我”, 不要伸手去拿, 观察小儿反应",
+    operationMethod: "将一玩具放入小儿手中, 然后主试者或家长对小儿说\"把某某东西给我\", 不要伸手去拿, 观察小儿反应",
     passCriteria: "经要求, 小儿把玩具主动递给主试者或家长, 并主动松手"
   },
   {
@@ -978,7 +978,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 15,
     domain: Domain.FineMotor,
     description: "从瓶中拿到小丸",
-    operationMethod: "出示装有小丸的30ml广口试剂瓶, 递给小儿, 说“阿姨想要豆豆(小丸)怎么办?”或“把豆豆给妈妈”。鼓励小儿将小丸取出, 但不能说倒出",
+    operationMethod: "出示装有小丸的30ml广口试剂瓶, 递给小儿, 说\"阿姨想要豆豆(小丸)怎么办?\"或\"把豆豆给妈妈\"。鼓励小儿将小丸取出, 但不能说倒出",
     passCriteria: "小儿能将小丸拿出或倒出"
   },
   {
@@ -1002,7 +1002,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 15,
     domain: Domain.Adaptive,
     description: "会指眼耳鼻口手",
-    operationMethod: "主试者问小儿“眼在哪儿?”“耳在哪儿?”“鼻子在哪儿?”等, 观察其反应",
+    operationMethod: "主试者问小儿\"眼在哪儿?\"\"耳在哪儿?\"\"鼻子在哪儿?\"等, 观察其反应",
     passCriteria: "能正确指出3个或3个以上身体部位"
   },
   {
@@ -1051,7 +1051,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 18,
     domain: Domain.Adaptive,
     description: "正放圆积木入型板",
-    operationMethod: "在型板圆孔下方放一圆积木, 圆孔靠近小儿身体。主试者对小儿说“这是小朋友的家(指型板面而不是圆孔), 请帮这个小朋友(指圆积木)找到自己的家”, 不示范",
+    operationMethod: "在型板圆孔下方放一圆积木, 圆孔靠近小儿身体。主试者对小儿说\"这是小朋友的家(指型板面而不是圆孔), 请帮这个小朋友(指圆积木)找到自己的家\", 不示范",
     passCriteria: "不经指点, 能正确将圆积木一次性放入孔内"
   },
   {
@@ -1132,7 +1132,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 21,
     domain: Domain.Adaptive,
     description: "知道红色",
-    operationMethod: "出示红、黄、蓝、绿四色图片, 问小儿“哪个是红色?”",
+    operationMethod: "出示红、黄、蓝、绿四色图片, 问小儿\"哪个是红色?\"",
     passCriteria: "小儿能在四色图片中正确指出红色"
   },
   {
@@ -1140,7 +1140,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 21,
     domain: Domain.Language,
     description: "回答简单问题",
-    operationMethod: "主试者问“这是什么(球)?”“那是谁(带小儿者)?”“爸爸干什么去了(上班)?”",
+    operationMethod: "主试者问\"这是什么(球)?\"\"那是谁(带小儿者) ? \"\"爸爸干什么去了(上班)?\"",
     passCriteria: "小儿均能正确回答"
   },
   {
@@ -1157,7 +1157,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     domain: Domain.Social,
     description: "能表示个人需要R", // Note: R added from A.1
     operationMethod: "观察或询问小儿是否会明确表示自己的需要",
-    passCriteria: "小儿会说出三种或以上的需要, 如“吃饭、喝水、玩汽车、上街”等, 可伴手势"
+    passCriteria: "小儿会说出三种或以上的需要, 如\"吃饭、喝水、玩汽车、上街\"等, 可伴手势"
   },
   {
     id: 137,
@@ -1197,7 +1197,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 24,
     domain: Domain.Adaptive,
     description: "倒放圆积木入型板",
-    operationMethod: "在小儿能正放圆积木入型板的基础上, 将型板倒转180°。圆积木仍在原处, 主试者对小儿说“这是小朋友的家(指型板), 请帮这个小朋友(指圆积木)找到自己的家”, 不示范",
+    operationMethod: "在小儿能正放圆积木入型板的基础上, 将型板倒转180°。圆积木仍在原处, 主试者对小儿说\"这是小朋友的家(指型板), 请帮这个小朋友(指圆积木)找到自己的家\", 不示范",
     passCriteria: "型板倒转后, 小儿能正确将圆积木一次性放入圆孔内"
   },
   {
@@ -1222,15 +1222,15 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     domain: Domain.Social,
     description: "会打招呼",
     operationMethod: "示范或不示范小儿见人打招呼",
-    passCriteria: "小儿会自发或模仿说“你好”、“再见”等"
+    passCriteria: "小儿会自发或模仿说\"你好\"、\"再见\"等"
   },
   {
     id: 145,
     ageMonths: 24,
     domain: Domain.Social,
-    description: "问“这是什么?”R", // Note: R added from A.1
-    operationMethod: "观察或询问, 小儿在见到某物时, 是否能自发提问“这是什么?”",
-    passCriteria: "小儿会自发提出问题, 主动问“这是什么?”"
+    description: "问\"这是什么?\"R", // Note: R added from A.1
+    operationMethod: "观察或询问, 小儿在见到某物时, 是否能自发提问\"这是什么?\"",
+    passCriteria: "小儿会自发提出问题, 主动问\"这是什么?\""
   },
   // --- 27 Months ---
   {
@@ -1278,7 +1278,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 27,
     domain: Domain.Adaptive,
     description: "正放型板", // Note: Desc changed from '正放型板' in A.1 to '正放型板' in B.1 text, using B.1 context.
-    operationMethod: "将圆、方、三角形三块积木放在与型板相应的孔旁, 主试者对小儿说“这是小朋友的家(指型板), 请帮这些小朋友(指三块积木)找到自己的家”, 不示范。放置三角型积木方向要与型板一致",
+    operationMethod: "将圆、方、三角形三块积木放在与型板相应的孔旁, 主试者对小儿说\"这是小朋友的家(指型板), 请帮这些小朋友(指三块积木)找到自己的家\", 不示范。放置三角型积木方向要与型板一致",
     passCriteria: "小儿能一次性正确放入相应孔内, 仅等腰三角形可提示"
   },
   {
@@ -1294,7 +1294,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 27,
     domain: Domain.Language,
     description: "理解指令",
-    operationMethod: "主试者对小儿说“请举举你的手”和“请抬抬你的脚”, 可重复指令一遍, 但不能有示范的动作, 观察小儿反应",
+    operationMethod: "主试者对小儿说\"请举举你的手\"和\"请抬抬你的脚\", 可重复指令一遍, 但不能有示范的动作, 观察小儿反应",
     passCriteria: "小儿能按指令做出举手或抬脚动作"
   },
   {
@@ -1310,7 +1310,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 27,
     domain: Domain.Social,
     description: "开始有是非观念",
-    operationMethod: "主试者问小儿“打人对不对?”, 观察小儿的反应或回答",
+    operationMethod: "主试者问小儿\"打人对不对?\", 观察小儿的反应或回答",
     passCriteria: "小儿摇头或说出不对"
   },
   // --- 30 Months (2.5 years) ---
@@ -1343,15 +1343,15 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 30,
     domain: Domain.Adaptive,
     description: "知道1与许多",
-    operationMethod: "一块和数块积木分放两边, 请小儿指出哪边是多的, 再指另一边问“这是几个?”",
-    passCriteria: "小儿先正确指出哪一边多, 后回答“是1个”"
+    operationMethod: "一块和数块积木分放两边, 请小儿指出哪边是多的, 再指另一边问\"这是几个?\"",
+    passCriteria: "小儿先正确指出哪一边多, 后回答\"是1个\""
   },
   {
     id: 160,
     ageMonths: 30,
     domain: Domain.Adaptive,
     description: "倒放型板", // Note: A.1 desc is '倒放型板', B.1 desc confirms context.
-    operationMethod: "在小儿正放三块积木入型板的基础上, 将型板倒转180°, 三块积木仍在原处, 主试者对小儿说“这是小朋友的家(指型板), 请帮这些小朋友(指三块积木)找到自己的家”, 不示范",
+    operationMethod: "在小儿正放三块积木入型板的基础上, 将型板倒转180°, 三块积木仍在原处, 主试者对小儿说\"这是小朋友的家(指型板), 请帮这些小朋友(指三块积木)找到自己的家\", 不示范",
     passCriteria: "小儿能一次性正确放入翻转后型板的相应孔内, 仅等腰三角形可提示"
   },
   {
@@ -1367,7 +1367,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 30,
     domain: Domain.Language,
     description: "说自己名字",
-    operationMethod: "主试者问小儿“你叫什么名字?”",
+    operationMethod: "主试者问小儿\"你叫什么名字?\"",
     passCriteria: "小儿能正确回答自己的大名"
   },
   {
@@ -1383,7 +1383,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 30,
     domain: Domain.Social,
     description: "女孩扔果皮",
-    operationMethod: "出示图片, 问小儿“乱扔垃圾是不对的, 你看这个小女孩吃完的果皮应该扔哪儿?”, 鼓励小儿回答",
+    operationMethod: "出示图片, 问小儿\"乱扔垃圾是不对的, 你看这个小女孩吃完的果皮应该扔哪儿?\", 鼓励小儿回答",
     passCriteria: "小儿能正确回答或指出应该扔垃圾筐"
   },
   // --- 33 Months ---
@@ -1432,15 +1432,15 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 33,
     domain: Domain.Language,
     description: "说出性别",
-    operationMethod: "主试者问小儿性别, 若是女孩问“你是女孩还是男孩?”; 若是男孩问“你是男孩还是女孩?”",
+    operationMethod: "主试者问小儿性别, 若是女孩问\"你是女孩还是男孩?\"; 若是男孩问\"你是男孩还是女孩 ? \"",
     passCriteria: "小儿能正确说出自己的性别"
   },
   {
     id: 171,
     ageMonths: 33,
     domain: Domain.Language,
-    description: "分清“里”“外”",
-    operationMethod: "主试者将一小丸放入30毫升广口试剂瓶内问“小丸是在瓶里? 还是在瓶外?”",
+    description: "分清\"里\"\"外\"",
+    operationMethod: "主试者将一小丸放入30毫升广口试剂瓶内问\"小丸是在瓶里? 还是在瓶外?\"",
     passCriteria: "小儿会正确说出是在里边"
   },
   {
@@ -1488,9 +1488,9 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 177,
     ageMonths: 36,
     domain: Domain.Adaptive,
-    description: "懂得“3”",
-    operationMethod: "主试者出示三块积木, 问小儿“这是几块?”",
-    passCriteria: "小儿能正确说出“三块”"
+    description: "懂得\"3\"",
+    operationMethod: "主试者出示三块积木, 问小儿\"这是几块?\"",
+    passCriteria: "小儿能正确说出\"三块\""
   },
   {
     id: 178,
@@ -1520,9 +1520,9 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 181,
     ageMonths: 36,
     domain: Domain.Social,
-    description: "懂得“饿了、冷了、累了”",
-    operationMethod: "主试者依次问“饿了怎么办?冷了怎么办?累了怎么办?”",
-    passCriteria: "小儿能正确回答两问或以上 吃饭、穿衣、休息等"
+    description: "懂得\"饿了、冷了、累了\"",
+    operationMethod: "主试者依次问\"饿了怎么办?冷了怎么办?累了怎么办?\"",
+    passCriteria: "小儿能正确回答两问或以上  吃饭、穿衣、休息等"
   },
   {
     id: 182,
@@ -1569,9 +1569,9 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 187,
     ageMonths: 42,
     domain: Domain.Adaptive,
-    description: "懂得“5”",
-    operationMethod: "主试者出示五块积木, 问小儿“这是几块?”",
-    passCriteria: "小儿能正确说出“五块”"
+    description: "懂得\"5\"",
+    operationMethod: "主试者出示五块积木, 问小儿\"这是几块?\"",
+    passCriteria: "小儿能正确说出\"五块\""
   },
   {
     id: 188,
@@ -1594,7 +1594,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 42,
     domain: Domain.Language,
     description: "说出图形(△○□)",
-    operationMethod: "主试者依次出示积木△○□, 问小儿“这是什么形状?”",
+    operationMethod: "主试者依次出示积木△○□, 问小儿\"这是什么形状?\"",
     passCriteria: "小儿能正确回答三个图形的名称"
   },
   {
@@ -1610,8 +1610,8 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 42,
     domain: Domain.Social,
     description: "吃饭之前为什么要洗手?",
-    operationMethod: "主试者问小儿“吃饭之前为什么要洗手”? ", // Question mark inconsistent in OCR, added one.
-    passCriteria: "小儿能回答出原因“为避免生病”等"
+    operationMethod: "主试者问小儿\"吃饭之前为什么要洗手?\"",
+    passCriteria: "小儿能回答出原因\"为避免生病\"等"
   },
   // --- 48 Months (4 years) ---
   {
@@ -1643,7 +1643,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 48,
     domain: Domain.FineMotor,
     description: "照图组装螺丝",
-    operationMethod: "主试者出示组装好的螺丝图片5s后收起, 将分开的螺丝、平垫和螺母交给小儿, 请小儿凭记忆组装。主试者可针对落下的零件提示“还有呢?”",
+    operationMethod: "主试者出示组装好的螺丝图片5s后收起, 将分开的螺丝、平垫和螺母交给小儿, 请小儿凭记忆组装。主试者可针对落下的零件提示\"还有呢?\"",
     passCriteria: "小儿无需提示或稍经提示后自行将螺丝、平垫、螺母按顺序组装起来"
   },
   {
@@ -1667,7 +1667,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 48,
     domain: Domain.Language,
     description: "模仿说复合句",
-    operationMethod: "主试者说一句话“妈妈叫我一定不要和小朋友打架”, 可重复一遍, 鼓励小儿复述",
+    operationMethod: "主试者说一句话\"妈妈叫我一定不要和小朋友打架\", 可重复一遍, 鼓励小儿复述",
     passCriteria: "小儿能够复述较完整的复合句, 偶尔漏字/错字"
   },
   {
@@ -1691,7 +1691,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 48,
     domain: Domain.Social,
     description: "分辨男女厕所",
-    operationMethod: "出示男女厕所标识图片, 问小儿应该进哪个厕所, 并提问“为什么”",
+    operationMethod: "出示男女厕所标识图片, 问小儿应该进哪个厕所, 并提问\"为什么\"",
     passCriteria: "小儿能正确识别标志并用语言表达出性别意义"
   },
   // --- 54 Months (4.5 years) ---
@@ -1732,7 +1732,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 54,
     domain: Domain.Adaptive,
     description: "类同",
-    operationMethod: "主试者给小儿一个圆形扣子, 然后出示第一组模板(包括圆型、方型、三角型), 问“你手里的东西和我这些东西哪些是一类的? 为什么?”然后收起, 再出示第二组模版(包括方型钮扣、三角型、方型), 提问同上",
+    operationMethod: "主试者给小儿一个圆形扣子, 然后出示第一组模板(包括圆型、方型、三角型), 问\"你手里的东西和我这些东西哪些是一类的? 为什么?\", 然后收起, 再出示第二组模版(包括方型钮扣、三角型、方型), 提问同上",
     passCriteria: "两问均答对"
   },
   {
@@ -1829,7 +1829,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 60,
     domain: Domain.Language,
     description: "你姓什么?",
-    operationMethod: "主试者问小儿“你姓什么?”",
+    operationMethod: "主试者问小儿\"你姓什么?\"",
     passCriteria: "小儿正确回答出姓, 连名带姓不能通过"
   },
   {
@@ -1845,7 +1845,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 60,
     domain: Domain.Social,
     description: "你家住哪里?",
-    operationMethod: "主试者问小儿“你家住在哪里?”, 或追问“你再说详细些, 我怎么送你回家呢?”",
+    operationMethod: "主试者问小儿\"你家住在哪里?\", 或追问\"你再说详细些, 我怎么送你回家呢?\"",
     passCriteria: "小儿说出的住址可使他人较容易找到"
   },
   // --- 66 Months (5.5 years) ---
@@ -1870,7 +1870,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 66,
     domain: Domain.FineMotor,
     description: "会写自己的名字",
-    operationMethod: "主试者让小儿写出自己的名字",
+    operationMethod: "主试者让小儿写出自己的名字。",
     passCriteria: "小儿能正确写出自己的名字。"
   },
   {
@@ -1886,23 +1886,23 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 66,
     domain: Domain.Adaptive,
     description: "树间站人",
-    operationMethod: "主试者问小儿“两棵树之间站一个人, 一排三棵树之间站几个人?”",
-    passCriteria: "小儿回答“两个人。”"
+    operationMethod: "主试者问小儿\"两棵树之间站一个人, 一排三棵树之间站几个人?\"",
+    passCriteria: "小儿回答\"两个人。\""
   },
   {
     id: 227,
     ageMonths: 66,
     domain: Domain.Adaptive,
     description: "十字切苹果",
-    operationMethod: "主试者问小儿“将一个苹果十字切开是几块?” 如小儿不理解, 主试者可用手势比划提示",
-    passCriteria: "不经提示或仅在主试者手势比划提示后答“四块”"
+    operationMethod: "主试者问小儿\"将一个苹果十字切开是几块?\" 如小儿不理解, 主试者可用手势比划提示",
+    passCriteria: "不经提示或仅在主试者手势比划提示后答\"四块\""
   },
   {
     id: 228,
     ageMonths: 66,
     domain: Domain.Language,
     description: "知道自己属相",
-    operationMethod: "主试者问小儿“你是属什么的?”",
+    operationMethod: "主试者问小儿\"你是属什么的?\"",
     passCriteria: "小儿能正确说出自己的属相"
   },
   {
@@ -1910,7 +1910,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 66,
     domain: Domain.Language,
     description: "倒数数字",
-    operationMethod: "主试者先示教“你会倒着数数吗?1、2、3倒数就是……3、2、1, 现在请你从24开始倒数, 24、23、22、21……”, 鼓励小儿完成倒数",
+    operationMethod: "主试者先示教\"你会倒着数数吗?1、2、3倒数就是……3、2、1, 现在请你从24开始倒数, 24、23、22、21……\", 鼓励小儿完成倒数",
     passCriteria: "小儿能较流利地正确数出13~1"
   },
   {
@@ -1918,7 +1918,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 66,
     domain: Domain.Social,
     description: "为什么要走人行横道?",
-    operationMethod: "主试者问小儿:“过马路为什么要走人行横道?”",
+    operationMethod: "主试者问小儿:\"过马路为什么要走人行横道?\"",
     passCriteria: "小儿能正确回答。为了安全, 如怕被汽车撞了等"
   },
   {
@@ -1926,7 +1926,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 66,
     domain: Domain.Social,
     description: "鸡在水中游",
-    operationMethod: "出示鸡在水中游图画, 主试者问小儿画的对不对, 如回答“不对”, 问哪里画错了",
+    operationMethod: "出示鸡在水中游图画, 主试者问小儿画的对不对, 如回答\"不对\", 问哪里画错了",
     passCriteria: "小儿能正确回答鸡不能在水里游泳"
   },
   // --- 72 Months (6 years) ---
@@ -1983,7 +1983,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 72,
     domain: Domain.Language,
     description: "描述图画内容",
-    operationMethod: "主试者出示三幅连环画, 然后对小儿说“这三幅图连起来讲了一个故事, 请你给我讲一讲故事的内容是什么? 小猴子为什么哭了?”若小儿回答第一问后不再答, 可再追问“小猴子为什么哭了?”",
+    operationMethod: "主试者出示三幅连环画, 然后对小儿说\"这三幅图连起来讲了一个故事, 请你给我讲一讲故事的内容是什么? 小猴子为什么哭了?\", 若小儿回答第一问后不再答, 可再追问\"小猴子为什么哭了 ? \"",
     passCriteria: "能分别描述每张图画的基本内容"
   },
   {
@@ -2007,7 +2007,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 72,
     domain: Domain.Social,
     description: "认识标识",
-    operationMethod: "依次出示两组标识图片, 问“哪一个是代表危险的标志? 为什么?”",
+    operationMethod: "依次出示两组标识图片, 问\"哪一个是代表危险的标志? 为什么?\"",
     passCriteria: "两组图均正确指出危险的标志, 并说对理由"
   },
   // --- 78 Months (6.5 years) ---
@@ -2056,7 +2056,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 78,
     domain: Domain.Adaptive,
     description: "面粉的用途",
-    operationMethod: "主试者问小儿“面粉能做哪些东西?”",
+    operationMethod: "主试者问小儿\"面粉能做哪些东西?\"",
     passCriteria: "小儿能回答两种或以上"
   },
   {
@@ -2064,7 +2064,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 78,
     domain: Domain.Language,
     description: "归纳图画主题",
-    operationMethod: "主试者出示三幅连环画, 然后对小儿说“这三幅图连起来讲了一个故事, 请你给我讲一讲故事的内容是什么? 小猴子为什么哭了?”若小儿回答第一问后不再答, 可再追问“小猴子为什么哭了?”",
+    operationMethod: "主试者出示三幅连环画, 然后对小儿说\"这三幅图连起来讲了一个故事, 请你给我讲一讲故事的内容是什么? 小猴子为什么哭了?\", 若小儿回答第一问后不再答, 可再追问\"小猴子为什么哭了 ? \"",
     passCriteria: "能明确理解故事的主题"
   },
   {
@@ -2080,7 +2080,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 78,
     domain: Domain.Social,
     description: "懂得星期几", // Note: A.1 description '懂得星期几', B.1 has '懂得星期几'
-    operationMethod: "主试者先告诉小儿今天是星期几, 然后提问“请告诉我后天是星期几? 明天是星期几?”",
+    operationMethod: "主试者先告诉小儿今天是星期几, 然后提问\"请告诉我后天是星期几? 明天是星期几?\"",
     passCriteria: "小儿均能正确说出"
   },
   {
@@ -2088,7 +2088,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 78,
     domain: Domain.Social,
     description: "雨中看书",
-    operationMethod: "出示雨中看书图片, 主试者问小儿画的对不对, 如回答“不对”, 问哪里画错了",
+    operationMethod: "出示雨中看书图片, 主试者问小儿画的对不对, 如回答\"不对\", 问哪里画错了",
     passCriteria: "小儿能正确回答下雨了, 不能在雨里看书, 会淋湿、生病、书湿了"
   },
   // --- 84 Months (7 years) ---
@@ -2105,7 +2105,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 84,
     domain: Domain.GrossMotor,
     description: "交替踩踏板",
-    operationMethod: "主试者示范在一级台阶上交替换脚上下共3组(示范时主试者要边喊口号边示范), 请小儿照样做, 若小儿不会两脚交替可提醒小儿“换脚”",
+    operationMethod: "主试者示范在一级台阶上交替换脚上下共3组(示范时主试者要边喊口号边示范), 请小儿照样做, 若小儿不会两脚交替可提醒小儿\"换脚\"",
     passCriteria: "小儿能稳当并较熟练地两脚交替完成3组, 可稍有停顿"
   },
   {
@@ -2137,7 +2137,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 84,
     domain: Domain.Adaptive,
     description: "什么动物没有脚?",
-    operationMethod: "主试者问小儿“什么动物没有脚?” (脚定义为走路用的)",
+    operationMethod: "主试者问小儿\"什么动物没有脚?(脚定义为走路用的)\"",
     passCriteria: "小儿回答蛇、鱼等两类或以上没有脚的动物"
   },
   {
@@ -2145,7 +2145,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 84,
     domain: Domain.Language,
     description: "为什么要进行预防接种?",
-    operationMethod: "主试者问小儿“小朋友为什么要打预防针?”",
+    operationMethod: "主试者问小儿\"小朋友为什么要打预防针?\"",
     passCriteria: "小儿能表达出预防生病/感冒或打预防针可以不生病等"
   },
   {
@@ -2153,7 +2153,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 84,
     domain: Domain.Language,
     description: "毛衣、裤、鞋共同点?",
-    operationMethod: "主试者问小儿“毛衣、长裤和鞋有什么共同之处?”",
+    operationMethod: "主试者问小儿\"毛衣、长裤和鞋有什么共同之处?\"",
     passCriteria: "小儿回答都是穿的、能保暖"
   },
   {
@@ -2169,7 +2169,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     ageMonths: 84,
     domain: Domain.Social,
     description: "猫头鹰抓老鼠",
-    operationMethod: "出示猫头鹰抓老鼠图片, 主试者问小儿画的对不对, 如回答“不对”, 问哪里画错了",
+    operationMethod: "出示猫头鹰抓老鼠图片, 主试者问小儿画的对不对, 如回答\"不对\", 问哪里画错了",
     passCriteria: "小儿能正确回答猫头鹰白天睡觉, 不会在白天出来抓老鼠"
   }
 ];

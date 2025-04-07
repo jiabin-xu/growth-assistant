@@ -2,6 +2,7 @@ import { ALL_TEST_ITEMS, AGE_GROUPS, Domain, TestItem, TestResultStatus } from "
 import { AssessmentState, AssessmentProgress, DomainScore, AssessmentResult } from "./types";
 import { getNextDomain, DOMAIN_ORDER } from "./domain";
 import { findMainTestAge, calculateAgeMonths } from "./age";
+import { getDevelopmentStatus } from "./status";
 
 export const initializeAssessment = (birthDate: Date, assessmentDate: Date): AssessmentState => {
   const chronologicalAgeMonths = calculateAgeMonths(birthDate, assessmentDate);
@@ -216,12 +217,9 @@ export const calculateScores = (state: AssessmentState): AssessmentResult => {
   const averageMentalAge = totalMentalAge / DOMAIN_ORDER.length;
   const developmentQuotient = Math.round((averageMentalAge / state.chronologicalAgeMonths) * 100);
 
-  let dqClassification = "delayed";
-  if (developmentQuotient >= 130) dqClassification = "excellent";
-  else if (developmentQuotient >= 110) dqClassification = "good";
-  else if (developmentQuotient >= 90) dqClassification = "normal";
-  else if (developmentQuotient >= 80) dqClassification = "attention";
+  const dqClassification = getDevelopmentStatus(developmentQuotient);
 
+  console.log('dqClassification :>> ', dqClassification);
   return {
     domainMentalAges,
     totalMentalAge: averageMentalAge,

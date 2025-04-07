@@ -11,6 +11,7 @@ import {
   getProgress,
 } from "../../utils";
 import { Domain, TestItem, TestResultStatus } from "../../constants/rule";
+import { useShare } from "../../hooks/useShare";
 import BasicInfo from "../../components/BasicInfo";
 import "./index.scss";
 
@@ -32,6 +33,9 @@ interface ExtendedTestItem extends TestItem {
 export default function Testing() {
   const router = useRouter();
   const { id } = router.params;
+
+  // 添加分享功能
+  useShare("发育评估测试进行中 - 萌宝成长小助手");
 
   const [assessment, setAssessment] = useState<AssessmentState | null>(null);
   const [baseInfo, setBaseInfo] = useState<StoredAssessment | null>(null);

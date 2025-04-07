@@ -1,18 +1,7 @@
+import { DQ_CLASSIFICATIONS, DQClassification } from "../constants/rule";
+
 export const getStatusDisplay = (status: string): string => {
-  switch (status) {
-    case "excellent":
-      return "优秀";
-    case "good":
-      return "良好";
-    case "normal":
-      return "正常";
-    case "attention":
-      return "需要关注";
-    case "delayed":
-      return "发育迟缓";
-    default:
-      return status;
-  }
+  return DQ_CLASSIFICATIONS[status as DQClassification] || status;
 };
 
 export const getScoreRange = (score: number): string => {
@@ -23,7 +12,7 @@ export const getScoreRange = (score: number): string => {
   return "<70";
 };
 
-export const getDevelopmentStatus = (dq: number): string => {
+export const getDevelopmentStatus = (dq: number): DQClassification => {
   if (dq >= 130) return "excellent";
   if (dq >= 110) return "good";
   if (dq >= 90) return "normal";

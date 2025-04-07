@@ -1,10 +1,14 @@
 import { View, Text, Image } from "@tarojs/components";
 import Taro from "@tarojs/taro";
+import { useShare } from "../../hooks/useShare";
 import "./index.scss";
 import assessmentIcon from "../../assets/images/assessment.svg";
 import historyIcon from "../../assets/images/history.svg";
 
 export default function Index() {
+  // 添加分享功能
+  useShare("萌宝成长小助手 - 妈妈不再焦虑儿保");
+
   const handleStartAssessment = () => {
     Taro.navigateTo({
       url: "/pages/assessment/index",

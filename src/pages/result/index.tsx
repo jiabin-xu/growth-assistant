@@ -7,6 +7,7 @@ import { RadarChart } from "../../components/assessment/RadarChart";
 import { InterpretationCard } from "../../components/assessment/InterpretationCard";
 import { NextStepsCard } from "../../components/assessment/NextStepsCard";
 import { useAssessmentData } from "../../hooks/useAssessmentData";
+import { useShare } from "../../hooks/useShare";
 import { calculateAge, getNextAssessmentDate } from "../../utils";
 import "./index.scss";
 
@@ -17,15 +18,11 @@ export default function Result() {
   const { assessment, loading, actualAgeMonths, domainAnalysis } =
     useAssessmentData(id);
 
+  useShare("宝宝发育评估结果 - 萌宝成长小助手");
+
   const handleViewHistory = useCallback(() => {
     Taro.navigateTo({
       url: "/pages/history/index",
-    });
-  }, []);
-
-  const handleNewAssessment = useCallback(() => {
-    Taro.navigateTo({
-      url: "/pages/assessment/index",
     });
   }, []);
 
@@ -84,11 +81,11 @@ export default function Result() {
       <NextStepsCard nextAssessmentDate={getNextAssessmentDate(birthDate)} />
 
       <View className="actions">
-        <Button className="action-btn history" onClick={handleViewHistory}>
+        <Button className="action-btn history-btn" onClick={handleViewHistory}>
           查看历史记录
         </Button>
-        <Button className="action-btn new" onClick={handleNewAssessment}>
-          开始新的评估
+        <Button className="action-btn new-btn" openType="share">
+          分享
         </Button>
       </View>
     </View>

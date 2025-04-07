@@ -1,6 +1,10 @@
 import { View, Text } from "@tarojs/components";
 import { AssessmentResultTableProps } from "../../types/assessment";
-import { getStatusDisplay, formatAgeMonths } from "../../utils";
+import {
+  getStatusDisplay,
+  formatAgeMonths,
+  getDevelopmentStatus,
+} from "../../utils";
 import "./assessment-table.scss";
 
 export const AssessmentResultTable: React.FC<AssessmentResultTableProps> = ({
@@ -9,6 +13,7 @@ export const AssessmentResultTable: React.FC<AssessmentResultTableProps> = ({
   domainAnalysis,
   developmentQuotient,
 }) => {
+  console.log("dqClassification :>> ", dqClassification);
   return (
     <View className="score-card">
       <Text className="score-card-title">发育评估结果</Text>
@@ -28,7 +33,9 @@ export const AssessmentResultTable: React.FC<AssessmentResultTableProps> = ({
           </View>
           <View className="score-table-cell status">
             <Text
-              className={`status-tag ${dqClassification?.toLowerCase() || ""}`}
+              className={`status-tag ${
+                getDevelopmentStatus(developmentQuotient || 0) || ""
+              }`}
             >
               {dqClassification || "暂无结果"}
             </Text>

@@ -1,6 +1,7 @@
 import { View, Text } from "@tarojs/components";
 import { useState, useEffect } from "react";
 import Taro from "@tarojs/taro";
+import { useShare } from "../../hooks/useShare";
 import "./index.scss";
 
 interface Assessment {
@@ -18,6 +19,8 @@ interface Assessment {
 }
 
 export default function History() {
+  useShare("评估历史记录 - 萌宝成长小助手");
+
   const [assessments, setAssessments] = useState<Assessment[]>([]);
   const [loading, setLoading] = useState(true);
 

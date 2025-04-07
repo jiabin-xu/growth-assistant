@@ -1,4 +1,4 @@
-import { Domain } from "../constants/rule";
+import { Domain, DQClassification } from "../constants/rule";
 
 export interface Assessment {
   id: string;
@@ -12,7 +12,7 @@ export interface Assessment {
 
 export interface AssessmentResults {
   developmentQuotient: number;
-  dqClassification: string;
+  dqClassification: DQClassification;
   domainMentalAges: Record<Domain, number>;
   totalMentalAge: number;
 }
@@ -23,7 +23,7 @@ export interface DomainAnalysis {
   interpretation: string;
   suggestions: string[];
   description: string;
-  developmentStatus: string;
+  developmentStatus: DQClassification;
   gap: number;
   customSuggestions: string[];
   dq?: number;
@@ -37,7 +37,7 @@ export interface BasicInfoProps {
 }
 
 export interface AssessmentResultTableProps {
-  dqClassification: string;
+  dqClassification: DQClassification;
   totalMentalAge: number;
   domainAnalysis: DomainAnalysis[];
   developmentQuotient?: number;
