@@ -9,13 +9,8 @@ import {
   getNextTestItems,
   calculateScores,
   getProgress,
-} from "../../rule";
-import {
-  Domain,
-  TestItem,
-  TestResultStatus,
-  AGE_GROUPS,
-} from "../../constants/rule";
+} from "../../utils";
+import { Domain, TestItem, TestResultStatus } from "../../constants/rule";
 import BasicInfo from "../../components/BasicInfo";
 import "./index.scss";
 

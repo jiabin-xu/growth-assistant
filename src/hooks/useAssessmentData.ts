@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import Taro from "@tarojs/taro";
 import { Assessment, DomainAnalysis } from "../types/assessment";
 import { Domain } from "../constants";
-import { analyzeDomain } from "../utils/assessment";
+import { analyzeDomain } from "../utils";
 
 export const useAssessmentData = (id?: string) => {
   const [assessment, setAssessment] = useState<Assessment | null>(null);
@@ -60,11 +60,11 @@ export const useAssessmentData = (id?: string) => {
       );
     });
   }, [assessment?.results.domainMentalAges, assessment?.results.developmentQuotient, actualAgeMonths]);
-  console.log('domainAnalysis :>> ', domainAnalysis); 
+  console.log('domainAnalysis :>> ', domainAnalysis);
   return {
     assessment,
     loading,
     actualAgeMonths,
     domainAnalysis,
   };
-}; 
+};

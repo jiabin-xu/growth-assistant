@@ -1,9 +1,11 @@
 import { View, Text, Swiper, SwiperItem } from "@tarojs/components";
 import { InterpretationCardProps } from "../../types/assessment";
-import { getStatusDisplay } from "../../utils/statusUtils";
+import { getStatusDisplay } from "../../utils";
 import "./interpretation.scss";
 
-export const InterpretationCard: React.FC<InterpretationCardProps> = ({ domainAnalysis }) => {
+export const InterpretationCard: React.FC<InterpretationCardProps> = ({
+  domainAnalysis,
+}) => {
   return (
     <View className="interpretation-card">
       <Text className="card-title">能力解读与发展建议</Text>
@@ -24,18 +26,23 @@ export const InterpretationCard: React.FC<InterpretationCardProps> = ({ domainAn
                     <Text className="domain-age">
                       发展水平：{analysis.mentalAge}个月
                     </Text>
-                    <Text className={`status-tag ${analysis.developmentStatus}`}>
+                    <Text
+                      className={`status-tag ${analysis.developmentStatus}`}
+                    >
                       {getStatusDisplay(analysis.developmentStatus)}
                     </Text>
                   </View>
                 </View>
                 <View className="domain-content">
-                  {analysis.interpretation && analysis.interpretation.length > 0 && (
-                    <View className="domain-status">
-                      <Text className="subtitle">发展表现</Text>
-                      <Text className="description">{analysis.interpretation}</Text>
-                    </View>
-                  )}
+                  {analysis.interpretation &&
+                    analysis.interpretation.length > 0 && (
+                      <View className="domain-status">
+                        <Text className="subtitle">发展表现</Text>
+                        <Text className="description">
+                          {analysis.interpretation}
+                        </Text>
+                      </View>
+                    )}
                   <View className="suggestions">
                     <Text className="subtitle">发展建议</Text>
                     <View className="suggestion-list">
@@ -46,7 +53,10 @@ export const InterpretationCard: React.FC<InterpretationCardProps> = ({ domainAn
                         </View>
                       ))}
                       {analysis.customSuggestions?.map((suggestion, index) => (
-                        <View key={`custom-${index}`} className="suggestion-item">
+                        <View
+                          key={`custom-${index}`}
+                          className="suggestion-item"
+                        >
                           <Text className="suggestion-dot">•</Text>
                           <Text className="suggestion-text">{suggestion}</Text>
                         </View>
@@ -61,4 +71,4 @@ export const InterpretationCard: React.FC<InterpretationCardProps> = ({ domainAn
       )}
     </View>
   );
-}; 
+};

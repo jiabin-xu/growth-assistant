@@ -52,5 +52,8 @@ export interface InterpretationCardProps {
 }
 
 export interface NextStepsCardProps {
-  nextAssessmentDate: string;
-} 
+  nextAssessmentDate: {
+    nextDate: string;
+    nextAgeMonths: number;
+  };
+}

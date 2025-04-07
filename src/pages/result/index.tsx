@@ -7,14 +7,15 @@ import { RadarChart } from "../../components/assessment/RadarChart";
 import { InterpretationCard } from "../../components/assessment/InterpretationCard";
 import { NextStepsCard } from "../../components/assessment/NextStepsCard";
 import { useAssessmentData } from "../../hooks/useAssessmentData";
-import { calculateAge, getNextAssessmentDate } from "../../utils/date";
+import { calculateAge, getNextAssessmentDate } from "../../utils";
 import "./index.scss";
 
 export default function Result() {
   const router = useRouter();
   const { id } = router.params;
 
-  const { assessment, loading, actualAgeMonths, domainAnalysis } = useAssessmentData(id);
+  const { assessment, loading, actualAgeMonths, domainAnalysis } =
+    useAssessmentData(id);
 
   const handleViewHistory = useCallback(() => {
     Taro.navigateTo({
@@ -50,7 +51,7 @@ export default function Result() {
   return (
     <View className="result">
       <View className="header">
-        <Text className="title">{name}的评估结果</Text>
+        <Text className="title">{name}宝宝的评估结果</Text>
       </View>
 
       <BasicInfoCard
