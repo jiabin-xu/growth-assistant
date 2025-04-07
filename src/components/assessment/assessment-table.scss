@@ -1,43 +1,58 @@
 .score-card {
   background: #ffffff;
-  border-radius: 16px;
-  padding: 24px 0 0;
-  margin: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  padding: 28px 20px;
+  margin: 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 
   .score-card-title {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 600;
-    margin-left: 20px;
-    color: #2c3e50;
+    color: #1a2a3a;
     display: block;
+    margin-bottom: 20px;
+    text-align: center;
     position: relative;
-    padding-bottom: 12px;
+
+    &:after {
+      content: "";
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: #3498db;
+      border-radius: 3px;
+    }
   }
 
   .score-table {
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-top: 20px;
 
     .score-table-header {
       display: flex;
-      background: rgba(52, 152, 219, 0.1);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      background: rgba(52, 152, 219, 0.15);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 
       .score-table-cell {
-        padding: 12px 16px;
-        font-size: 14px;
+        padding: 16px;
+        font-size: 15px;
         font-weight: 600;
-        color: #2c3e50;
+        color: #1a2a3a;
         text-align: center;
 
         &.name {
           flex: 2;
+          text-align: left;
+          padding-left: 24px;
         }
 
         &.status {
-          flex: 1;
+          flex: 1.2;
         }
 
         &.age {
@@ -45,14 +60,14 @@
         }
 
         &.dq {
-          flex: 0.7;
+          flex: 0.8;
         }
       }
     }
 
     .score-table-row {
       display: flex;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
       transition: all 0.3s ease;
 
       &:hover {
@@ -63,14 +78,37 @@
         border-bottom: none;
       }
 
-      &.total {
-        background: rgba(46, 204, 113, 0.05);
-        font-weight: 500;
-      }
+      // &.total {
+      //   background: linear-gradient(
+      //     to right,
+      //     rgba(52, 152, 219, 0.08),
+      //     rgba(46, 204, 113, 0.08)
+      //   );
+      //   font-weight: 500;
+      //   padding: 4px 0;
+
+      //   .score-table-cell {
+      //     font-size: 16px;
+
+      //     &.name {
+      //       font-weight: 600;
+      //       color: #1a2a3a;
+      //     }
+
+      //     &.dq {
+      //       font-weight: 700;
+      //       color: #2980b9;
+      //     }
+
+      //     &.age {
+      //       font-weight: 600;
+      //     }
+      //   }
+      // }
 
       .score-table-cell {
-        padding: 12px 16px;
-        font-size: 14px;
+        padding: 16px;
+        font-size: 15px;
         color: #2c3e50;
         text-align: center;
         display: flex;
@@ -80,11 +118,13 @@
         &.name {
           flex: 2;
           text-align: left;
+          justify-content: flex-start;
           font-weight: 500;
+          padding-left: 24px;
         }
 
         &.status {
-          flex: 1;
+          flex: 1.2;
         }
 
         &.age {
@@ -92,14 +132,17 @@
         }
 
         &.dq {
-          flex: 0.7;
+          flex: 0.8;
+          font-weight: 600;
         }
 
         .status-tag {
-          padding: 4px 10px;
-          border-radius: 12px;
-          font-size: 12px;
+          padding: 6px 12px;
+          border-radius: 20px;
+          font-size: 13px;
           font-weight: 500;
+          min-width: 50px;
+          text-align: center;
 
           &.excellent {
             background: rgba(46, 204, 113, 0.15);

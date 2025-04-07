@@ -27,11 +27,12 @@ export const AssessmentResultTable: React.FC<AssessmentResultTableProps> = ({
             {developmentQuotient || "暂无"}
           </View>
           <View className="score-table-cell status">
-            <Text className={`status-tag`}>
+            <Text
+              className={`status-tag ${dqClassification?.toLowerCase() || ""}`}
+            >
               {dqClassification || "暂无结果"}
             </Text>
           </View>
-
           <View className="score-table-cell age">
             {formatAgeMonths(totalMentalAge)}
           </View>
