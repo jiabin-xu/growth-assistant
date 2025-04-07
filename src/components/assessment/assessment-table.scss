@@ -43,6 +43,10 @@
         &.age {
           flex: 1;
         }
+
+        &.dq {
+          flex: 0.7;
+        }
       }
     }
 
@@ -87,6 +91,10 @@
           flex: 1;
         }
 
+        &.dq {
+          flex: 0.7;
+        }
+
         .status-tag {
           padding: 4px 10px;
           border-radius: 12px;
@@ -121,4 +129,4 @@
       }
     }
   }
-} 
+}

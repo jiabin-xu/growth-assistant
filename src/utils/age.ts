@@ -57,3 +57,15 @@ export const getAgeRangeKey = (ageMonths: number): string => {
   if (ageMonths > 54 && ageMonths <= 84) return "55-84m";
   return "55-84m";
 };
+
+export const formatAgeMonths = (months: number | undefined): string => {
+  if (!months && months !== 0) return "暂无";
+
+  if (months < 12) {
+    return `${months}个月`;
+  } else {
+    const years = Math.floor(months / 12);
+    const remainingMonths = Math.floor(months % 12);
+    return `${years}岁${remainingMonths > 0 ? `${remainingMonths}月` : ''}`;
+  }
+};

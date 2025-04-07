@@ -69,5 +69,6 @@ export const analyzeDomain = (
     developmentStatus,
     gap: Math.abs(mentalAge - actualAgeMonths),
     customSuggestions: [],
+    dq: domainDQ,
   };
 };

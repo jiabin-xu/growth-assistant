@@ -46,7 +46,12 @@ export default function Result() {
   }
 
   const { name, birthDate, gender, height, weight, results } = assessment;
-  const { dqClassification, domainMentalAges, totalMentalAge } = results;
+  const {
+    dqClassification,
+    domainMentalAges,
+    totalMentalAge,
+    developmentQuotient,
+  } = results;
 
   return (
     <View className="result">
@@ -65,6 +70,7 @@ export default function Result() {
         dqClassification={dqClassification}
         totalMentalAge={totalMentalAge}
         domainAnalysis={domainAnalysis}
+        developmentQuotient={developmentQuotient}
       />
 
       <RadarChart

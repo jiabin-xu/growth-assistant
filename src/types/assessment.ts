@@ -26,6 +26,7 @@ export interface DomainAnalysis {
   developmentStatus: string;
   gap: number;
   customSuggestions: string[];
+  dq?: number;
 }
 
 export interface BasicInfoProps {
@@ -39,6 +40,7 @@ export interface AssessmentResultTableProps {
   dqClassification: string;
   totalMentalAge: number;
   domainAnalysis: DomainAnalysis[];
+  developmentQuotient?: number;
 }
 
 export interface RadarChartProps {

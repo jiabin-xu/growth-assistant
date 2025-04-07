@@ -1,6 +1,6 @@
 import { View, Text, Swiper, SwiperItem } from "@tarojs/components";
 import { InterpretationCardProps } from "../../types/assessment";
-import { getStatusDisplay } from "../../utils";
+import { getStatusDisplay, formatAgeMonths } from "../../utils";
 import "./interpretation.scss";
 
 export const InterpretationCard: React.FC<InterpretationCardProps> = ({
@@ -24,7 +24,7 @@ export const InterpretationCard: React.FC<InterpretationCardProps> = ({
                   <Text className="domain-title">{analysis.domain}</Text>
                   <View className="domain-status">
                     <Text className="domain-age">
-                      发展水平：{analysis.mentalAge}个月
+                      发展水平：{formatAgeMonths(analysis.mentalAge)}
                     </Text>
                     <Text
                       className={`status-tag ${analysis.developmentStatus}`}
