@@ -3,7 +3,7 @@
 .result {
   min-height: 100vh;
   background-color: $background-color;
-  padding: $spacing-xl $spacing-xl calc(80px + #{$spacing-xl * 2});
+  padding: $spacing-xl 0;
   font-family: $font-family-base;
 
   &.loading {
@@ -32,11 +32,13 @@
 
   .basic-info {
     @include card;
+    margin: 0 20px;
     margin-bottom: $spacing-lg;
 
     .info-title {
       font-size: $font-size-lg;
       color: $text-primary;
+      font-weight: 600;
       margin-bottom: $spacing-md;
     }
 
@@ -63,40 +65,135 @@
   .score-card {
     background: #ffffff;
     border-radius: 16px;
-    padding: 24px;
-    // margin-bottom: 20px;
-    margin: 20px 0;
+    padding: 24px 0 0;
+    margin: 20px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
-    .main-score {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
+    .score-card-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-left: 20px;
+      color: #2c3e50;
+      display: block;
+      position: relative;
+      padding-bottom: 12px;
+    }
 
-      .score-label {
-        font-size: 18px;
-        color: #333;
-        font-weight: 500;
+    .score-table {
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      border-radius: 8px;
+      overflow: hidden;
+
+      .score-table-header {
+        display: flex;
+        background: rgba(52, 152, 219, 0.1);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+        .score-table-cell {
+          padding: 12px 16px;
+          font-size: 14px;
+          font-weight: 600;
+          color: #2c3e50;
+          text-align: center;
+
+          &.name {
+            flex: 2;
+          }
+
+          &.status {
+            flex: 1;
+          }
+
+          &.age {
+            flex: 1;
+          }
+        }
       }
 
-      .classification {
-        font-size: 24px;
-        font-weight: bold;
-        color: $primary-color;
-        padding: 8px 20px;
-        // background: #e6f4ea;
-        border-radius: 24px;
+      .score-table-row {
+        display: flex;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: rgba(52, 152, 219, 0.05);
+        }
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        &.total {
+          background: rgba(46, 204, 113, 0.05);
+          font-weight: 500;
+        }
+
+        .score-table-cell {
+          padding: 12px 16px;
+          font-size: 14px;
+          color: #2c3e50;
+          text-align: center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          &.name {
+            flex: 2;
+            text-align: left;
+            font-weight: 500;
+          }
+
+          &.status {
+            flex: 1;
+          }
+
+          &.age {
+            flex: 1;
+          }
+
+          .status-tag {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            background: rgba(52, 152, 219, 0.15);
+            color: #2980b9;
+
+            &.领先 {
+              background: rgba(46, 204, 113, 0.15);
+              color: #27ae60;
+            }
+
+            &.正常 {
+              background: rgba(52, 152, 219, 0.15);
+              color: #2980b9;
+            }
+
+            &.需要关注 {
+              background: rgba(231, 76, 60, 0.15);
+              color: #c0392b;
+            }
+          }
+
+          .warning {
+            color: #e74c3c;
+            font-weight: 500;
+          }
+        }
       }
     }
   }
 
   .radar-chart {
     @include card;
+    margin: 20px;
+    padding: 20px 0 0;
     margin-bottom: $spacing-lg;
 
     .chart-title {
       font-size: $font-size-lg;
+      margin-left: 20px;
+      font-weight: 600;
       color: $text-primary;
       margin-bottom: $spacing-md;
       display: block;
@@ -105,7 +202,7 @@
 
   .details-card {
     @include card;
-
+    margin: 20px;
     .card-title {
       font-size: $font-size-lg;
       color: $text-primary;
@@ -208,21 +305,23 @@
   .interpretation-card {
     background: #ffffff;
     border-radius: 16px;
-    padding: 20px 0;
-    margin: 20px 0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 24px 0;
+    margin: 20px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
 
     .card-title {
-      font-size: 18px;
-      // font-weight: bold;
-      color: #333;
-      margin-bottom: 16px;
-      padding-left: 12px;
-      // border-left: 4px solid $primary-color;
+      font-size: 20px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 24px;
+      padding: 0 24px;
+      position: relative;
     }
 
     .domain-swiper {
-      height: 520px; // 适当增加高度
+      // height: 610px;
+      height: fit-content;
+      max-height: 650px;
 
       .domain-swiper-item {
         padding: 0;
@@ -230,7 +329,7 @@
 
       .domain-interpretation {
         height: 100%;
-        padding: 16px 2px;
+        padding: 16px 0;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
@@ -238,14 +337,14 @@
         .domain-header {
           display: flex;
           flex-direction: column;
-          // gap: 8px;
-          margin-bottom: 20px;
+          gap: 8px;
+          margin-bottom: 4px;
           padding: 12px 16px;
           // background: rgba(52, 152, 219, 0.05);
           border-radius: 12px;
 
           .domain-title {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 600;
             color: #2c3e50;
           }
@@ -253,34 +352,36 @@
           .domain-status {
             display: flex;
             align-items: center;
-            // gap: 8px;
-            flex-wrap: wrap;
+            gap: 12px;
+            // flex-wrap: wrap;
 
             .domain-age {
               font-size: 14px;
-              color: #666;
+              color: #34495e;
               background: rgba(52, 152, 219, 0.1);
-              padding: 4px 12px;
-              border-radius: 16px;
+              padding: 6px 14px;
+              border-radius: 20px;
+              font-weight: 500;
             }
 
             .status-tag {
-              padding: 4px 12px;
-              border-radius: 16px;
-              font-size: 12px;
+              padding: 6px 14px;
+              border-radius: 20px;
+              font-size: 13px;
+              font-weight: 500;
 
               &.领先 {
-                background: rgba(46, 204, 113, 0.1);
+                background: rgba(46, 204, 113, 0.15);
                 color: #27ae60;
               }
 
               &.正常 {
-                background: rgba(52, 152, 219, 0.1);
+                background: rgba(52, 152, 219, 0.15);
                 color: #2980b9;
               }
 
               &.需要关注 {
-                background: rgba(231, 76, 60, 0.1);
+                background: rgba(231, 76, 60, 0.15);
                 color: #c0392b;
               }
             }
@@ -289,8 +390,8 @@
 
         .domain-content {
           flex: 1;
-          overflow-y: auto;
-          padding: 0 8px;
+          // overflow-y: auto;
+          padding: 0 12px;
 
           &::-webkit-scrollbar {
             width: 4px;
@@ -301,11 +402,14 @@
             border-radius: 2px;
           }
 
+          // .domain-status {
+          //   margin-bottom: 20px;
+          // }
+
           .subtitle {
-            font-size: 15px;
-            font-weight: 500;
+            font-size: 16px;
             color: #34495e;
-            margin: 16px 0 12px;
+            margin: 20px 0 10px;
             display: flex;
             align-items: center;
 
@@ -313,9 +417,9 @@
               content: "";
               display: inline-block;
               width: 4px;
-              height: 16px;
+              height: 18px;
               background: $primary-color;
-              margin-right: 8px;
+              margin-right: 10px;
               border-radius: 2px;
             }
 
@@ -326,24 +430,26 @@
 
           .description {
             font-size: 14px;
-            color: #666;
+            color: #555;
             line-height: 1.6;
-            margin-bottom: 16px;
-            padding: 16px;
-            background: rgba(52, 152, 219, 0.05);
+            display: inline-block;
+            // margin-bottom: 20px;
+            padding: 2px 2px;
             border-radius: 12px;
             white-space: pre-wrap;
             word-wrap: break-word;
           }
 
+          .suggestions {
+            margin-top: 12px;
+          }
+
           .suggestion-list {
             display: flex;
             flex-direction: column;
-            // gap: 10px;
-
             .suggestion-item {
               display: flex;
-              padding: 8px 16px;
+              padding: 4px 8px;
               // background: rgba(46, 204, 113, 0.05);
               border-radius: 12px;
               transition: all 0.3s ease;
@@ -352,13 +458,14 @@
                 color: #2ecc71;
                 margin-right: 12px;
                 font-size: 16px;
-                line-height: 1.2;
+                line-height: 1.4;
               }
 
               .suggestion-text {
                 font-size: 14px;
                 color: #2c3e50;
-                line-height: 1.2;
+                line-height: 1.5;
+                display: inline-block;
                 flex: 1;
                 white-space: pre-wrap;
                 word-wrap: break-word;
@@ -379,7 +486,7 @@
 
     .card-title {
       font-size: 18px;
-      font-weight: bold;
+      font-weight: 600;
       color: #333;
       margin-bottom: 20px;
     }
@@ -453,7 +560,6 @@
     .report-actions {
       display: flex;
       justify-content: space-between;
-      gap: 16px;
 
       .action-btn {
         flex: 1;

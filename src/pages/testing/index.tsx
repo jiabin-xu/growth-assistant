@@ -15,7 +15,7 @@ import {
   TestItem,
   TestResultStatus,
   AGE_GROUPS,
-} from "../../constants";
+} from "../../constants/rule";
 import BasicInfo from "../../components/BasicInfo";
 import "./index.scss";
 

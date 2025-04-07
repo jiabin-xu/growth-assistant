@@ -1,4 +1,4 @@
-import { ALL_TEST_ITEMS, AGE_GROUPS, Domain, TestItem, TestResultStatus } from './constants';
+import { ALL_TEST_ITEMS, AGE_GROUPS, Domain, TestItem, TestResultStatus } from './constants/rule';
 
 // --- 类型定义 ---
 export interface AssessmentState {

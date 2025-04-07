@@ -1,0 +1,33 @@
+.next-steps-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  margin: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  .card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .next-steps-content {
+    .next-assessment {
+      margin-bottom: 20px;
+
+      .subtitle {
+        font-size: 15px;
+        font-weight: 500;
+        color: #34495e;
+        margin-bottom: 8px;
+      }
+
+      .time {
+        font-size: 16px;
+        color: #e74c3c;
+        font-weight: 500;
+      }
+    }
+  }
+} 

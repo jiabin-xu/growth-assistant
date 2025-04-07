@@ -1,4 +1,4 @@
-import { Domain } from "src/constants";
+import { Domain } from "src/constants/rule";
 import pingjia from "src/data/pingjia.json";
 export function getAgeRangeKey(ageMonths: number): string {
   if (ageMonths >= 0 && ageMonths <= 6) return "0-6m";
@@ -25,6 +25,7 @@ export function getInterpretationAndSuggestions(domain: Domain, ageMonths: numbe
   interpretation: string;
   suggestions: string[];
 } {
+  console.log(domain, ageMonths, score);
   const ageRangeKey = getAgeRangeKey(ageMonths);
   const scoreRange = getScoreRange(score);
   const domainData = pingjia.find(item => item.domain.includes(domain));
