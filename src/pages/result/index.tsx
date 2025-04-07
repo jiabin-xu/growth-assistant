@@ -51,7 +51,7 @@ export default function Result() {
   return (
     <View className="result">
       <View className="header">
-        <Text className="title">{name}宝宝的评估结果</Text>
+        <Text className="title">{name}的发展评估</Text>
       </View>
 
       <BasicInfoCard
@@ -77,14 +77,14 @@ export default function Result() {
 
       <NextStepsCard nextAssessmentDate={getNextAssessmentDate(birthDate)} />
 
-      {/* <View className="actions">
+      <View className="actions">
         <Button className="action-btn history" onClick={handleViewHistory}>
           查看历史记录
         </Button>
         <Button className="action-btn new" onClick={handleNewAssessment}>
           开始新的评估
         </Button>
-      </View> */}
+      </View>
     </View>
   );
 }
