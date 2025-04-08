@@ -37,7 +37,7 @@ export const AssessmentResultTable: React.FC<AssessmentResultTableProps> = ({
                 getDevelopmentStatus(developmentQuotient || 0) || ""
               }`}
             >
-              {dqClassification || "暂无结果"}
+              {getStatusDisplay(dqClassification)}
             </Text>
           </View>
           <View className="score-table-cell age">

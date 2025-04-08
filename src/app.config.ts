@@ -5,7 +5,8 @@ export default defineAppConfig({
     'pages/assessment/index',
     'pages/testing/index',
     'pages/result/index',
-    'pages/history/index'
+    'pages/history/index',
+    'pages/failed-items/index'
   ],
   window: {
     backgroundTextStyle: 'light',

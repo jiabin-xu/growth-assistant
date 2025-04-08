@@ -10,7 +10,12 @@ import {
   calculateScores,
   getProgress,
 } from "../../utils";
-import { Domain, TestItem, TestResultStatus } from "../../constants/rule";
+import {
+  Domain,
+  TestItem,
+  TestResultStatus,
+  TestResult,
+} from "../../constants/rule";
 import { useShare } from "../../hooks/useShare";
 import BasicInfo from "../../components/BasicInfo";
 import "./index.scss";
@@ -33,26 +38,17 @@ interface ExtendedTestItem extends TestItem {
 export default function Testing() {
   const router = useRouter();
   const { id } = router.params;
+  const [assessment, setAssessment] = useState<AssessmentState | null>(null);
+  const [currentItems, setCurrentItems] = useState<ExtendedTestItem[]>([]);
+  const [currentItemIndex, setCurrentItemIndex] = useState(0);
+  const [baseInfo, setBaseInfo] = useState<StoredAssessment | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState({ totalProgress: 0 });
 
   // 添加分享功能
-  useShare("发育评估测试进行中 - 萌宝成长小助手");
+  useShare("发育评估测试 - 萌宝成长小助手");
 
-  const [assessment, setAssessment] = useState<AssessmentState | null>(null);
-  const [baseInfo, setBaseInfo] = useState<StoredAssessment | null>(null);
-  const [currentItems, setCurrentItems] = useState<ExtendedTestItem[]>([]);
-  const [currentItemIndex, setCurrentItemIndex] = useState<number>(0);
-  const [loading, setLoading] = useState(true);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [progress, setProgress] = useState<{
-    totalProgress: number;
-    domainProgress: {
-      [key in Domain]?: {
-        tested: number;
-        direction: string;
-        progress: number;
-      };
-    };
-  }>({ totalProgress: 0, domainProgress: {} });
+  const currentItem = currentItems[currentItemIndex];
 
   // console.log("currentItem?.ageMonths :>> ", currentItem?.ageMonths);
   // 初始化评估
@@ -111,6 +107,19 @@ export default function Testing() {
 
       // 更新进度
       setProgress(getProgress(newState));
+
+      // 保存每个测试项的结果
+      const testResult: TestResult = {
+        itemId,
+        status: result,
+      };
+
+      // 获取已有的测试结果
+      const existingResults = Taro.getStorageSync(`test_results_${id}`) || [];
+      // 添加新结果
+      const updatedResults = [...existingResults, testResult];
+      // 保存更新后的结果
+      Taro.setStorageSync(`test_results_${id}`, updatedResults);
 
       // 检查是否完成当前组的所有测试项
       if (currentItemIndex < currentItems.length - 1) {

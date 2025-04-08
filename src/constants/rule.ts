@@ -107,7 +107,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 7,
     ageMonths: 1,
     domain: Domain.Language,
-    description: "自发细小喉音R",
+    description: "自发细小喉音",
     operationMethod: "婴儿仰卧、清醒。注意其发音",
     passCriteria: "观察或询问, 小儿能发出任何一种细小柔和的喉音"
   },
@@ -188,7 +188,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 17,
     ageMonths: 2,
     domain: Domain.Language,
-    description: "发a、o、e等母音R",
+    description: "发a、o、e等母音",
     operationMethod: "询问或逗引婴儿发音",
     passCriteria: "能从喉部发出a、o、e等元音来"
   },
@@ -204,7 +204,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 19,
     ageMonths: 2,
     domain: Domain.Social,
-    description: "自发微笑R",
+    description: "自发微笑",
     operationMethod: "观察或询问婴儿在无外界逗引时是否有自发微笑的情况",
     passCriteria: "婴儿能自发出现微笑, 但不一定出声。睡眠时微笑不通过"
   },
@@ -269,7 +269,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 27,
     ageMonths: 3,
     domain: Domain.Language,
-    description: "笑出声R", // Note: Table B.1 has '笑出声', R added from A.1
+    description: "笑出声", // Note: Table B.1 has '笑出声', R added from A.1
     operationMethod: "逗引婴儿笑, 但不得接触身体",
     passCriteria: "观察或询问, 婴儿能发出\"咯咯\"笑声"
   },
@@ -334,7 +334,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 35,
     ageMonths: 4,
     domain: Domain.Language,
-    description: "高声叫R", // Note: Table B.1 has '高声叫', R added from A.1
+    description: "高声叫", // Note: Table B.1 has '高声叫', R added from A.1
     operationMethod: "观察或询问婴儿在高兴或不满时的发音",
     passCriteria: "会高声叫(非高调尖叫)"
   },
@@ -342,7 +342,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 36,
     ageMonths: 4,
     domain: Domain.Language,
-    description: "伊语作声R", // Note: Table B.1 has '伊语作声', R added from A.1
+    description: "伊语作声", // Note: Table B.1 has '伊语作声', R added from A.1
     operationMethod: "观察婴儿安静时的发音",
     passCriteria: "观察或询问, 婴儿会类似自言自语, 无音节、无意义"
   },
@@ -366,7 +366,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 39,
     ageMonths: 4,
     domain: Domain.Social,
-    description: "认亲人R", // Note: Table B.1 has '认亲人', R added from A.1
+    description: "认亲人", // Note: Table B.1 has '认亲人', R added from A.1
     operationMethod: "观察婴儿在看到母亲或其他亲人或听到亲人声音后的表情变化",
     passCriteria: "观察或询问, 在见到母亲或其他亲人时, 婴儿会变得高兴起来"
   },
@@ -423,7 +423,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 46,
     ageMonths: 5,
     domain: Domain.Language,
-    description: "对人及物发声R", // Note: Table B.1 has '对人及物发声', R added from A.1
+    description: "对人及物发声", // Note: Table B.1 has '对人及物发声', R added from A.1
     operationMethod: "观察或询问婴儿看到熟悉的人或玩具时的发音",
     passCriteria: "观察或询问, 婴儿会发出象说话般的声音, 如伊伊呀呀、ma、pa、ba等辅元结合音"
   },
@@ -439,7 +439,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 48,
     ageMonths: 5,
     domain: Domain.Social,
-    description: "见食物兴奋R", // Note: Table B.1 has '见食物兴奋', R added from A.1
+    description: "见食物兴奋", // Note: Table B.1 has '见食物兴奋', R added from A.1
     operationMethod: "观察婴儿看到奶瓶、饼干、水等食物时的反应",
     passCriteria: "观察或询问, 当婴儿看到奶瓶或母亲乳房时, 表现出高兴要吃的样子"
   },
@@ -448,7 +448,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 49,
     ageMonths: 6,
     domain: Domain.GrossMotor,
-    description: "仰卧翻身R", // Note: Table B.1 has '仰卧翻身', R added from A.1
+    description: "仰卧翻身", // Note: Table B.1 has '仰卧翻身', R added from A.1
     operationMethod: "婴儿仰卧, 用玩具逗引其翻身",
     passCriteria: "观察或询问, 婴儿可从仰卧自行翻到俯卧位"
   },
@@ -512,7 +512,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 57,
     ageMonths: 6,
     domain: Domain.Social,
-    description: "自喂食物R", // Note: Table B.1 has '自喂食物', R added from A.1
+    description: "自喂食物", // Note: Table B.1 has '自喂食物', R added from A.1
     operationMethod: "观察或询问婴儿拿到一块饼干或其他能拿住的食物时, 能否送至口中并咀嚼",
     passCriteria: "能将饼干送入口中并咀嚼, 有张嘴咬的动作而不是吸吮"
   },
@@ -577,7 +577,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 65,
     ageMonths: 7,
     domain: Domain.Language,
-    description: "发da-da ma-ma 无所指R", // Note: R added from A.1
+    description: "发da-da ma-ma 无所指", // Note: R added from A.1
     operationMethod: "观察婴儿在清醒状态时的发声情况",
     passCriteria: "观察或询问, 婴儿会发da-da、ma-ma的双唇音, 但无所指"
   },
@@ -594,7 +594,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 67,
     ageMonths: 7,
     domain: Domain.Social,
-    description: "能认生人R", // Note: Table B.1 has '能认生人', R added from A.1
+    description: "能认生人", // Note: Table B.1 has '能认生人', R added from A.1
     operationMethod: "观察或询问婴儿对陌生人的反应",
     passCriteria: "婴儿有拒抱、哭、不高兴或惊奇等表现"
   },
@@ -651,7 +651,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 74,
     ageMonths: 8,
     domain: Domain.Language,
-    description: "模仿声音R", // Note: R added from A.1
+    description: "模仿声音", // Note: R added from A.1
     operationMethod: "观察或询问婴儿是否会模仿咳嗽、弄舌的声音",
     passCriteria: "观察或询问, 婴儿能模仿发出类似声音"
   },
@@ -724,7 +724,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 83,
     ageMonths: 9,
     domain: Domain.Language,
-    description: "会欢迎R", // Note: R added from A.1
+    description: "会欢迎", // Note: R added from A.1
     operationMethod: "主试者只说欢迎, 不做手势示范, 鼓励婴儿以手势表示",
     passCriteria: "观察或询问, 婴儿能够做出欢迎的手势"
   },
@@ -732,7 +732,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 84,
     ageMonths: 9,
     domain: Domain.Language,
-    description: "会再见R", // Note: R added from A.1
+    description: "会再见", // Note: R added from A.1
     operationMethod: "主试者只说再见, 不做手势示范, 鼓励婴儿以手势表示",
     passCriteria: "观察或询问, 婴儿能够做出再见的手势"
   },
@@ -740,7 +740,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 85,
     ageMonths: 9,
     domain: Domain.Social,
-    description: "表示不要R", // Note: R added from A.1
+    description: "表示不要", // Note: R added from A.1
     operationMethod: "观察或询问婴儿对不感兴趣的物品的反应",
     passCriteria: "观察或询问, 婴儿对不要之物有摇头或推开的动作"
   },
@@ -790,14 +790,14 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 91,
     ageMonths: 10,
     domain: Domain.Language,
-    description: "模仿发语声R", // Note: R added from A.1
+    description: "模仿发语声", // Note: R added from A.1
     operationMethod: "观察或询问婴儿是否会模仿\"妈妈\"、\"爸爸\"、\"拿\"、\"走\"等语音",
     passCriteria: "观察或询问, 婴儿能模仿发语声"
   },
   {
     id: 92,
     ageMonths: 10,
-    domain: Domain.Language,
+    domain: Domain.Social,
     description: "懂得常见物及人名称",
     operationMethod: "主试者问婴儿\"妈妈在哪里?\"\"灯在哪里?\"\"阿姨在哪里?\"等人或物的名称, 观察其反应",
     passCriteria: "婴儿会用眼睛注视或指出2种或以上的人或物"
@@ -855,7 +855,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 99,
     ageMonths: 11,
     domain: Domain.Language,
-    description: "有意识地发一个字音R", // Note: R added from A.1
+    description: "有意识地发一个字音", // Note: R added from A.1
     operationMethod: "观察或询问婴儿有意识的发音情况",
     passCriteria: "观察或询问, 有意识并正确地发出相应的字音, 如爸、妈、拿、走、姨、奶、汪汪等"
   },
@@ -871,7 +871,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 101,
     ageMonths: 11,
     domain: Domain.Social,
-    description: "会从杯中喝水R", // Note: R added from A.1
+    description: "会从杯中喝水", // Note: R added from A.1
     operationMethod: "观察或询问婴儿能否从成人拿的杯子里喝到水",
     passCriteria: "观察或询问, 婴儿能从杯中喝到水"
   },
@@ -928,7 +928,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 108,
     ageMonths: 12,
     domain: Domain.Language,
-    description: "叫爸爸妈妈有所指R", // Note: R added from A.1
+    description: "叫爸爸妈妈有所指", // Note: R added from A.1
     operationMethod: "观察或询问小儿见到妈妈、爸爸时, 是否会有意识并准确地叫出",
     passCriteria: "小儿会主动地称呼爸爸或妈妈"
   },
@@ -944,7 +944,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 110,
     ageMonths: 12,
     domain: Domain.Social,
-    description: "穿衣知配合R", // Note: R added from A.1
+    description: "穿衣知配合", // Note: R added from A.1
     operationMethod: "观察或询问成人给小儿穿衣时的配合情况",
     passCriteria: "穿衣时小儿合作, 会有伸手、伸腿等配合动作, 不一定穿进去"
   },
@@ -952,7 +952,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 111,
     ageMonths: 12,
     domain: Domain.Social,
-    description: "共同注意R", // Note: R added from A.1
+    description: "共同注意", // Note: R added from A.1
     operationMethod: "观察或询问, 对家长指示的某一场景或过程, 小儿能否与家长一起关注",
     passCriteria: "小儿有共同注意过程"
   },
@@ -968,7 +968,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
   {
     id: 113,
     ageMonths: 15,
-    domain: Domain.GrossMotor,
+    domain: Domain.FineMotor,
     description: "自发乱画",
     operationMethod: "主试者出示纸和笔, 鼓励小儿画画",
     passCriteria: "小儿能用笔在纸上自行乱画"
@@ -984,7 +984,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
   {
     id: 115,
     ageMonths: 15,
-    domain: Domain.FineMotor,
+    domain: Domain.Adaptive,
     description: "翻书两次",
     operationMethod: "主试者示范翻书, 鼓励小儿照样做",
     passCriteria: "做出翻书动作两次或以上"
@@ -1000,7 +1000,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
   {
     id: 117,
     ageMonths: 15,
-    domain: Domain.Adaptive,
+    domain: Domain.Language,
     description: "会指眼耳鼻口手",
     operationMethod: "主试者问小儿\"眼在哪儿?\"\"耳在哪儿?\"\"鼻子在哪儿?\"等, 观察其反应",
     passCriteria: "能正确指出3个或3个以上身体部位"
@@ -1009,7 +1009,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 118,
     ageMonths: 15,
     domain: Domain.Language,
-    description: "说3~5个字R", // Note: R added from A.1
+    description: "说3~5个字", // Note: R added from A.1
     operationMethod: "观察或询问小儿有意识讲话的情况",
     passCriteria: "有意识地说3~5个字(妈、爸除外)"
   },
@@ -1017,7 +1017,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 119,
     ageMonths: 15,
     domain: Domain.Social,
-    description: "会脱袜子R", // Note: R added from A.1
+    description: "会脱袜子", // Note: R added from A.1
     operationMethod: "观察或询问小儿脱袜子的方法",
     passCriteria: "观察或询问, 小儿能正确且有意识地脱下袜子"
   },
@@ -1066,7 +1066,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 125,
     ageMonths: 18,
     domain: Domain.Language,
-    description: "说十个字词R", // Note: R added from A.1
+    description: "说十个字词", // Note: R added from A.1
     operationMethod: "观察或询问小儿有意识讲话的情况并记录",
     passCriteria: "有意识说10个或以上单字或词(爸、妈除外)"
   },
@@ -1074,7 +1074,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 126,
     ageMonths: 18,
     domain: Domain.Social,
-    description: "白天能控制大小便R", // Note: R added from A.1
+    description: "白天能控制大小便", // Note: R added from A.1
     operationMethod: "观察或询问小儿大小便控制情况, 或询问白天是否尿湿裤子",
     passCriteria: "经人提醒或主动示意大小便, 白天基本不尿湿裤子"
   },
@@ -1091,7 +1091,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 128,
     ageMonths: 21,
     domain: Domain.GrossMotor,
-    description: "脚尖走R", // Note: R added from A.1
+    description: "脚尖走", // Note: R added from A.1
     operationMethod: "主试者示范用脚尖行走, 鼓励小儿照样做",
     passCriteria: "小儿能用脚尖连续行走三步以上, 脚跟不得着地"
   },
@@ -1147,7 +1147,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 135,
     ageMonths: 21,
     domain: Domain.Language,
-    description: "说3~5个字的句子R", // Note: R added from A.1
+    description: "说3~5个字的句子", // Note: R added from A.1
     operationMethod: "观察或询问小儿有意识说话的情况",
     passCriteria: "小儿能有意识地说出3~5个字的句子, 有主谓语"
   },
@@ -1155,7 +1155,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 136,
     ageMonths: 21,
     domain: Domain.Social,
-    description: "能表示个人需要R", // Note: R added from A.1
+    description: "能表示个人需要", // Note: R added from A.1
     operationMethod: "观察或询问小儿是否会明确表示自己的需要",
     passCriteria: "小儿会说出三种或以上的需要, 如\"吃饭、喝水、玩汽车、上街\"等, 可伴手势"
   },
@@ -1163,7 +1163,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 137,
     ageMonths: 21,
     domain: Domain.Social,
-    description: "想象性游戏R", // Note: R added from A.1
+    description: "想象性游戏", // Note: R added from A.1
     operationMethod: "观察或询问小儿是否有想象性游戏, 如假装给娃娃或动物玩具喂饭、盖被子、打针等",
     passCriteria: "小儿有想象性游戏"
   },
@@ -1187,7 +1187,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
   {
     id: 140,
     ageMonths: 24,
-    domain: Domain.FineMotor,
+    domain: Domain.Adaptive,
     description: "一页页翻书",
     operationMethod: "主试者示范一页页翻书, 鼓励小儿照样做",
     passCriteria: "小儿会用手捻书页, 每次一页, 连续翻书三页或以上"
@@ -1228,7 +1228,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 145,
     ageMonths: 24,
     domain: Domain.Social,
-    description: "问\"这是什么?\"R", // Note: R added from A.1
+    description: "问\"这是什么?\"", // Note: R added from A.1
     operationMethod: "观察或询问, 小儿在见到某物时, 是否能自发提问\"这是什么?\"",
     passCriteria: "小儿会自发提出问题, 主动问\"这是什么?\""
   },
@@ -1301,7 +1301,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 154,
     ageMonths: 27,
     domain: Domain.Social,
-    description: "脱单衣或裤R", // Note: R added from A.1
+    description: "脱单衣或裤", // Note: R added from A.1
     operationMethod: "观察或询问小儿是否会自己脫上衣或裤子",
     passCriteria: "小儿不用帮忙, 自己脱掉单衣或单裤"
   },
@@ -1601,7 +1601,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 191,
     ageMonths: 42,
     domain: Domain.Social,
-    description: "会穿上衣R", // Note: R added from A.1
+    description: "会穿上衣", // Note: R added from A.1
     operationMethod: "观察小儿是否会穿上衣",
     passCriteria: "小儿无需大人帮忙, 会穿上衣并将扣子扣好或拉锁拉好"
   },
@@ -1682,7 +1682,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
     id: 201,
     ageMonths: 48,
     domain: Domain.Social,
-    description: "会做集体游戏R", // Note: R added from A.1
+    description: "会做集体游戏", // Note: R added from A.1
     operationMethod: "观察或询问小儿能否做集体游戏",
     passCriteria: "小儿能主动参加集体游戏, 并能遵守游戏规则"
   },

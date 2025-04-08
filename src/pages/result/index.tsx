@@ -20,11 +20,17 @@ export default function Result() {
 
   useShare("宝宝发育评估结果 - 萌宝成长小助手");
 
-  const handleViewHistory = useCallback(() => {
+  const handleViewFailedItems = useCallback(() => {
+    if (!assessment || !assessment.id) return;
+
+    // 存储当前评估ID，以便在未通过项目页面使用
+    Taro.setStorageSync("currentAssessmentId", assessment.id);
+
+    // 导航到未通过项目页面
     Taro.navigateTo({
-      url: "/pages/history/index",
+      url: "/pages/failed-items/index",
     });
-  }, []);
+  }, [assessment]);
 
   if (loading) {
     return (
@@ -81,8 +87,11 @@ export default function Result() {
       <NextStepsCard nextAssessmentDate={getNextAssessmentDate(birthDate)} />
 
       <View className="actions">
-        <Button className="action-btn history-btn" onClick={handleViewHistory}>
-          查看历史记录
+        <Button
+          className="action-btn history-btn"
+          onClick={handleViewFailedItems}
+        >
+          查看未通过项目
         </Button>
         <Button className="action-btn new-btn" openType="share">
           分享
