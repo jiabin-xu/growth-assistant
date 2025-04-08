@@ -80,10 +80,12 @@ const hasFoundCeiling = (state: AssessmentState, domain: Domain): boolean => {
   if (currentIndex >= AGE_GROUPS.length - 1) {
     return isAgeGroupAllFail(state, domain, currentIndex);
   }
-  // if(currentIndex)
+  if (currentIndex - 1 <= AGE_GROUPS.indexOf(state.mainTestAgeMonths)) {
+    return false;
+  }
 
   const currentFailed = isAgeGroupAllFail(state, domain, currentIndex);
-  const nextFailed = isAgeGroupAllFail(state, domain, currentIndex + 1);
+  const nextFailed = isAgeGroupAllFail(state, domain, currentIndex - 1);
 
   const result = currentFailed && nextFailed;
   console.log('result :>> ', result);

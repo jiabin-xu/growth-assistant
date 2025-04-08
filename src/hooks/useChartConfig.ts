@@ -22,13 +22,13 @@ export const useChartConfig = (
           ...Object.keys(domainMentalAges).map((domain) => ({
             key: domain,
             value: actualAgeMonths,
-            type: "实际年龄",
+            type: "真实年龄",
           })),
           // 发育年龄数据
           ...Object.entries(domainMentalAges).map(([domain, age]) => ({
-            key:domain,
+            key: domain,
             value: age,
-            type: "发育年龄",
+            type: "评估发育年龄",
           })),
         ],
       },
@@ -50,4 +50,4 @@ export const useChartConfig = (
       },
     };
   }, [domainMentalAges, actualAgeMonths, name]);
-}; 
+};
