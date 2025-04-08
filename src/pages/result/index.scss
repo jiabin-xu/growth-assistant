@@ -186,29 +186,6 @@
           &.age {
             flex: 1;
           }
-
-          .status-tag {
-            padding: 5px 10px;
-            border-radius: 16px;
-            font-size: 12px;
-            font-weight: 600;
-
-            &.领先 {
-              background: rgba(88, 204, 2, 0.15);
-              color: #58cc02;
-            }
-
-            &.正常 {
-              background: rgba(28, 176, 246, 0.15);
-              color: #1cb0f6;
-            }
-
-            &.需要关注 {
-              background: rgba(255, 75, 75, 0.15);
-              color: #ff4b4b;
-            }
-          }
-
           .warning {
             color: #ff4b4b;
             font-weight: 600;
@@ -319,28 +296,6 @@
               padding: 5px 12px;
               border-radius: 16px;
               font-weight: 600;
-            }
-
-            .status-tag {
-              padding: 5px 12px;
-              border-radius: 16px;
-              font-size: 13px;
-              font-weight: 600;
-
-              &.领先 {
-                background: rgba(88, 204, 2, 0.15);
-                color: #58cc02;
-              }
-
-              &.正常 {
-                background: rgba(28, 176, 246, 0.15);
-                color: #1cb0f6;
-              }
-
-              &.需要关注 {
-                background: rgba(255, 75, 75, 0.15);
-                color: #ff4b4b;
-              }
             }
           }
         }
