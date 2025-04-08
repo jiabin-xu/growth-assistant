@@ -1033,7 +1033,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
   {
     id: 121,
     ageMonths: 18,
-    domain: Domain.GrossMotor,
+    domain: Domain.FineMotor,
     description: "模仿画道道",
     operationMethod: "主试者示范用蜡笔画出一无方向道道, 鼓励小儿模仿",
     passCriteria: "小儿能画出道道, 起止自如, 方向不限"
@@ -1041,7 +1041,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
   {
     id: 122,
     ageMonths: 18,
-    domain: Domain.FineMotor,
+    domain: Domain.Adaptive,
     description: "积木搭高四块",
     operationMethod: "示范搭高两块积木, 推倒后一块一块出示积木, 鼓励小儿搭高",
     passCriteria: "小儿搭高四块积木或以上, 三试一成"
@@ -1057,7 +1057,7 @@ export const ALL_TEST_ITEMS: TestItemDetailed[] = [
   {
     id: 124,
     ageMonths: 18,
-    domain: Domain.Adaptive,
+    domain: Domain.Language,
     description: "懂得三个投向",
     operationMethod: "请小儿把三块积木分别递给妈妈、阿姨、放在桌子上, 妈妈阿姨不能伸手要",
     passCriteria: "小儿会正确地将积木送到要求的地方"

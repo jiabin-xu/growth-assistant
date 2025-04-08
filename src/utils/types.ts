@@ -9,6 +9,8 @@ export interface AssessmentState {
   currentDomain: Domain;
   searchDirection: "backward" | "forward";
   lastTestedAgeIndex: number;
+  finishedPoints: number;
+  totalPoints: number;
 }
 
 export interface DomainScore {
@@ -24,15 +26,6 @@ export interface AssessmentResult {
   dqClassification: string;
 }
 
-export interface DomainProgress {
-  tested: number;
-  direction: string;
-  progress: number;
-}
-
 export interface AssessmentProgress {
   totalProgress: number;
-  domainProgress: {
-    [key in Domain]?: DomainProgress;
-  };
 }

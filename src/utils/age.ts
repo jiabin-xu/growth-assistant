@@ -69,3 +69,19 @@ export const formatAgeMonths = (months: number | undefined): string => {
     return `${years}岁${remainingMonths > 0 ? `${remainingMonths}月` : ''}`;
   }
 };
+
+/**
+ * 寻找第一个小于或等于chronoAgeMonths的age值
+ * @param chronoAgeMonths 实际年龄（月）
+ * @returns 第一个小于或等于chronoAgeMonths的age值，如果没有则返回第一个age值
+ */
+export const findClosestLowerAge = (chronoAgeMonths: number): number => {
+  // 按降序排列的年龄组
+  const sortedAges = [...AGE_GROUPS].sort((a, b) => b - a);
+
+  // 寻找第一个小于或等于chronoAgeMonths的age
+  const closestLowerAge = sortedAges.find(age => age <= chronoAgeMonths);
+
+  // 如果没有找到合适的值（chronoAgeMonths小于最小值），返回最小的age
+  return closestLowerAge !== undefined ? closestLowerAge : AGE_GROUPS[0];
+};

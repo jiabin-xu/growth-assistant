@@ -81,7 +81,7 @@ export default function Testing() {
       // 使用新的初始化函数
       const assessmentState = initializeAssessment(birthDate, assessmentDate);
       setAssessment(assessmentState);
-
+      console.log("assessmentState :>> ", assessmentState);
       // 获取初始测试项
       const initialItems = getInitialTestItems(assessmentState);
       setCurrentItems(initialItems);
