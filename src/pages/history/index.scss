@@ -135,5 +135,37 @@
       background: #e6f4ea;
       border-radius: 12px;
     }
+
+    .status-tag {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+
+      &.excellent {
+        background: rgba(46, 204, 113, 0.15);
+        color: #27ae60;
+      }
+
+      &.good {
+        background: rgba(155, 89, 182, 0.15);
+        color: #8e44ad;
+      }
+
+      &.normal {
+        background: rgba(52, 152, 219, 0.15);
+        color: #2980b9;
+      }
+
+      &.attention {
+        background: rgba(241, 196, 15, 0.15);
+        color: #f39c12;
+      }
+
+      &.delayed {
+        background: rgba(231, 76, 60, 0.15);
+        color: #c0392b;
+      }
+    }
   }
 }

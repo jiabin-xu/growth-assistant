@@ -154,7 +154,7 @@ export default function Testing() {
       // 显示方向变化提示
       if (newState.searchDirection !== assessment.searchDirection) {
         Taro.showToast({
-          title: `开始测试宝宝能力上限`,
+          title: `开始测试${newState.currentDomain}能力上限`,
           icon: "none",
           duration: 2000,
         });

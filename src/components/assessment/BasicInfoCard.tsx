@@ -2,9 +2,14 @@ import { View, Text } from "@tarojs/components";
 import { BasicInfoProps } from "../../types/assessment";
 import "./basic-info.scss";
 
-export const BasicInfoCard: React.FC<BasicInfoProps> = ({ gender, age, height, weight }) => {
+export const BasicInfoCard: React.FC<BasicInfoProps> = ({
+  gender,
+  age,
+  height,
+  weight,
+}) => {
   return (
-    <View className="basic-info">
+    <View className="basic-info-card">
       <Text className="info-title">基本信息</Text>
       <View className="info-grid">
         <View className="info-item">
@@ -26,4 +31,4 @@ export const BasicInfoCard: React.FC<BasicInfoProps> = ({ gender, age, height, w
       </View>
     </View>
   );
-}; 
+};

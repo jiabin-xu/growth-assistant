@@ -2,6 +2,7 @@ import { View, Text } from "@tarojs/components";
 import { useState, useEffect } from "react";
 import Taro from "@tarojs/taro";
 import { useShare } from "../../hooks/useShare";
+import { getStatusDisplay, getDevelopmentStatus } from "../../utils";
 import "./index.scss";
 
 interface Assessment {
@@ -74,6 +75,8 @@ export default function History() {
     );
   }
 
+  console.log("assessments :>> ", assessments);
+
   return (
     <View className="history">
       <View className="header">
@@ -114,19 +117,27 @@ export default function History() {
               </View>
             </View>
 
-            {assessment.status === "completed" && assessment.results && (
-              <View className="record-result">
-                <View className="result-item">
-                  <Text className="score">
-                    {assessment.results.developmentQuotient}
-                  </Text>
-                  <Text className="label">发育商 (DQ)</Text>
-                </View>
-                <Text className="classification">
-                  {assessment.results.dqClassification}
-                </Text>
-              </View>
-            )}
+            {assessment.status === "completed" &&
+              assessment.results &&
+              (() => {
+                const { developmentQuotient, dqClassification } =
+                  assessment.results;
+                return (
+                  <View className="record-result">
+                    <View className="result-item">
+                      <Text className="score">{developmentQuotient}</Text>
+                      <Text className="label">发育商 (DQ)</Text>
+                    </View>
+                    <Text
+                      className={`status-tag ${getDevelopmentStatus(
+                        developmentQuotient
+                      )}`}
+                    >
+                      {getStatusDisplay(dqClassification)}
+                    </Text>
+                  </View>
+                );
+              })()}
           </View>
         ))}
       </View>
