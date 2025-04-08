@@ -1,4 +1,4 @@
-import { View, Text, Button } from "@tarojs/components";
+import { View, Text, Button, CoverView } from "@tarojs/components";
 import { useCallback } from "react";
 import Taro, { useRouter } from "@tarojs/taro";
 import { BasicInfoCard } from "../../components/assessment/BasicInfoCard";
@@ -59,7 +59,7 @@ export default function Result() {
   return (
     <View className="result">
       <View className="header">
-        <Text className="title">{name}的发展评估</Text>
+        <Text className="title">{name}的发育评估</Text>
       </View>
 
       <BasicInfoCard
@@ -86,7 +86,7 @@ export default function Result() {
 
       <NextStepsCard nextAssessmentDate={getNextAssessmentDate(birthDate)} />
 
-      <View className="actions">
+      <CoverView className="actions">
         <Button
           className="action-btn history-btn"
           onClick={handleViewFailedItems}
@@ -96,7 +96,7 @@ export default function Result() {
         <Button className="action-btn new-btn" openType="share">
           分享
         </Button>
-      </View>
+      </CoverView>
     </View>
   );
 }

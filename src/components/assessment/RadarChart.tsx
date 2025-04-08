@@ -6,6 +6,17 @@ import { VChartEnvType } from "@visactor/taro-vchart/esm/typings";
 import { RadarChartProps } from "../../types/assessment";
 import { useChartConfig } from "../../hooks/useChartConfig";
 import "./radar-chart.scss";
+import { registerWXEnv } from "@visactor/vchart/esm/env";
+import { registerRadarChart } from "@visactor/vchart/esm/chart/radar";
+import { registerDiscreteLegend } from "@visactor/vchart/esm/component";
+
+VChart.useRegisters([
+  registerRadarChart,
+  registerWXEnv,
+  // registerTooltip,
+  registerDiscreteLegend,
+  // registerCanvasTooltipHandler,
+]);
 
 export const RadarChart: React.FC<RadarChartProps> = ({
   domainMentalAges,
@@ -41,4 +52,4 @@ export const RadarChart: React.FC<RadarChartProps> = ({
       )}
     </View>
   );
-}; 
+};

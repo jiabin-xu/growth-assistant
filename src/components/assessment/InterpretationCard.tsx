@@ -8,7 +8,7 @@ export const InterpretationCard: React.FC<InterpretationCardProps> = ({
 }) => {
   return (
     <View className="interpretation-card">
-      <Text className="card-title">能力解读与发展建议</Text>
+      <Text className="card-title">能力解读与发育建议</Text>
       {domainAnalysis.length > 0 && (
         <Swiper
           className="domain-swiper"
@@ -24,7 +24,7 @@ export const InterpretationCard: React.FC<InterpretationCardProps> = ({
                   <Text className="domain-title">{analysis.domain}</Text>
                   <View className="domain-status">
                     <Text className="domain-age">
-                      发展水平：{formatAgeMonths(analysis.mentalAge)}
+                      发育水平：{formatAgeMonths(analysis.mentalAge)}
                     </Text>
                     <Text
                       className={`status-tag ${analysis.developmentStatus}`}
@@ -37,14 +37,14 @@ export const InterpretationCard: React.FC<InterpretationCardProps> = ({
                   {analysis.interpretation &&
                     analysis.interpretation.length > 0 && (
                       <View className="domain-status">
-                        <Text className="subtitle">发展表现</Text>
+                        <Text className="subtitle">发育表现</Text>
                         <Text className="description">
                           {analysis.interpretation}
                         </Text>
                       </View>
                     )}
                   <View className="suggestions">
-                    <Text className="subtitle">发展建议</Text>
+                    <Text className="subtitle">发育建议</Text>
                     <View className="suggestion-list">
                       {analysis.suggestions?.map((suggestion, index) => (
                         <View key={index} className="suggestion-item">

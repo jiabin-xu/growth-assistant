@@ -255,10 +255,12 @@
     }
 
     .domain-swiper {
-      height: fit-content;
-      max-height: 600px;
+      min-height: 470px;
+      // height: fit-content;
+      max-height: 650px;
 
       .domain-swiper-item {
+        height: 100%;
         padding: 0;
       }
 
